@@ -56,3 +56,4 @@ describe('Checkpoint 5: Video Links Processing & Security Safety', () => {
     expect(res.error).toContain('upload an MP4 recording');
   });
 });
+

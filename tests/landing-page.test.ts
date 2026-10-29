@@ -60,3 +60,4 @@ describe('Checkpoint 2: Landing Page Required Sections & Verification', () => {
     expect(footerTsx.toLowerCase()).not.toContain('trusted by harvard');
   });
 });
+

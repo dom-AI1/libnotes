@@ -50,3 +50,4 @@ export const FinalCTA = ({ onOpenUpload }: FinalCTAProps) => {
     </section>
   );
 };
+

@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import type { StudyKit } from '../types';
 import { BookOpen, Clock, Award, Sparkles, Plus, Search, ArrowRight } from 'lucide-react';
+import { loadQuizAttempts } from '../services/storageService';
+import { isSupabaseConfigured } from '../services/supabaseClient';
 
 interface DashboardViewProps {
   studyKits: StudyKit[];
@@ -17,6 +19,21 @@ export const DashboardView = ({
 }: DashboardViewProps) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedSubjectFilter, setSelectedSubjectFilter] = useState<string>('All');
+  const [quizAttempts] = useState(() => loadQuizAttempts());
+
+  const subjectCount = new Set(studyKits.map((k) => k.subject)).size;
+  const totalQuizSets = quizAttempts.length;
+  const avgAccuracy =
+    totalQuizSets > 0
+      ? Math.round(
+          quizAttempts.reduce((acc, curr) => acc + curr.percentage, 0) /
+            totalQuizSets
+        )
+      : 0;
+
+  const uniqueWeakTopics = Array.from(
+    new Set(quizAttempts.flatMap((a) => a.weakTopics))
+  );
 
   const filteredKits = studyKits.filter((kit) => {
     const matchesSearch =
@@ -27,7 +44,10 @@ export const DashboardView = ({
     return matchesSearch && matchesSubject;
   });
 
-  const subjects = ['All', 'Physics', 'Chemistry', 'Computer Science'];
+  const availableSubjects = [
+    'All',
+    ...Array.from(new Set(studyKits.map((k) => k.subject))),
+  ];
 
   return (
     <div className="min-h-screen bg-[#F7F5EF] py-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
@@ -44,6 +64,14 @@ export const DashboardView = ({
           <p className="font-body text-sm sm:text-base text-[#5E5D57] mt-1">
             You have {studyKits.length} study kits ready for pre-exam revision.
           </p>
+          {isSupabaseConfigured() && (
+            <div className="flex items-center gap-2 mt-3">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FCFAF6] border border-[#141414]/20 text-[11px] font-mono text-[#5E5D57] shadow-sm">
+                <span className="w-2 h-2 rounded-full bg-[#79A94A] animate-pulse" />
+                <span>Supabase Cloud Synced (<strong>vidbiyemknmkfswiucsr</strong>)</span>
+              </span>
+            </div>
+          )}
         </div>
 
         <button
@@ -65,7 +93,9 @@ export const DashboardView = ({
           <div className="font-mono-editorial text-3xl font-bold text-[#141414] mt-2">
             {studyKits.length}
           </div>
-          <p className="text-xs font-body text-[#8A8880] mt-1">Across 3 academic subjects</p>
+          <p className="text-xs font-body text-[#8A8880] mt-1">
+            Across {subjectCount} academic {subjectCount === 1 ? 'subject' : 'subjects'}
+          </p>
         </div>
 
         <div className="bg-[#FCFAF6] border-2 border-[#141414] rounded-xl p-5 shadow-[2px_2px_0px_#141414]">
@@ -74,9 +104,11 @@ export const DashboardView = ({
             <Award className="w-4 h-4 text-[#79A94A]" />
           </div>
           <div className="font-mono-editorial text-3xl font-bold text-[#141414] mt-2">
-            5 Sets
+            {totalQuizSets} {totalQuizSets === 1 ? 'Attempt' : 'Sets'}
           </div>
-          <p className="text-xs font-body text-[#8A8880] mt-1">82% average accuracy</p>
+          <p className="text-xs font-body text-[#8A8880] mt-1">
+            {totalQuizSets > 0 ? `${avgAccuracy}% average accuracy` : 'Take your first quiz'}
+          </p>
         </div>
 
         <div className="bg-[#FCFAF6] border-2 border-[#141414] rounded-xl p-5 shadow-[2px_2px_0px_#141414]">
@@ -85,9 +117,11 @@ export const DashboardView = ({
             <Sparkles className="w-4 h-4 text-[#79A94A]" />
           </div>
           <div className="font-mono-editorial text-3xl font-bold text-[#79A94A] mt-2">
-            1 Topic
+            {uniqueWeakTopics.length} {uniqueWeakTopics.length === 1 ? 'Topic' : 'Topics'}
           </div>
-          <p className="text-xs font-body text-[#8A8880] mt-1">Carnot Cycle numericals</p>
+          <p className="text-xs font-body text-[#8A8880] mt-1 truncate">
+            {uniqueWeakTopics.length > 0 ? uniqueWeakTopics.slice(0, 2).join(', ') : 'All concepts mastered! 🎉'}
+          </p>
         </div>
       </div>
 
@@ -106,11 +140,11 @@ export const DashboardView = ({
 
         {/* Subject Pills */}
         <div className="flex items-center gap-1.5 overflow-x-auto pb-1">
-          {subjects.map((sub) => (
+          {availableSubjects.map((sub) => (
             <button
               key={sub}
               onClick={() => setSelectedSubjectFilter(sub)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-mono transition-all ${
+              className={`px-3 py-1.5 rounded-lg text-xs font-mono transition-all shrink-0 ${
                 selectedSubjectFilter === sub
                   ? 'bg-[#141414] text-[#FFFFFF] font-bold'
                   : 'bg-[#FCFAF6] border border-[#141414]/20 text-[#5E5D57] hover:border-[#141414]'
@@ -122,61 +156,84 @@ export const DashboardView = ({
         </div>
       </div>
 
-      {/* Grid of Study Kits */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredKits.map((kit) => (
-          <div
-            key={kit.id}
-            className="bg-[#FCFAF6] border-2 border-[#141414] rounded-2xl p-6 shadow-[3px_3px_0px_#141414] hover:shadow-[5px_5px_0px_#141414] transition-all flex flex-col justify-between"
+      {/* Grid of Study Kits or Empty State */}
+      {filteredKits.length === 0 ? (
+        <div className="bg-[#FCFAF6] border-2 border-dashed border-[#141414]/30 rounded-2xl p-10 text-center my-6">
+          <BookOpen className="w-10 h-10 text-[#8A8880] mx-auto mb-3" />
+          <h3 className="font-mono-editorial text-lg font-bold text-[#141414]">
+            No study kits found
+          </h3>
+          <p className="text-xs font-body text-[#5E5D57] mt-1 max-w-sm mx-auto">
+            {searchQuery
+              ? `No notes matching "${searchQuery}" in ${selectedSubjectFilter === 'All' ? 'any subject' : selectedSubjectFilter}.`
+              : `No study kits found for ${selectedSubjectFilter}.`}
+          </p>
+          <button
+            onClick={() => {
+              setSearchQuery('');
+              setSelectedSubjectFilter('All');
+            }}
+            className="mt-4 px-4 py-2 rounded-xl border border-[#141414] bg-[#FFFFFF] hover:bg-[#EFECE1] text-xs font-mono font-bold transition-all shadow-[2px_2px_0px_#141414]"
           >
-            <div>
-              <div className="flex items-center justify-between mb-3">
-                <span className="text-[11px] font-mono font-bold text-[#79A94A] bg-[#E8F2DC] px-2.5 py-0.5 rounded-full border border-[#79A94A]/30">
-                  {kit.subject}
-                </span>
-                <span className="text-[11px] font-mono text-[#8A8880]">
-                  {kit.dateCreated}
-                </span>
+            Reset Filters
+          </button>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filteredKits.map((kit) => (
+            <div
+              key={kit.id}
+              className="bg-[#FCFAF6] border-2 border-[#141414] rounded-2xl p-6 shadow-[3px_3px_0px_#141414] hover:shadow-[5px_5px_0px_#141414] transition-all flex flex-col justify-between"
+            >
+              <div>
+                <div className="flex items-center justify-between mb-3">
+                  <span className="text-[11px] font-mono font-bold text-[#79A94A] bg-[#E8F2DC] px-2.5 py-0.5 rounded-full border border-[#79A94A]/30">
+                    {kit.subject}
+                  </span>
+                  <span className="text-[11px] font-mono text-[#8A8880]">
+                    {kit.dateCreated}
+                  </span>
+                </div>
+
+                <h3 className="font-mono-editorial text-lg font-bold text-[#141414] mb-2 leading-snug">
+                  {kit.title}
+                </h3>
+
+                <div className="flex items-center gap-3 text-xs font-mono text-[#5E5D57] mb-4">
+                  <span className="flex items-center gap-1">
+                    <Clock className="w-3.5 h-3.5" />
+                    {kit.duration}
+                  </span>
+                  <span>•</span>
+                  <span>{kit.academicClass}</span>
+                </div>
+
+                <p className="text-xs font-body text-[#4A4944] line-clamp-2 mb-4">
+                  {(kit.content.quick || kit.content.minimal)?.headline}
+                </p>
               </div>
 
-              <h3 className="font-mono-editorial text-lg font-bold text-[#141414] mb-2 leading-snug">
-                {kit.title}
-              </h3>
+              <div className="pt-4 border-t border-[#DFDBCF] flex items-center justify-between gap-2">
+                <button
+                  onClick={() => onSelectKit(kit.id)}
+                  className="btn-secondary-outline px-4 py-2 text-xs font-mono font-semibold flex items-center gap-1.5"
+                >
+                  <span>Read Notes</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </button>
 
-              <div className="flex items-center gap-3 text-xs font-mono text-[#5E5D57] mb-4">
-                <span className="flex items-center gap-1">
-                  <Clock className="w-3.5 h-3.5" />
-                  {kit.duration}
-                </span>
-                <span>•</span>
-                <span>{kit.academicClass}</span>
+                <button
+                  onClick={() => onTakeQuiz(kit.id)}
+                  className="px-3 py-2 rounded-xl text-xs font-mono font-bold text-[#79A94A] hover:bg-[#E8F2DC] transition-colors flex items-center gap-1"
+                >
+                  <Award className="w-3.5 h-3.5" />
+                  <span>Quiz</span>
+                </button>
               </div>
-
-              <p className="text-xs font-body text-[#4A4944] line-clamp-2 mb-4">
-                {(kit.content.quick || kit.content.minimal)?.headline}
-              </p>
             </div>
-
-            <div className="pt-4 border-t border-[#DFDBCF] flex items-center justify-between gap-2">
-              <button
-                onClick={() => onSelectKit(kit.id)}
-                className="btn-secondary-outline px-4 py-2 text-xs font-mono font-semibold flex items-center gap-1.5"
-              >
-                <span>Read Notes</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </button>
-
-              <button
-                onClick={() => onTakeQuiz(kit.id)}
-                className="px-3 py-2 rounded-xl text-xs font-mono font-bold text-[#79A94A] hover:bg-[#E8F2DC] transition-colors flex items-center gap-1"
-              >
-                <Award className="w-3.5 h-3.5" />
-                <span>Quiz</span>
-              </button>
-            </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
 
     </div>
   );

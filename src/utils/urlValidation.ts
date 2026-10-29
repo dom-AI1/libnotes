@@ -94,3 +94,70 @@ export function validateLectureUrl(rawUrl: string): UrlValidationResult {
     error: `Provider "${hostname}" is not officially supported for direct web stream extraction. Please upload an MP4 recording of your lecture instead.`,
   };
 }
+
+/**
+ * Attempt to fetch the public video title from YouTube or Vimeo via oEmbed with timeout.
+ */
+export async function fetchVideoTitleFromUrl(rawUrl: string): Promise<string | null> {
+  const trimmed = rawUrl.trim();
+  if (!trimmed) return null;
+
+  try {
+    const parsed = new URL(trimmed);
+    const hostname = parsed.hostname.toLowerCase();
+
+    // 1. YouTube oEmbed
+    if (hostname.includes('youtube.com') || hostname.includes('youtu.be')) {
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), 2500);
+      try {
+        const oembedUrl = `https://www.youtube.com/oembed?url=${encodeURIComponent(trimmed)}&format=json`;
+        const res = await fetch(oembedUrl, { signal: controller.signal });
+        clearTimeout(timer);
+        if (res.ok) {
+          const data = await res.json();
+          if (data && data.title) return data.title as string;
+        }
+      } catch {
+        clearTimeout(timer);
+      }
+    }
+
+    // 2. Vimeo oEmbed
+    if (hostname.includes('vimeo.com')) {
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), 2500);
+      try {
+        const oembedUrl = `https://vimeo.com/api/oembed.json?url=${encodeURIComponent(trimmed)}`;
+        const res = await fetch(oembedUrl, { signal: controller.signal });
+        clearTimeout(timer);
+        if (res.ok) {
+          const data = await res.json();
+          if (data && data.title) return data.title as string;
+        }
+      } catch {
+        clearTimeout(timer);
+      }
+    }
+
+    // 3. Fallback: Parse query parameters or pathname slug if present
+    const searchParams = parsed.searchParams;
+    const queryTitle = searchParams.get('title') || searchParams.get('topic') || searchParams.get('q');
+    if (queryTitle) return decodeURIComponent(queryTitle);
+
+    // If pathname has slug keywords like /watch/photosynthesis-light-reaction
+    const pathSegments = parsed.pathname.split('/').filter(Boolean);
+    const lastSegment = pathSegments[pathSegments.length - 1];
+    if (lastSegment && lastSegment.length > 5 && (lastSegment.includes('-') || lastSegment.includes('_'))) {
+      const cleanSlug = lastSegment.replace(/\.[a-z0-9]+$/i, '').replace(/[-_]/g, ' ');
+      if (cleanSlug.includes(' ') && !/^[a-zA-Z0-9]{11}$/.test(cleanSlug)) {
+        return cleanSlug;
+      }
+    }
+  } catch {
+    return null;
+  }
+
+  return null;
+}
+

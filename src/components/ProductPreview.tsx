@@ -17,7 +17,7 @@ export const ProductPreview = ({ onOpenWorkspace }: ProductPreviewProps) => {
           PRODUCT PREVIEW
         </span>
         <h2 className="font-mono-editorial text-3xl sm:text-4xl font-bold text-[#141414] mt-3 tracking-tight">
-          See what NoteAI generates from a 40-minute lecture.
+          See what Libnotes generates from a 40-minute lecture.
         </h2>
         <p className="text-[#5E5D57] font-body text-base mt-2">
           Toggle between styles below to see how our models adapt the same physics lecture for rapid recap, deep proof comprehension, or board exam scoring.
@@ -28,9 +28,9 @@ export const ProductPreview = ({ onOpenWorkspace }: ProductPreviewProps) => {
       <div className="bg-[#FCFAF6] border-2 border-[#141414] rounded-2xl shadow-[6px_6px_0px_#141414] overflow-hidden">
         
         {/* Top Mockup Title Bar */}
-        <div className="bg-[#FAF9F5] border-b-2 border-[#141414] px-6 py-4 flex flex-wrap items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <div className="flex gap-1.5">
+        <div className="bg-[#FAF9F5] border-b-2 border-[#141414] px-4 sm:px-6 py-3.5 sm:py-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
+          <div className="flex items-center gap-2.5 max-w-full">
+            <div className="flex gap-1.5 shrink-0">
               <span className="w-3 h-3 rounded-full border border-[#141414] bg-[#E05B49]" />
               <span className="w-3 h-3 rounded-full border border-[#141414] bg-[#F4B400]" />
               <span className="w-3 h-3 rounded-full border border-[#141414] bg-[#79A94A]" />
@@ -40,66 +40,66 @@ export const ProductPreview = ({ onOpenWorkspace }: ProductPreviewProps) => {
             </span>
           </div>
 
-          {/* Style Selector Tabs */}
-          <div className="flex items-center gap-1.5 bg-[#FFFFFF] border border-[#141414] rounded-xl p-1 shadow-[1.5px_1.5px_0px_#141414]">
+          {/* Style Selector Tabs (Responsive Grid on mobile, Flex on desktop, never wraps) */}
+          <div className="w-full sm:w-auto grid grid-cols-4 sm:flex sm:items-center gap-1 sm:gap-1.5 bg-[#FFFFFF] border border-[#141414] rounded-xl p-1 shadow-[1.5px_1.5px_0px_#141414]">
             <button
               onClick={() => setActivePreviewStyle('quick')}
-              className={`px-3 py-1 rounded-lg text-xs font-mono font-bold transition-all flex items-center gap-1.5 ${
+              className={`px-1.5 sm:px-3 py-1.5 rounded-lg text-xs font-mono font-bold transition-all flex items-center justify-center gap-1 sm:gap-1.5 whitespace-nowrap ${
                 activePreviewStyle === 'quick' || activePreviewStyle === 'minimal'
                   ? 'bg-[#141414] text-[#FFFFFF]'
                   : 'text-[#5E5D57] hover:text-[#141414]'
               }`}
             >
-              <BookOpen className="w-3 h-3" />
-              <span>Quick</span>
+              <BookOpen className="w-3 h-3 sm:w-3.5 sm:h-3.5 shrink-0" />
+              <span className="text-[11px] sm:text-xs">Quick</span>
             </button>
             <button
               onClick={() => setActivePreviewStyle('topper')}
-              className={`px-3 py-1 rounded-lg text-xs font-mono font-bold transition-all flex items-center gap-1.5 ${
+              className={`px-1.5 sm:px-3 py-1.5 rounded-lg text-xs font-mono font-bold transition-all flex items-center justify-center gap-1 sm:gap-1.5 whitespace-nowrap ${
                 activePreviewStyle === 'topper'
                   ? 'bg-[#141414] text-[#FFFFFF]'
                   : 'text-[#5E5D57] hover:text-[#141414]'
               }`}
             >
-              <Award className="w-3 h-3 text-[#79A94A]" />
-              <span>Topper</span>
+              <Award className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#79A94A] shrink-0" />
+              <span className="text-[11px] sm:text-xs">Topper</span>
             </button>
             <button
               onClick={() => setActivePreviewStyle('chatpata')}
-              className={`px-3 py-1 rounded-lg text-xs font-mono font-bold transition-all flex items-center gap-1.5 ${
+              className={`px-1.5 sm:px-3 py-1.5 rounded-lg text-xs font-mono font-bold transition-all flex items-center justify-center gap-1 sm:gap-1.5 whitespace-nowrap ${
                 activePreviewStyle === 'chatpata' || activePreviewStyle === 'chatpate'
                   ? 'bg-[#141414] text-[#FFFFFF]'
                   : 'text-[#5E5D57] hover:text-[#141414]'
               }`}
             >
-              <Coffee className="w-3 h-3" />
-              <span>Chatpata</span>
+              <Coffee className="w-3 h-3 sm:w-3.5 sm:h-3.5 shrink-0" />
+              <span className="text-[11px] sm:text-xs">Chatpata</span>
             </button>
             <button
               onClick={() => setActivePreviewStyle('exam')}
-              className={`px-3 py-1 rounded-lg text-xs font-mono font-bold transition-all flex items-center gap-1.5 ${
+              className={`px-1.5 sm:px-3 py-1.5 rounded-lg text-xs font-mono font-bold transition-all flex items-center justify-center gap-1 sm:gap-1.5 whitespace-nowrap ${
                 activePreviewStyle === 'exam'
                   ? 'bg-[#141414] text-[#FFFFFF]'
                   : 'text-[#5E5D57] hover:text-[#141414]'
               }`}
             >
-              <GraduationCap className="w-3 h-3" />
-              <span>Exam PYQ</span>
+              <GraduationCap className="w-3 h-3 sm:w-3.5 sm:h-3.5 shrink-0" />
+              <span className="text-[11px] sm:text-xs">Exam<span className="hidden sm:inline">&nbsp;PYQ</span></span>
             </button>
           </div>
         </div>
 
         {/* Content Preview Body */}
-        <div className="p-6 sm:p-8">
+        <div className="p-4 sm:p-8">
           
           {/* Quick Notes Preview */}
           {(activePreviewStyle === 'quick' || activePreviewStyle === 'minimal') && (
             <div className="space-y-4 animate-in fade-in duration-200">
-              <div className="flex items-center justify-between pb-3 border-b border-[#DFDBCF]">
-                <h4 className="font-mono-editorial text-lg font-bold text-[#141414]">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-[#DFDBCF] gap-2">
+                <h4 className="font-mono-editorial text-base sm:text-lg font-bold text-[#141414]">
                   High-Yield Revision Formulae & State Variables
                 </h4>
-                <span className="text-xs font-mono text-[#79A94A] bg-[#E8F2DC] px-2 py-0.5 rounded border border-[#79A94A]/30">
+                <span className="self-start sm:self-auto text-xs font-mono text-[#79A94A] bg-[#E8F2DC] px-2 py-0.5 rounded border border-[#79A94A]/30 shrink-0 whitespace-nowrap">
                   Quick Mode
                 </span>
               </div>
@@ -131,30 +131,30 @@ export const ProductPreview = ({ onOpenWorkspace }: ProductPreviewProps) => {
           {/* Topper Notes Preview */}
           {activePreviewStyle === 'topper' && (
             <div className="space-y-4 animate-in fade-in duration-200">
-              <div className="flex items-center justify-between pb-3 border-b border-[#DFDBCF]">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-[#DFDBCF] gap-2">
                 <div>
-                  <h4 className="font-mono-editorial text-lg font-bold text-[#141414]">
+                  <h4 className="font-mono-editorial text-base sm:text-lg font-bold text-[#141414] leading-snug">
                     1. First Law & Reversible Isothermal Expansion Proof
                   </h4>
-                  <div className="flex items-center gap-2 mt-1 text-xs font-mono text-[#5E5D57]">
-                    <span className="flex items-center gap-1 text-[#79A94A] font-bold">
-                      <Clock className="w-3 h-3" />
+                  <div className="flex flex-wrap items-center gap-2 mt-1.5 text-xs font-mono text-[#5E5D57]">
+                    <span className="flex items-center gap-1 text-[#79A94A] font-bold whitespace-nowrap shrink-0">
+                      <Clock className="w-3 h-3 shrink-0" />
                       [03:15 - 12:40]
                     </span>
-                    <span>•</span>
-                    <span>CBSE / NCERT Reference Section 12.4</span>
+                    <span className="hidden sm:inline">•</span>
+                    <span className="text-[11px] sm:text-xs">CBSE / NCERT Reference Section 12.4</span>
                   </div>
                 </div>
-                <span className="text-xs font-mono text-[#79A94A] bg-[#E8F2DC] px-2 py-0.5 rounded border border-[#79A94A]/30">
+                <span className="self-start sm:self-auto text-xs font-mono text-[#79A94A] bg-[#E8F2DC] px-2 py-0.5 rounded border border-[#79A94A]/30 shrink-0 whitespace-nowrap">
                   Topper Depth
                 </span>
               </div>
               <p className="font-body text-sm text-[#2E2E2E] leading-relaxed">
                 The First Law of Thermodynamics is the macroscopic formulation of conservation of energy: dQ = dU + dW. For an ideal gas expanding reversibly from V1 to V2 at constant temperature T, work done is given by integrating P dV:
               </p>
-              <div className="p-4 rounded-xl border border-[#141414] bg-[#FAF9F5] font-mono text-xs text-[#141414] space-y-1">
-                <div>W = ∫ P dV = nRT ∫ (1/V) dV from V1 to V2</div>
-                <div className="font-bold text-[#79A94A]">W = 2.303 nRT log10(V2 / V1)</div>
+              <div className="p-3.5 sm:p-4 rounded-xl border border-[#141414] bg-[#FAF9F5] font-mono text-xs sm:text-sm text-[#141414] space-y-1 overflow-x-auto">
+                <div className="whitespace-nowrap">W = ∫ P dV = nRT ∫ (1/V) dV from V1 to V2</div>
+                <div className="font-bold text-[#79A94A] whitespace-nowrap">W = 2.303 nRT log10(V2 / V1)</div>
               </div>
               <div className="p-3 rounded-xl bg-[#F1F7EA] border border-[#79A94A] text-xs font-body text-[#141414]">
                 <span className="font-mono font-bold text-[#79A94A] mr-1.5">TOPPER TIP:</span>
@@ -166,11 +166,11 @@ export const ProductPreview = ({ onOpenWorkspace }: ProductPreviewProps) => {
           {/* Chatpata Notes Preview */}
           {(activePreviewStyle === 'chatpata' || activePreviewStyle === 'chatpate') && (
             <div className="space-y-4 animate-in fade-in duration-200">
-              <div className="flex items-center justify-between pb-3 border-b border-[#DFDBCF]">
-                <h4 className="font-mono-editorial text-lg font-bold text-[#141414]">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-[#DFDBCF] gap-2">
+                <h4 className="font-mono-editorial text-base sm:text-lg font-bold text-[#141414] leading-snug">
                   Bhai Ki Desi Analogy: Mummy Ki Pocket Money
                 </h4>
-                <span className="text-xs font-mono text-[#79A94A] bg-[#E8F2DC] px-2 py-0.5 rounded border border-[#79A94A]/30">
+                <span className="self-start sm:self-auto text-xs font-mono text-[#79A94A] bg-[#E8F2DC] px-2 py-0.5 rounded border border-[#79A94A]/30 shrink-0 whitespace-nowrap">
                   Hinglish Vibe
                 </span>
               </div>
@@ -186,19 +186,19 @@ export const ProductPreview = ({ onOpenWorkspace }: ProductPreviewProps) => {
           {/* Exam Mode Preview */}
           {activePreviewStyle === 'exam' && (
             <div className="space-y-4 animate-in fade-in duration-200">
-              <div className="flex items-center justify-between pb-3 border-b border-[#DFDBCF]">
-                <span className="font-mono text-xs font-bold px-2.5 py-1 rounded-full bg-[#141414] text-[#FFFFFF]">
+              <div className="flex flex-wrap items-center justify-between pb-3 border-b border-[#DFDBCF] gap-2">
+                <span className="font-mono text-xs font-bold px-2.5 py-1 rounded-full bg-[#141414] text-[#FFFFFF] shrink-0">
                   3 Mark Question (CBSE 2024 Set 2)
                 </span>
-                <span className="text-xs font-mono text-[#5E5D57]">Marking Scheme Rubric</span>
+                <span className="text-xs font-mono text-[#5E5D57] whitespace-nowrap">Marking Scheme Rubric</span>
               </div>
               <div className="font-mono-editorial text-sm font-bold text-[#141414]">
                 Q: A Carnot engine has efficiency 40% at sink 300 K. By how much must source temperature be increased to reach 50%?
               </div>
-              <div className="p-3.5 rounded-xl bg-[#FAF9F5] border border-[#141414] text-xs font-mono text-[#333333]">
-                <div>• Initial source T1 = 300 / 0.60 = 500 K (1 Mark)</div>
-                <div>• Required source T1' = 300 / 0.50 = 600 K (1 Mark)</div>
-                <div className="font-bold text-[#79A94A]">• Increase needed ΔT = 100 K (1 Mark with units)</div>
+              <div className="p-3.5 rounded-xl bg-[#FAF9F5] border border-[#141414] text-xs font-mono text-[#333333] overflow-x-auto">
+                <div className="whitespace-nowrap">• Initial source T1 = 300 / 0.60 = 500 K (1 Mark)</div>
+                <div className="whitespace-nowrap">• Required source T1' = 300 / 0.50 = 600 K (1 Mark)</div>
+                <div className="font-bold text-[#79A94A] whitespace-nowrap">• Increase needed ΔT = 100 K (1 Mark with units)</div>
               </div>
             </div>
           )}
@@ -206,15 +206,15 @@ export const ProductPreview = ({ onOpenWorkspace }: ProductPreviewProps) => {
         </div>
 
         {/* Bottom Banner inside mockup */}
-        <div className="bg-[#FAF9F5] border-t-2 border-[#141414] px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="bg-[#FAF9F5] border-t-2 border-[#141414] px-4 sm:px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
           <div className="flex items-center gap-2 text-xs font-mono text-[#5E5D57]">
-            <Sparkles className="w-4 h-4 text-[#79A94A]" />
+            <Sparkles className="w-4 h-4 text-[#79A94A] shrink-0" />
             <span>Interactive flashcards, 5-question diagnostic quiz & printable sheet included.</span>
           </div>
 
           <button
             onClick={onOpenWorkspace}
-            className="btn-primary-green px-5 py-2 text-xs font-mono font-bold flex items-center gap-1.5"
+            className="w-full sm:w-auto justify-center btn-primary-green px-5 py-2.5 text-xs font-mono font-bold flex items-center gap-1.5 shrink-0"
           >
             <span>Open Interactive Workspace</span>
             <ArrowRight className="w-3.5 h-3.5" />

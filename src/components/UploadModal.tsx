@@ -1,12 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   X, UploadCloud, Link as LinkIcon, Sparkles, BookOpen, Award, Coffee, 
   GraduationCap, CheckCircle2, AlertCircle, FileVideo, Trash2 
 } from 'lucide-react';
 import type { AcademicClass, Language, NoteStyle, Subject, StudyKit } from '../types';
 import { validateEducationalFile, formatFileSize } from '../utils/fileValidation';
-import { validateLectureUrl } from '../utils/urlValidation';
-import { processEducationalLecture, type ProcessingProgressEvent } from '../services/aiProcessingService';
+import { validateLectureUrl, fetchVideoTitleFromUrl } from '../utils/urlValidation';
+import { 
+  processEducationalLecture, 
+  detectLectureMetadataFromSource, 
+  type ProcessingProgressEvent 
+} from '../services/aiProcessingService';
+import {
+  ACADEMIC_CURRICULUM,
+  getSubjectsForClassAndStream,
+  getStreamsForClass,
+} from '../constants/curriculum';
 
 interface UploadModalProps {
   isOpen: boolean;
@@ -24,28 +33,134 @@ export const UploadModal = ({
   initialStyle = 'topper',
 }: UploadModalProps) => {
   const [sourceType, setSourceType] = useState<'upload' | 'link'>(initialLink ? 'link' : 'link');
-  const [videoLink, setVideoLink] = useState(initialLink || 'https://www.youtube.com/watch?v=cbse-phys-thermo');
+  const [videoLink, setVideoLink] = useState(initialLink || '');
+  const [customTopic, setCustomTopic] = useState('');
+  const [detectedTitle, setDetectedTitle] = useState<string | null>(null);
+  const [isFetchingTitle, setIsFetchingTitle] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [fileValidationMessage, setFileValidationMessage] = useState<string | null>(null);
   const [urlValidationMessage, setUrlValidationMessage] = useState<string | null>(null);
   const [urlNotice, setUrlNotice] = useState<string | null>(null);
 
   const [academicClass, setAcademicClass] = useState<AcademicClass>('Class 12');
+  const [stream, setStream] = useState<string>('Science');
   const [subject, setSubject] = useState<Subject>('Physics');
   const [chapter, setChapter] = useState('Thermodynamics & Heat Engines');
   const [language, setLanguage] = useState<Language>('Hinglish');
+  const [autoDetect, setAutoDetect] = useState(true);
+  const [showManualSyllabus, setShowManualSyllabus] = useState(false);
   const [noteStyle, setNoteStyle] = useState<NoteStyle>(
     initialStyle === 'minimal' ? 'quick' : initialStyle === 'chatpate' ? 'chatpata' : initialStyle
   );
 
   const [isProcessing, setIsProcessing] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
   const [progressEvent, setProgressEvent] = useState<ProcessingProgressEvent>({
     step: 'audio',
     message: '',
     percentage: 0,
   });
 
+  const handleClassChange = (newClass: AcademicClass) => {
+    setAcademicClass(newClass);
+    const config = ACADEMIC_CURRICULUM[newClass];
+    if (config.hasStreams && config.streams) {
+      const firstStream = Object.keys(config.streams)[0];
+      const streamConfig = config.streams[firstStream];
+      setStream(firstStream);
+      setSubject(streamConfig.defaultSubject);
+      setChapter(streamConfig.defaultChapter);
+    } else {
+      setStream('');
+      setSubject(config.defaultSubject || 'Science');
+      setChapter(config.defaultChapter || 'Chemical Reactions & Equations');
+    }
+  };
+
+  const handleStreamChange = (newStream: string) => {
+    setStream(newStream);
+    const config = ACADEMIC_CURRICULUM[academicClass];
+    if (config.hasStreams && config.streams && config.streams[newStream]) {
+      const streamConfig = config.streams[newStream];
+      setSubject(streamConfig.defaultSubject);
+      setChapter(streamConfig.defaultChapter);
+    }
+  };
+
+  const handleSubjectChange = (newSubject: Subject) => {
+    setSubject(newSubject);
+    const config = ACADEMIC_CURRICULUM[academicClass];
+    if (config.hasStreams && config.streams && config.streams[stream]?.chapterSuggestions?.[newSubject]) {
+      setChapter(config.streams[stream].chapterSuggestions![newSubject]);
+    } else if (!config.hasStreams && config.chapterSuggestions?.[newSubject]) {
+      setChapter(config.chapterSuggestions[newSubject]);
+    }
+  };
+
+  useEffect(() => {
+    if (isOpen) {
+      if (initialLink) {
+        setSourceType('link');
+        setVideoLink(initialLink);
+      } else {
+        setVideoLink('');
+      }
+      setCustomTopic('');
+      setDetectedTitle(null);
+      setIsFetchingTitle(false);
+      if (initialStyle) {
+        setNoteStyle(
+          initialStyle === 'minimal' ? 'quick' : initialStyle === 'chatpate' ? 'chatpata' : initialStyle
+        );
+      }
+      setFileValidationMessage(null);
+      setUrlValidationMessage(null);
+      setUrlNotice(null);
+      setSelectedFile(null);
+      setIsProcessing(false);
+      setShowManualSyllabus(false);
+      setAutoDetect(true);
+    }
+  }, [isOpen, initialLink, initialStyle]);
+
+  // Close on Escape key
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isOpen) {
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+    const file = e.dataTransfer.files?.[0];
+    if (file) {
+      const validation = validateEducationalFile(file);
+      if (!validation.valid) {
+        setSelectedFile(null);
+        setFileValidationMessage(validation.error || 'Invalid file.');
+      } else {
+        setSelectedFile(file);
+        setFileValidationMessage(null);
+      }
+    }
+  };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -61,7 +176,7 @@ export const UploadModal = ({
     }
   };
 
-  const handleUrlBlur = () => {
+  const handleUrlBlur = async () => {
     if (!videoLink.trim()) {
       setUrlValidationMessage(null);
       setUrlNotice(null);
@@ -74,6 +189,27 @@ export const UploadModal = ({
     } else {
       setUrlValidationMessage(null);
       setUrlNotice(result.notice || null);
+
+      // Attempt to automatically extract title from YouTube / Vimeo oEmbed
+      setIsFetchingTitle(true);
+      try {
+        const title = await fetchVideoTitleFromUrl(videoLink);
+        setIsFetchingTitle(false);
+        if (title) {
+          setDetectedTitle(title);
+          if (!customTopic) {
+            setCustomTopic(title);
+            setChapter(title);
+          }
+          // Infer subject from title
+          const detected = detectLectureMetadataFromSource(videoLink, 'link', title);
+          setAcademicClass(detected.academicClass);
+          if (detected.stream) setStream(detected.stream);
+          setSubject(detected.subject);
+        }
+      } catch {
+        setIsFetchingTitle(false);
+      }
     }
   };
 
@@ -101,12 +237,23 @@ export const UploadModal = ({
     setIsProcessing(true);
 
     try {
+      const currentConfig = ACADEMIC_CURRICULUM[academicClass];
+      const isAuto = autoDetect && !showManualSyllabus;
+
+      const effectiveChapter = customTopic.trim() || (isAuto ? undefined : chapter);
+      const effectiveTitle = customTopic.trim() 
+        ? `${subject}: ${customTopic.trim()}` 
+        : (isAuto ? undefined : `${subject}: ${chapter}`);
+
       const generatedKit = await processEducationalLecture(
         {
-          title: `${subject}: ${chapter}`,
-          subject,
-          academicClass,
-          chapter,
+          title: effectiveTitle,
+          subject: isAuto ? undefined : subject,
+          academicClass: isAuto ? undefined : academicClass,
+          stream: isAuto ? undefined : (currentConfig.hasStreams ? stream : undefined),
+          chapter: effectiveChapter,
+          customTopic: customTopic.trim() || undefined,
+          autoDetect: isAuto,
           noteStyle,
           language,
           sourceType,
@@ -122,7 +269,12 @@ export const UploadModal = ({
       onSuccess(generatedKit);
     } catch (err) {
       setIsProcessing(false);
-      alert('An error occurred during note generation. Please try again.');
+      const errMsg = err instanceof Error ? err.message : 'An error occurred during note generation. Please try again.';
+      if (sourceType === 'upload') {
+        setFileValidationMessage(errMsg);
+      } else {
+        setUrlValidationMessage(errMsg);
+      }
     }
   };
 
@@ -158,48 +310,81 @@ export const UploadModal = ({
   ];
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#141414]/65 backdrop-blur-sm overflow-y-auto">
-      <div className="relative w-full max-w-3xl my-8 bg-[#FCFAF6] border-2 border-[#141414] rounded-2xl shadow-[6px_6px_0px_#141414] p-6 sm:p-8 animate-in fade-in zoom-in-95 duration-200">
-        
-        {/* Close Button */}
-        <button
-          onClick={onClose}
-          disabled={isProcessing}
-          className="absolute top-5 right-5 p-2 rounded-xl border border-[#141414] bg-[#FFFFFF] hover:bg-[#EFECE1] transition-colors"
-          aria-label="Close modal"
+    <div 
+      className="fixed inset-0 z-50 overflow-y-auto bg-[#141414]/65 backdrop-blur-sm p-3 sm:p-6"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) {
+          onClose();
+        }
+      }}
+    >
+      <div 
+        className="min-h-full flex items-start sm:items-center justify-center py-4 sm:py-8"
+        onClick={(e) => {
+          if (e.target === e.currentTarget) {
+            onClose();
+          }
+        }}
+      >
+        <div 
+          className="relative w-full max-w-3xl bg-[#FCFAF6] border-2 border-[#141414] rounded-2xl shadow-[6px_6px_0px_#141414] p-5 sm:p-8 animate-in fade-in zoom-in-95 duration-200"
+          onClick={(e) => e.stopPropagation()}
         >
-          <X className="w-5 h-5 text-[#141414]" />
-        </button>
+          
+          {/* Prominent Close Button */}
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              onClose();
+            }}
+            className="absolute top-4 right-4 sm:top-5 sm:right-5 z-30 p-2 sm:p-2.5 rounded-xl border-2 border-[#141414] bg-[#FFFFFF] hover:bg-[#FDEDE8] hover:border-[#E05B49] hover:scale-105 active:scale-95 shadow-[2px_2px_0px_#141414] transition-all cursor-pointer text-[#141414]"
+            aria-label="Close modal"
+            title="Close (Esc)"
+          >
+            <X className="w-5 h-5" />
+          </button>
 
-        {isProcessing ? (
-          /* Processing State with Live Pipeline Progress */
-          <div className="py-16 text-center">
-            <div className="w-16 h-16 rounded-2xl bg-[#E8F2DC] border-2 border-[#141414] shadow-[3px_3px_0px_#141414] flex items-center justify-center mx-auto mb-6 animate-pulse">
-              <Sparkles className="w-8 h-8 text-[#79A94A]" />
+          {isProcessing ? (
+            /* Processing State with Live Pipeline Progress */
+            <div className="py-16 text-center">
+              <div className="w-16 h-16 rounded-2xl bg-[#E8F2DC] border-2 border-[#141414] shadow-[3px_3px_0px_#141414] flex items-center justify-center mx-auto mb-6 animate-pulse">
+                <Sparkles className="w-8 h-8 text-[#79A94A]" />
+              </div>
+              
+              <h3 className="font-mono-editorial text-2xl font-bold text-[#141414]">
+                {progressEvent.message || 'Transforming lecture into notes...'}
+              </h3>
+
+              <p className="mt-2 text-xs font-mono text-[#5E5D57]">
+                Pipeline Progress: {progressEvent.percentage}%
+              </p>
+
+              {/* Real Progress Bar */}
+              <div className="w-72 h-3 bg-[#DFDBCF] rounded-full mx-auto mt-6 overflow-hidden border border-[#141414] p-0.5">
+                <div 
+                  className="h-full bg-[#79A94A] rounded-full transition-all duration-300"
+                  style={{ width: `${progressEvent.percentage}%` }}
+                />
+              </div>
+
+              <div className="mt-6 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FAF9F5] border border-[#141414]/30 text-[11px] font-mono text-[#5E5D57]">
+                <span className="w-2 h-2 rounded-full bg-[#79A94A] animate-ping" />
+                <span>Synthesizing speech timestamps into {noteStyle.toUpperCase()} study kit</span>
+              </div>
+
+              {/* Cancel Generation Button */}
+              <div className="mt-8">
+                <button
+                  type="button"
+                  onClick={onClose}
+                  className="btn-secondary-outline px-5 py-2 text-xs font-mono font-bold text-[#5E5D57] hover:text-[#E05B49] hover:border-[#E05B49] transition-colors"
+                >
+                  Cancel & Close
+                </button>
+              </div>
             </div>
-            
-            <h3 className="font-mono-editorial text-2xl font-bold text-[#141414]">
-              {progressEvent.message || 'Transforming lecture into notes...'}
-            </h3>
-
-            <p className="mt-2 text-xs font-mono text-[#5E5D57]">
-              Pipeline Progress: {progressEvent.percentage}%
-            </p>
-
-            {/* Real Progress Bar */}
-            <div className="w-72 h-3 bg-[#DFDBCF] rounded-full mx-auto mt-6 overflow-hidden border border-[#141414] p-0.5">
-              <div 
-                className="h-full bg-[#79A94A] rounded-full transition-all duration-300"
-                style={{ width: `${progressEvent.percentage}%` }}
-              />
-            </div>
-
-            <div className="mt-6 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FAF9F5] border border-[#141414]/30 text-[11px] font-mono text-[#5E5D57]">
-              <span className="w-2 h-2 rounded-full bg-[#79A94A] animate-ping" />
-              <span>Synthesizing speech timestamps into {noteStyle.toUpperCase()} study kit</span>
-            </div>
-          </div>
-        ) : (
+          ) : (
           /* Upload Form */
           <form onSubmit={handleSubmit} className="space-y-6">
             
@@ -280,6 +465,38 @@ export const UploadModal = ({
                     <span>{urlNotice}</span>
                   </div>
                 )}
+
+                {/* Lecture Topic / Video Title Field */}
+                <div className="space-y-1.5 pt-1">
+                  <div className="flex items-center justify-between">
+                    <label className="block text-xs font-mono font-semibold text-[#141414] uppercase">
+                      Lecture Topic / Chapter (Optional)
+                    </label>
+                    {isFetchingTitle ? (
+                      <span className="text-[11px] font-mono text-[#79A94A] flex items-center gap-1 animate-pulse">
+                        <Sparkles className="w-3 h-3" />
+                        Detecting title from video...
+                      </span>
+                    ) : detectedTitle ? (
+                      <span className="text-[10px] font-mono font-bold text-[#79A94A] bg-[#E8F2DC] px-2 py-0.5 rounded-full border border-[#79A94A]/30">
+                        DETECTED FROM VIDEO
+                      </span>
+                    ) : null}
+                  </div>
+                  <input
+                    type="text"
+                    value={customTopic}
+                    onChange={(e) => {
+                      setCustomTopic(e.target.value);
+                      setChapter(e.target.value);
+                    }}
+                    placeholder="e.g. Demand & Supply, French Revolution, Photosynthesis, Binary Search"
+                    className="w-full h-10 px-3.5 rounded-xl border border-[#141414]/30 bg-[#FFFFFF] text-xs font-body text-[#141414] focus:outline-none focus:ring-1 focus:ring-[#79A94A] focus:border-[#79A94A]"
+                  />
+                  <p className="text-[11px] font-mono text-[#8A8880]">
+                    Auto-detected from YouTube or enter the topic so notes are custom-crafted for this video.
+                  </p>
+                </div>
               </div>
             ) : (
               <div className="space-y-2">
@@ -288,16 +505,25 @@ export const UploadModal = ({
                 </label>
 
                 {!selectedFile ? (
-                  <div className="border-2 border-dashed border-[#141414]/40 rounded-xl p-6 text-center bg-[#FAF9F5] hover:bg-[#E8F2DC]/30 transition-colors cursor-pointer relative">
+                  <div
+                    onDragOver={handleDragOver}
+                    onDragLeave={handleDragLeave}
+                    onDrop={handleDrop}
+                    className={`border-2 border-dashed rounded-xl p-6 text-center transition-all cursor-pointer relative ${
+                      isDragging
+                        ? 'border-[#79A94A] bg-[#E8F2DC]/60 ring-2 ring-[#79A94A]/40 scale-[1.01]'
+                        : 'border-[#141414]/40 bg-[#FAF9F5] hover:bg-[#E8F2DC]/30'
+                    }`}
+                  >
                     <input
                       type="file"
                       accept="video/mp4,video/mkv,video/quicktime,video/webm,audio/mp3,audio/wav,audio/m4a"
                       onChange={handleFileChange}
                       className="absolute inset-0 opacity-0 cursor-pointer"
                     />
-                    <UploadCloud className="w-8 h-8 text-[#79A94A] mx-auto mb-2" />
+                    <UploadCloud className={`w-8 h-8 mx-auto mb-2 transition-transform duration-200 ${isDragging ? 'text-[#79A94A] scale-110 animate-bounce' : 'text-[#79A94A]'}`} />
                     <p className="text-sm font-medium text-[#141414]">
-                      Click to browse or drop lecture recording
+                      {isDragging ? 'Drop your lecture video here now' : 'Click to browse or drop lecture recording'}
                     </p>
                     <p className="text-xs text-[#8A8880] mt-1 font-mono">
                       MP4, MKV, MOV, WebM or MP3 (Max 500 MB limit)
@@ -340,70 +566,174 @@ export const UploadModal = ({
               </div>
             )}
 
-            {/* Class, Subject, Chapter, Language Selectors */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
-              <div>
-                <label className="block text-xs font-mono font-semibold text-[#141414] mb-1 uppercase">
-                  Target Class
-                </label>
-                <select
-                  value={academicClass}
-                  onChange={(e) => setAcademicClass(e.target.value as AcademicClass)}
-                  className="w-full h-10 px-2.5 rounded-xl border border-[#141414]/30 bg-[#FFFFFF] text-xs font-body focus:outline-none focus:border-[#79A94A]"
-                >
-                  <option value="Class 10">Class 10</option>
-                  <option value="Class 11">Class 11</option>
-                  <option value="Class 12">Class 12</option>
-                  <option value="College / B.Tech">College / B.Tech</option>
-                  <option value="Competitive (JEE/NEET)">Competitive (JEE/NEET)</option>
-                </select>
-              </div>
+            {/* Auto-Detection Banner vs Manual Syllabus Selectors */}
+            {autoDetect && !showManualSyllabus ? (
+              <div className="space-y-3">
+                <div className="rounded-xl border-2 border-[#79A94A] bg-[#F1F7EA] p-4 shadow-[2px_2px_0px_#79A94A]/20">
+                  <div className="flex items-start gap-3">
+                    <div className="w-9 h-9 rounded-lg bg-[#E8F2DC] border border-[#79A94A] flex items-center justify-center shrink-0 mt-0.5">
+                      <Sparkles className="w-5 h-5 text-[#79A94A]" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs font-mono font-bold text-[#141414] uppercase tracking-wide">
+                          AI Auto-Analysis Active
+                        </span>
+                        <span className="text-[10px] font-mono font-bold text-[#79A94A] bg-[#FFFFFF] px-2 py-0.5 rounded-full border border-[#79A94A]/40">
+                          AUTO-DETECT
+                        </span>
+                      </div>
+                      <p className="text-xs font-body text-[#5E5D57] mt-1 leading-relaxed">
+                        {sourceType === 'upload'
+                          ? 'Libnotes AI will transcribe your recording and automatically detect what the lecture is about — identifying the subject, chapter, and academic concepts. No manual syllabus selection needed!'
+                          : 'Libnotes AI will analyze the lecture video and automatically identify the subject, chapter, and core concepts.'}
+                      </p>
+                    </div>
+                  </div>
+                </div>
 
-              <div>
-                <label className="block text-xs font-mono font-semibold text-[#141414] mb-1 uppercase">
-                  Subject
-                </label>
-                <select
-                  value={subject}
-                  onChange={(e) => setSubject(e.target.value as Subject)}
-                  className="w-full h-10 px-2.5 rounded-xl border border-[#141414]/30 bg-[#FFFFFF] text-xs font-body focus:outline-none focus:border-[#79A94A]"
-                >
-                  <option value="Physics">Physics</option>
-                  <option value="Chemistry">Chemistry</option>
-                  <option value="Mathematics">Mathematics</option>
-                  <option value="Biology">Biology</option>
-                  <option value="Computer Science">Computer Science</option>
-                </select>
-              </div>
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-1">
+                  <div className="flex items-center gap-2">
+                    <label className="text-xs font-mono font-semibold text-[#141414] uppercase">
+                      Language:
+                    </label>
+                    <select
+                      value={language}
+                      onChange={(e) => setLanguage(e.target.value as Language)}
+                      className="h-9 px-2.5 rounded-xl border border-[#141414]/30 bg-[#FFFFFF] text-xs font-body focus:outline-none focus:border-[#79A94A] cursor-pointer"
+                    >
+                      <option value="Hinglish">Hinglish (Recommended)</option>
+                      <option value="English">English</option>
+                      <option value="Hindi">Pure Hindi</option>
+                    </select>
+                  </div>
 
-              <div>
-                <label className="block text-xs font-mono font-semibold text-[#141414] mb-1 uppercase">
-                  Chapter / Topic
-                </label>
-                <input
-                  type="text"
-                  value={chapter}
-                  onChange={(e) => setChapter(e.target.value)}
-                  placeholder="e.g. Thermodynamics"
-                  className="w-full h-10 px-3 rounded-xl border border-[#141414]/30 bg-[#FFFFFF] text-xs font-body focus:outline-none focus:border-[#79A94A]"
-                />
+                  <button
+                    type="button"
+                    onClick={() => setShowManualSyllabus(true)}
+                    className="text-xs font-mono text-[#5E5D57] hover:text-[#141414] transition-colors underline cursor-pointer text-left"
+                  >
+                    Want to specify class & subject manually? (Optional)
+                  </button>
+                </div>
               </div>
+            ) : (
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-mono font-bold text-[#141414] uppercase">
+                    Manual Syllabus Customization
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => setShowManualSyllabus(false)}
+                    className="text-xs font-mono text-[#79A94A] hover:underline font-semibold flex items-center gap-1 cursor-pointer"
+                  >
+                    <Sparkles className="w-3.5 h-3.5" />
+                    Switch to AI Auto-Detect
+                  </button>
+                </div>
 
-              <div>
-                <label className="block text-xs font-mono font-semibold text-[#141414] mb-1 uppercase">
-                  Language Mode
-                </label>
-                <select
-                  value={language}
-                  onChange={(e) => setLanguage(e.target.value as Language)}
-                  className="w-full h-10 px-2.5 rounded-xl border border-[#141414]/30 bg-[#FFFFFF] text-xs font-body focus:outline-none focus:border-[#79A94A]"
-                >
-                  <option value="English">English</option>
-                  <option value="Hinglish">Hinglish (Recommended)</option>
-                  <option value="Hindi">Pure Hindi</option>
-                </select>
+                {(() => {
+                  const currentConfig = ACADEMIC_CURRICULUM[academicClass];
+                  const availableStreams = getStreamsForClass(academicClass);
+                  const availableSubjects = getSubjectsForClassAndStream(academicClass, stream);
+
+                  return (
+                    <div
+                      className={`grid grid-cols-1 sm:grid-cols-2 ${
+                        currentConfig.hasStreams ? 'md:grid-cols-3 lg:grid-cols-5' : 'md:grid-cols-4'
+                      } gap-3`}
+                    >
+                      {/* 1. Target Class */}
+                      <div>
+                        <label className="block text-xs font-mono font-semibold text-[#141414] mb-1 uppercase">
+                          Target Class
+                        </label>
+                        <select
+                          value={academicClass}
+                          onChange={(e) => handleClassChange(e.target.value as AcademicClass)}
+                          className="w-full h-10 px-2.5 rounded-xl border border-[#141414]/30 bg-[#FFFFFF] text-xs font-body focus:outline-none focus:border-[#79A94A] cursor-pointer"
+                        >
+                          <option value="Class 10">Class 10</option>
+                          <option value="Class 11">Class 11</option>
+                          <option value="Class 12">Class 12</option>
+                          <option value="College / B.Tech">College / B.Tech</option>
+                          <option value="Competitive (JEE/NEET)">Competitive (JEE/NEET)</option>
+                        </select>
+                      </div>
+
+                      {/* 2. Choose Stream / Branch (Conditional: Only for Class 11, 12, College, Competitive) */}
+                      {currentConfig.hasStreams && (
+                        <div className="animate-in fade-in duration-200">
+                          <label className="block text-xs font-mono font-semibold text-[#141414] mb-1 uppercase flex items-center justify-between">
+                            <span>{currentConfig.streamLabel || 'Choose Stream'}</span>
+                          </label>
+                          <select
+                            value={stream}
+                            onChange={(e) => handleStreamChange(e.target.value)}
+                            className="w-full h-10 px-2.5 rounded-xl border-2 border-[#79A94A] bg-[#F1F7EA] text-xs font-body font-semibold text-[#141414] focus:outline-none focus:ring-1 focus:ring-[#79A94A] cursor-pointer"
+                          >
+                            {availableStreams.map((st) => (
+                              <option key={st} value={st}>
+                                {st}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                      )}
+
+                      {/* 3. Subject (Dynamic based on Class & Stream) */}
+                      <div>
+                        <label className="block text-xs font-mono font-semibold text-[#141414] mb-1 uppercase">
+                          Subject
+                        </label>
+                        <select
+                          value={subject}
+                          onChange={(e) => handleSubjectChange(e.target.value as Subject)}
+                          className="w-full h-10 px-2.5 rounded-xl border border-[#141414]/30 bg-[#FFFFFF] text-xs font-body focus:outline-none focus:border-[#79A94A] cursor-pointer"
+                        >
+                          {availableSubjects.map((sub) => (
+                            <option key={sub} value={sub}>
+                              {sub}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+
+                      {/* 4. Chapter / Topic */}
+                      <div>
+                        <label className="block text-xs font-mono font-semibold text-[#141414] mb-1 uppercase">
+                          Chapter / Topic
+                        </label>
+                        <input
+                          type="text"
+                          value={chapter}
+                          onChange={(e) => setChapter(e.target.value)}
+                          placeholder="e.g. Thermodynamics"
+                          className="w-full h-10 px-3 rounded-xl border border-[#141414]/30 bg-[#FFFFFF] text-xs font-body focus:outline-none focus:border-[#79A94A]"
+                        />
+                      </div>
+
+                      {/* 5. Language Mode */}
+                      <div>
+                        <label className="block text-xs font-mono font-semibold text-[#141414] mb-1 uppercase">
+                          Language Mode
+                        </label>
+                        <select
+                          value={language}
+                          onChange={(e) => setLanguage(e.target.value as Language)}
+                          className="w-full h-10 px-2.5 rounded-xl border border-[#141414]/30 bg-[#FFFFFF] text-xs font-body focus:outline-none focus:border-[#79A94A] cursor-pointer"
+                        >
+                          <option value="English">English</option>
+                          <option value="Hinglish">Hinglish (Recommended)</option>
+                          <option value="Hindi">Pure Hindi</option>
+                        </select>
+                      </div>
+                    </div>
+                  );
+                })()}
               </div>
-            </div>
+            )}
 
             {/* Note Style Selection Cards */}
             <div>
@@ -449,11 +779,18 @@ export const UploadModal = ({
               </div>
             </div>
 
-            {/* Prominent Primary Green Action Button */}
-            <div className="pt-2">
+            {/* Action Buttons: Cancel + Generate */}
+            <div className="pt-3 flex flex-col-reverse sm:flex-row items-center gap-3">
+              <button
+                type="button"
+                onClick={onClose}
+                className="w-full sm:w-auto btn-secondary-outline py-3 px-6 text-sm font-mono font-bold flex items-center justify-center transition-colors hover:bg-[#EFECE1]"
+              >
+                Cancel
+              </button>
               <button
                 type="submit"
-                className="w-full btn-primary-green py-3.5 text-base font-semibold flex items-center justify-center gap-2"
+                className="w-full sm:flex-1 btn-primary-green py-3.5 text-base font-semibold flex items-center justify-center gap-2"
               >
                 <Sparkles className="w-5 h-5" />
                 <span>Generate Study Kit</span>
@@ -461,6 +798,7 @@ export const UploadModal = ({
             </div>
           </form>
         )}
+        </div>
       </div>
     </div>
   );

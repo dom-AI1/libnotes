@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome to Libnotes — Turn Lectures into Notes You'll Love</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #F7F6F1;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: #171717;
+      line-height: 1.6;
+    }
+    .wrapper {
+      width: 100%;
+      background-color: #F7F6F1;
+      padding: 40px 16px;
+    }
+    .container {
+      max-width: 580px;
+      margin: 0 auto;
+      background-color: #FCFBF7;
+      border: 1px solid #D5D3CA;
+      border-radius: 12px;
+      padding: 36px 32px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+    }
+    .header {
+      text-align: center;
+      padding-bottom: 24px;
+      border-bottom: 1px dashed #D5D3CA;
+    }
+    .logo {
+      font-family: "Courier New", Courier, monospace;
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      color: #171717;
+      text-decoration: none;
+    }
+    .badge {
+      display: inline-block;
+      background-color: #EEF5E6;
+      color: #557F2E;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      margin-top: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .content {
+      padding: 28px 0;
+    }
+    h1 {
+      font-family: "Courier New", Courier, monospace;
+      font-size: 22px;
+      font-weight: 700;
+      color: #171717;
+      margin-top: 0;
+      margin-bottom: 16px;
+      line-height: 1.3;
+    }
+    p {
+      color: #444440;
+      font-size: 15px;
+      margin-bottom: 18px;
+    }
+    .perks-box {
+      background-color: #F7F6F1;
+      border: 1px solid #E5E3D8;
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin: 20px 0;
+    }
+    .perk-item {
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 10px;
+      font-size: 14px;
+      color: #333330;
+    }
+    .perk-item:last-child {
+      margin-bottom: 0;
+    }
+    .cta-button {
+      display: block;
+      width: fit-content;
+      margin: 28px auto 8px auto;
+      background-color: #78A94B;
+      color: #FFFFFF !important;
+      text-decoration: none;
+      padding: 14px 32px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 15px;
+      box-shadow: 0 2px 6px rgba(120, 169, 75, 0.35);
+      text-align: center;
+    }
+    .footer {
+      text-align: center;
+      padding-top: 24px;
+      border-top: 1px dashed #D5D3CA;
+      font-size: 12px;
+      color: #888880;
+    }
+    .footer a {
+      color: #78A94B;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <div class="container">
+      <div class="header">
+        <a href="https://libnotes.app" class="logo">Libnotes</a>
+        <br />
+        <span class="badge">Official Welcome</span>
+      </div>
+
+      <div class="content">
+        <h1>Arre wah! 🎉 You're officially a Libnotes learner!</h1>
+        <p>
+          Hey {{display_name}},
+        </p>
+        <p>
+          Ab lectures ka load kam, smart notes ka scene on! Your account is ready, and your smarter study journey starts right here.
+        </p>
+
+        <div class="perks-box">
+          <div class="perk-item">
+            ✨ <strong>Four Specialized Note Styles:</strong> Quick Notes, Topper Notes, Chatpata Hinglish, & Exam PYQs.
+          </div>
+          <div class="perk-item" style="margin-top: 8px;">
+            🎯 <strong>Exact Lecture Grounding:</strong> No hallucinated topics; precise formulas, step-by-step proofs, and timecodes.
+          </div>
+          <div class="perk-item" style="margin-top: 8px;">
+            📄 <strong>Board-Ready PDF Export:</strong> Clean printable revision kits in one click.
+          </div>
+        </div>
+
+        <a href="{{dashboard_url}}" class="cta-button">Open Your Dashboard →</a>
+      </div>
+
+      <div class="footer">
+        <p>Made with ❤️ for students preparing for CBSE, Boards, JEE, & NEET.</p>
+        <p>&copy; 2026 Libnotes. All rights reserved.</p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
+

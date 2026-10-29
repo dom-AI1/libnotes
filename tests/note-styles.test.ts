@@ -4,7 +4,7 @@ import { SAMPLE_STUDY_KITS } from '../src/data/mockData';
 describe('Checkpoint 6: Note-Style Selection & Meaningful Distinct Content', () => {
   const thermoKit = SAMPLE_STUDY_KITS.find(k => k.id === 'kit-thermodynamics')!;
 
-  it('provides all three distinct NoteAI note styles plus Exam Mode', () => {
+  it('provides all three distinct Libnotes note styles plus Exam Mode', () => {
     expect(thermoKit.content.quick || thermoKit.content.minimal).toBeDefined();
     expect(thermoKit.content.topper).toBeDefined();
     expect(thermoKit.content.chatpata || thermoKit.content.chatpate).toBeDefined();
@@ -49,3 +49,4 @@ describe('Checkpoint 6: Note-Style Selection & Meaningful Distinct Content', () 
     expect(chatpataText).not.toEqual(quickText);
   });
 });
+

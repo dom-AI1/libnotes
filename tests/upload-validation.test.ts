@@ -55,3 +55,4 @@ describe('Checkpoint 4: Video Upload File Validation', () => {
     expect(formatFileSize(1024 * 1024 * 42.5)).toBe('42.5 MB');
   });
 });
+

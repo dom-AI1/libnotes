@@ -9,10 +9,10 @@ export const Footer = () => {
         <div className="max-w-sm">
           <div className="flex items-center gap-2 mb-3">
             <div className="w-8 h-8 rounded-lg bg-[#FCFAF6] border-2 border-[#141414] shadow-[1.5px_1.5px_0px_#141414] flex items-center justify-center font-mono font-bold text-sm text-[#141414]">
-              N<span className="text-[#79A94A]">·</span>
+              L<span className="text-[#79A94A]">·</span>
             </div>
             <span className="font-mono-editorial text-xl font-bold tracking-tight text-[#141414]">
-              NoteAI
+              Libnotes
             </span>
           </div>
           <p className="font-body text-xs text-[#5E5D57] leading-relaxed">
@@ -56,7 +56,7 @@ export const Footer = () => {
 
       <div className="max-w-7xl mx-auto mt-12 pt-6 border-t border-[#DFDBCF] flex flex-col sm:flex-row items-center justify-between text-[11px] font-mono text-[#8A8880] gap-4">
         <div>
-          © {new Date().getFullYear()} NoteAI Inc. All rights reserved.
+          © {new Date().getFullYear()} Libnotes Inc. All rights reserved.
         </div>
         <div className="flex items-center gap-2">
           <span>Crafted in warm ivory (`#F7F5EF`) & botanical green (`#79A94A`)</span>

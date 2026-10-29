@@ -70,3 +70,4 @@ describe('Checkpoints 10 & 11: Programmatic Quiz Scoring & Weak Topic Detection'
     expect(result.weakTopics).not.toContain('State Functions');
   });
 });
+

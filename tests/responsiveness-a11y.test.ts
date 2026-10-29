@@ -19,7 +19,7 @@ describe('Checkpoint 14: Responsiveness & Accessibility (A11y)', () => {
   });
 
   it('provides accessible aria-label attributes on icon-only and interactive buttons', () => {
-    expect(navbarTsx).toContain('aria-label="NoteAI Home"');
+    expect(navbarTsx).toContain('aria-label="Libnotes Home"');
     expect(navbarTsx).toContain('aria-label="Toggle menu"');
     expect(uploadModalTsx).toContain('aria-label="Close modal"');
     expect(notesViewTsx).toContain('aria-label="Back to home"');
@@ -34,4 +34,12 @@ describe('Checkpoint 14: Responsiveness & Accessibility (A11y)', () => {
     const featureCardsTsx = fs.readFileSync(path.resolve(__dirname, '../src/components/FeatureCards.tsx'), 'utf-8');
     expect(featureCardsTsx).toContain('grid-cols-1 md:grid-cols-3');
   });
+
+  it('ensures product preview style switcher pills do not wrap or overflow on mobile', () => {
+    const productPreviewTsx = fs.readFileSync(path.resolve(__dirname, '../src/components/ProductPreview.tsx'), 'utf-8');
+    expect(productPreviewTsx).toContain('overflow-x-auto');
+    expect(productPreviewTsx).toContain('whitespace-nowrap');
+    expect(productPreviewTsx).toContain('shrink-0');
+  });
 });
+

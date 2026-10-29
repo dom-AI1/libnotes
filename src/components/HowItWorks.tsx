@@ -39,7 +39,7 @@ export const HowItWorks = () => {
           </h2>
         </div>
         <p className="text-[#5E5D57] font-body text-sm sm:text-base max-w-md">
-          No more pausing every 30 seconds to scribble illegible notebook pages. NoteAI extracts the meat of the lecture automatically.
+          No more pausing every 30 seconds to scribble illegible notebook pages. Libnotes extracts the meat of the lecture automatically.
         </p>
       </div>
 
@@ -92,7 +92,7 @@ export const HowItWorks = () => {
               We believe students shouldn't spend 80% of their study time pausing videos.
             </h3>
             <p className="font-body text-base text-[#4A4944] mt-4 leading-relaxed">
-              Every college student and board exam aspirant knows the pain: watching a 2-hour recording at 1.75x speed while frantically trying to copy down diagrams. NoteAI was built as a calm, editorial study workspace that distills what actually appears in exams, letting you focus on understanding and practice.
+              Every college student and board exam aspirant knows the pain: watching a 2-hour recording at 1.75x speed while frantically trying to copy down diagrams. Libnotes was built as a calm, editorial study workspace that distills what actually appears in exams, letting you focus on understanding and practice.
             </p>
             <div className="mt-6 flex flex-wrap gap-4 text-xs font-mono text-[#141414]">
               <span className="px-3 py-1.5 rounded-lg bg-[#FCFAF6] border border-[#141414] shadow-[1.5px_1.5px_0px_#141414]">
@@ -117,6 +117,75 @@ export const HowItWorks = () => {
             <p className="text-xs text-[#5E5D57] mt-1 font-body">
               Because a formula sheet isn't what you need when you're learning a concept for the first time.
             </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Resources & Curricula Hub */}
+      <div id="resources" className="mt-16 pt-12 border-t border-[#141414]/10">
+        <div className="text-center max-w-2xl mx-auto mb-10">
+          <span className="text-xs font-mono font-semibold uppercase tracking-widest text-[#79A94A] bg-[#E8F2DC] px-3 py-1 rounded-full border border-[#79A94A]/30">
+            STUDENT RESOURCES & CURRICULA
+          </span>
+          <h3 className="font-mono-editorial text-2xl sm:text-3xl font-bold text-[#141414] mt-3 tracking-tight">
+            Curriculum blueprints & offline study resources.
+          </h3>
+          <p className="text-[#5E5D57] font-body text-sm mt-2">
+            Aligned with official board marking schemes and competitive examination syllabi.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="bg-[#FCFAF6] border-2 border-[#141414] rounded-xl p-5 shadow-[3px_3px_0px_#141414] flex flex-col justify-between">
+            <div>
+              <div className="text-xs font-mono font-bold text-[#79A94A] uppercase mb-1">CBSE Class 10 & 12</div>
+              <h4 className="font-mono-editorial text-base font-bold text-[#141414]">Board Blueprint Packs</h4>
+              <p className="text-xs text-[#5E5D57] font-body mt-2 leading-relaxed">
+                Unit-wise marks weightage, NCERT exemplar derivations, and past 5-year question trends.
+              </p>
+            </div>
+            <div className="mt-4 pt-3 border-t border-[#DFDBCF] text-[11px] font-mono text-[#141414] font-semibold">
+              ✓ Physics, Chem, Maths & Bio
+            </div>
+          </div>
+
+          <div className="bg-[#FCFAF6] border-2 border-[#141414] rounded-xl p-5 shadow-[3px_3px_0px_#141414] flex flex-col justify-between">
+            <div>
+              <div className="text-xs font-mono font-bold text-[#79A94A] uppercase mb-1">JEE Main & Advanced</div>
+              <h4 className="font-mono-editorial text-base font-bold text-[#141414]">Formula & Proof Maps</h4>
+              <p className="text-xs text-[#5E5D57] font-body mt-2 leading-relaxed">
+                High-yield formula cheat sheets with edge-case assumptions and boundary condition traps.
+              </p>
+            </div>
+            <div className="mt-4 pt-3 border-t border-[#DFDBCF] text-[11px] font-mono text-[#141414] font-semibold">
+              ✓ 100% Derivation Coverage
+            </div>
+          </div>
+
+          <div className="bg-[#FCFAF6] border-2 border-[#141414] rounded-xl p-5 shadow-[3px_3px_0px_#141414] flex flex-col justify-between">
+            <div>
+              <div className="text-xs font-mono font-bold text-[#79A94A] uppercase mb-1">NEET UG Aspirants</div>
+              <h4 className="font-mono-editorial text-base font-bold text-[#141414]">Diagrammatic Recall</h4>
+              <p className="text-xs text-[#5E5D57] font-body mt-2 leading-relaxed">
+                Rapid memory aids and concept flashcards covering high-frequency human physiology & organic mechanisms.
+              </p>
+            </div>
+            <div className="mt-4 pt-3 border-t border-[#DFDBCF] text-[11px] font-mono text-[#141414] font-semibold">
+              ✓ NCERT Line-by-Line Key
+            </div>
+          </div>
+
+          <div className="bg-[#FCFAF6] border-2 border-[#141414] rounded-xl p-5 shadow-[3px_3px_0px_#141414] flex flex-col justify-between">
+            <div>
+              <div className="text-xs font-mono font-bold text-[#79A94A] uppercase mb-1">College & B.Tech</div>
+              <h4 className="font-mono-editorial text-base font-bold text-[#141414]">Engineering Digests</h4>
+              <p className="text-xs text-[#5E5D57] font-body mt-2 leading-relaxed">
+                Computer Science algorithms, Neural Networks, Differential Equations and Applied Physics lecture kits.
+              </p>
+            </div>
+            <div className="mt-4 pt-3 border-t border-[#DFDBCF] text-[11px] font-mono text-[#141414] font-semibold">
+              ✓ University Syllabus Ready
+            </div>
           </div>
         </div>
       </div>

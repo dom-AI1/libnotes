@@ -1,8 +1,11 @@
 import type { StudyKit } from '../types';
 import { SAMPLE_STUDY_KITS } from '../data/mockData';
+import { syncStudyKitToSupabase, syncQuizAttemptToSupabase } from './supabaseService';
 
-const STORAGE_KEY_KITS = 'noteai_study_kits_v2';
-const STORAGE_KEY_QUIZZES = 'noteai_quiz_attempts_v2';
+const STORAGE_KEY_KITS = 'libnotes_study_kits_v2';
+const LEGACY_STORAGE_KEY_KITS = 'noteai_study_kits_v2';
+const STORAGE_KEY_QUIZZES = 'libnotes_quiz_attempts_v2';
+const LEGACY_STORAGE_KEY_QUIZZES = 'noteai_quiz_attempts_v2';
 
 export interface QuizAttemptRecord {
   id: string;
@@ -17,7 +20,7 @@ export interface QuizAttemptRecord {
 
 export function loadSavedKits(): StudyKit[] {
   try {
-    const raw = localStorage.getItem(STORAGE_KEY_KITS);
+    const raw = localStorage.getItem(STORAGE_KEY_KITS) || localStorage.getItem(LEGACY_STORAGE_KEY_KITS);
     if (raw) {
       const parsed = JSON.parse(raw);
       if (Array.isArray(parsed) && parsed.length > 0) {
@@ -25,7 +28,7 @@ export function loadSavedKits(): StudyKit[] {
       }
     }
   } catch (err) {
-    console.warn('[NoteAI Storage] Failed to load kits from localStorage, using memory default', err);
+    console.warn('[Libnotes Storage] Failed to load kits from localStorage, using memory default', err);
   }
   return SAMPLE_STUDY_KITS;
 }
@@ -33,22 +36,28 @@ export function loadSavedKits(): StudyKit[] {
 export function saveKitsToStorage(kits: StudyKit[]): boolean {
   try {
     localStorage.setItem(STORAGE_KEY_KITS, JSON.stringify(kits));
+    // Asynchronously sync latest kit to Supabase
+    if (kits.length > 0) {
+      syncStudyKitToSupabase(kits[0]).catch((err) => {
+        console.warn('[Libnotes Storage] Supabase sync deferred:', err);
+      });
+    }
     return true;
   } catch (err) {
-    console.error('[NoteAI Storage] Failed to persist kits to localStorage', err);
+    console.error('[Libnotes Storage] Failed to persist kits to localStorage', err);
     return false;
   }
 }
 
 export function loadQuizAttempts(): QuizAttemptRecord[] {
   try {
-    const raw = localStorage.getItem(STORAGE_KEY_QUIZZES);
+    const raw = localStorage.getItem(STORAGE_KEY_QUIZZES) || localStorage.getItem(LEGACY_STORAGE_KEY_QUIZZES);
     if (raw) {
       const parsed = JSON.parse(raw);
       if (Array.isArray(parsed)) return parsed;
     }
   } catch (err) {
-    console.warn('[NoteAI Storage] Failed to load quiz attempts', err);
+    console.warn('[Libnotes Storage] Failed to load quiz attempts', err);
   }
   return [
     {
@@ -69,9 +78,14 @@ export function saveQuizAttempt(attempt: QuizAttemptRecord): boolean {
     const existing = loadQuizAttempts();
     const updated = [attempt, ...existing];
     localStorage.setItem(STORAGE_KEY_QUIZZES, JSON.stringify(updated));
+    // Asynchronously sync attempt to Supabase
+    syncQuizAttemptToSupabase(attempt).catch((err) => {
+      console.warn('[Libnotes Storage] Supabase quiz attempt sync deferred:', err);
+    });
     return true;
   } catch (err) {
-    console.error('[NoteAI Storage] Failed to save quiz attempt', err);
+    console.error('[Libnotes Storage] Failed to save quiz attempt', err);
     return false;
   }
 }
+

@@ -36,3 +36,4 @@ describe('Checkpoint 1: Design System & Visual Tokens', () => {
     expect(indexCss.toLowerCase()).not.toContain('linear-gradient(to right, #ff00');
   });
 });
+

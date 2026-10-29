@@ -1,31 +1,40 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import type { StudyKit, NoteStyle } from '../types';
 import { 
   ArrowLeft, Copy, Printer, Check, Clock, Sparkles, BookOpen, 
-  HelpCircle, Award, GraduationCap, ChevronRight, Play, Bookmark, Coffee, Search, X 
+  HelpCircle, Award, GraduationCap, ChevronRight, Play, Bookmark, Coffee, Search, X, Download 
 } from 'lucide-react';
 import { QuizComponent } from './QuizComponent';
+import { PdfExportModal } from './PdfExportModal';
 
 interface NotesViewProps {
   kit: StudyKit;
   onBack: () => void;
   onStyleChange: (newStyle: NoteStyle) => void;
+  initialTab?: 'full' | 'revision' | 'exam' | 'cards' | 'quiz';
 }
 
-export const NotesView = ({ kit, onBack, onStyleChange }: NotesViewProps) => {
-  const [activeTab, setActiveTab] = useState<'full' | 'revision' | 'exam' | 'cards' | 'quiz'>('full');
+export const NotesView = ({ kit, onBack, onStyleChange, initialTab }: NotesViewProps) => {
+  const [activeTab, setActiveTab] = useState<'full' | 'revision' | 'exam' | 'cards' | 'quiz'>(initialTab || 'full');
   const [copied, setCopied] = useState(false);
   const [bookmarked, setBookmarked] = useState(false);
+  const [isPdfModalOpen, setIsPdfModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [activeTimestamp, setActiveTimestamp] = useState<{ time: string; seconds: number; title: string; summary: string } | null>(null);
   const [flippedCards, setFlippedCards] = useState<Record<number, boolean>>({});
+
+  useEffect(() => {
+    if (initialTab) {
+      setActiveTab(initialTab);
+    }
+  }, [initialTab]);
 
   const quickContent = kit.content.quick || kit.content.minimal;
   const chatpataContent = kit.content.chatpata || kit.content.chatpate;
 
   const handleCopy = () => {
     const formulasText = quickContent?.formulas?.map(f => `${f.name}: ${f.formula} (${f.note})`).join('\n') || '';
-    const textToCopy = `NOTEAI STUDY KIT: ${kit.title}\nSubject: ${kit.subject} | Class: ${kit.academicClass}\n\n` +
+    const textToCopy = `LIBNOTES STUDY KIT: ${kit.title}\nSubject: ${kit.subject} | Class: ${kit.academicClass}\n\n` +
       `REVISION POINTS:\n` + kit.quickRevisionPoints.join('\n') + `\n\n` +
       `KEY FORMULAE:\n` + formulasText;
     
@@ -72,7 +81,22 @@ export const NotesView = ({ kit, onBack, onStyleChange }: NotesViewProps) => {
             </button>
             <div>
               <div className="flex items-center gap-2 text-xs font-mono text-[#5E5D57]">
+                {kit.autoDetected && (
+                  <>
+                    <span className="inline-flex items-center gap-1 text-[10px] font-mono font-bold text-[#79A94A] bg-[#E8F2DC] px-2 py-0.5 rounded-full border border-[#79A94A]/30">
+                      <Sparkles className="w-2.5 h-2.5" />
+                      AI ANALYZED
+                    </span>
+                    <span>•</span>
+                  </>
+                )}
                 <span>{kit.academicClass}</span>
+                {kit.stream && (
+                  <>
+                    <span>•</span>
+                    <span className="text-[#141414] font-medium">{kit.stream}</span>
+                  </>
+                )}
                 <span>•</span>
                 <span>{kit.subject}</span>
                 <span>•</span>
@@ -145,13 +169,24 @@ export const NotesView = ({ kit, onBack, onStyleChange }: NotesViewProps) => {
               <span>{copied ? 'Copied!' : 'Copy'}</span>
             </button>
 
+            {/* Download PDF Button */}
+            <button
+              onClick={() => setIsPdfModalOpen(true)}
+              className="btn-primary-green px-3.5 py-1.5 text-xs font-mono font-bold flex items-center gap-1.5"
+              title="Configure and download real structured A4 PDF notes"
+            >
+              <Download className="w-3.5 h-3.5" />
+              <span>Download PDF</span>
+            </button>
+
             {/* Print Button */}
             <button
               onClick={handlePrint}
-              className="btn-secondary-outline px-3 py-1.5 text-xs font-mono font-semibold flex items-center gap-1.5"
+              className="btn-secondary-outline px-3 py-1.5 text-xs font-mono font-semibold flex items-center gap-1.5 hidden sm:flex"
+              title="Browser print sheet"
             >
               <Printer className="w-3.5 h-3.5" />
-              <span>Print PDF</span>
+              <span>Print</span>
             </button>
           </div>
         </div>
@@ -223,6 +258,22 @@ export const NotesView = ({ kit, onBack, onStyleChange }: NotesViewProps) => {
       {/* Main Spacious Reading Container */}
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
         
+        {/* Source Evidence & Grounding Disclosure Banner */}
+        {kit.verifiedLecture && (
+          <div className="mb-6 p-3.5 rounded-2xl bg-[#FCFAF6] border border-[#141414]/15 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 text-xs font-mono">
+            <div className="flex items-center gap-2 text-[#141414]">
+              <span className="w-2 h-2 rounded-full bg-[#79A94A]" />
+              <span className="font-bold">Verified Source Grounded:</span>
+              <span className="text-[#5E5D57] truncate max-w-xs">{kit.verifiedLecture.sourceIdentifier}</span>
+            </div>
+            {kit.verifiedLecture.visualEvidenceDisclosed && (
+              <span className="text-[11px] text-[#79A94A] bg-[#E8F2DC] px-2.5 py-1 rounded-full border border-[#79A94A]/30 shrink-0">
+                {kit.verifiedLecture.visualEvidenceDisclosed}
+              </span>
+            )}
+          </div>
+        )}
+        
         {/* In-Page Keyword Search */}
         <div className="mb-6 relative no-print">
           <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-[#8A8880]" />
@@ -237,11 +288,28 @@ export const NotesView = ({ kit, onBack, onStyleChange }: NotesViewProps) => {
             <button
               onClick={() => setSearchQuery('')}
               className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#8A8880] hover:text-[#141414]"
+              aria-label="Clear search"
             >
               <X className="w-4 h-4" />
             </button>
           )}
         </div>
+
+        {/* Active Filter Pill */}
+        {searchQuery && (
+          <div className="mb-6 flex items-center justify-between px-3.5 py-2 rounded-xl bg-[#E8F2DC] border border-[#79A94A] text-xs font-mono text-[#141414] no-print animate-in fade-in">
+            <div className="flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-[#79A94A]" />
+              <span>Filtering notes for concept: <strong className="font-bold underline decoration-[#79A94A]">"{searchQuery}"</strong></span>
+            </div>
+            <button
+              onClick={() => setSearchQuery('')}
+              className="text-xs font-bold text-[#141414] hover:text-[#79A94A] underline font-mono ml-2 shrink-0"
+            >
+              Clear filter
+            </button>
+          </div>
+        )}
 
         {/* Timestamp Concept Popup Modal / Alert */}
         {activeTimestamp && (
@@ -739,14 +807,24 @@ export const NotesView = ({ kit, onBack, onStyleChange }: NotesViewProps) => {
               kitId={kit.id}
               kitTitle={kit.title}
               questions={kit.quiz}
-              onReviewTopic={() => {
+              onReviewTopic={(topic) => {
                 setActiveTab('full');
+                setSearchQuery(topic);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
             />
           </div>
         )}
 
       </div>
+
+      {/* PDF Export Configuration Modal */}
+      <PdfExportModal
+        isOpen={isPdfModalOpen}
+        onClose={() => setIsPdfModalOpen(false)}
+        kit={kit}
+        initialMode={activeTab}
+      />
     </div>
   );
 };

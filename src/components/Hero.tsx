@@ -97,7 +97,10 @@ export const Hero = ({ onStartGeneration, onSelectSample }: HeroProps) => {
               />
             </div>
           ) : (
-            <div className="relative flex-1 flex items-center justify-center px-4 py-2.5 border border-dashed border-[#141414]/40 rounded-xl bg-[#FAF9F5] text-xs font-mono text-[#5E5D57] cursor-pointer hover:bg-[#E8F2DC]/40 transition-colors">
+            <div 
+              onClick={handleGenerate}
+              className="relative flex-1 flex items-center justify-center px-4 py-2.5 border border-dashed border-[#141414]/40 rounded-xl bg-[#FAF9F5] text-xs font-mono text-[#5E5D57] cursor-pointer hover:bg-[#E8F2DC]/40 hover:border-[#79A94A] transition-colors"
+            >
               <UploadCloud className="w-4 h-4 mr-2 text-[#79A94A]" />
               <span>Drag & drop lecture video or browse file (up to 500MB)</span>
             </div>
@@ -118,27 +121,33 @@ export const Hero = ({ onStartGeneration, onSelectSample }: HeroProps) => {
             </button>
 
             {isStyleDropdownOpen && (
-              <div className="absolute right-0 mt-1.5 w-60 bg-[#FCFAF6] border-2 border-[#141414] rounded-xl shadow-[3px_3px_0px_#141414] p-1.5 z-20 space-y-1">
-                {(Object.keys(styleLabels) as NoteStyle[]).map((st) => (
-                  <button
-                    key={st}
-                    type="button"
-                    onClick={() => {
-                      setSelectedStyle(st);
-                      setIsStyleDropdownOpen(false);
-                    }}
-                    className={`w-full text-left px-3 py-2 rounded-lg text-xs font-body transition-colors flex items-center justify-between ${
-                      selectedStyle === st ? 'bg-[#E8F2DC] text-[#141414] font-semibold' : 'hover:bg-[#EFECE1]'
-                    }`}
-                  >
-                    <div>
-                      <div className="font-medium text-[#141414]">{styleLabels[st].label}</div>
-                      <div className="text-[10px] text-[#5E5D57]">{styleLabels[st].tag}</div>
-                    </div>
-                    {selectedStyle === st && <CheckCircle2 className="w-3.5 h-3.5 text-[#79A94A]" />}
-                  </button>
-                ))}
-              </div>
+              <>
+                <div 
+                  className="fixed inset-0 z-20 cursor-default" 
+                  onClick={() => setIsStyleDropdownOpen(false)} 
+                />
+                <div className="absolute right-0 mt-1.5 w-60 bg-[#FCFAF6] border-2 border-[#141414] rounded-xl shadow-[3px_3px_0px_#141414] p-1.5 z-30 space-y-1">
+                  {(Object.keys(styleLabels) as NoteStyle[]).map((st) => (
+                    <button
+                      key={st}
+                      type="button"
+                      onClick={() => {
+                        setSelectedStyle(st);
+                        setIsStyleDropdownOpen(false);
+                      }}
+                      className={`w-full text-left px-3 py-2 rounded-lg text-xs font-body transition-colors flex items-center justify-between ${
+                        selectedStyle === st ? 'bg-[#E8F2DC] text-[#141414] font-semibold' : 'hover:bg-[#EFECE1]'
+                      }`}
+                    >
+                      <div>
+                        <div className="font-medium text-[#141414]">{styleLabels[st].label}</div>
+                        <div className="text-[10px] text-[#5E5D57]">{styleLabels[st].tag}</div>
+                      </div>
+                      {selectedStyle === st && <CheckCircle2 className="w-3.5 h-3.5 text-[#79A94A]" />}
+                    </button>
+                  ))}
+                </div>
+              </>
             )}
           </div>
 

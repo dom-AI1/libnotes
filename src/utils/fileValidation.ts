@@ -63,3 +63,4 @@ export function validateEducationalFile(file: File): FileValidationResult {
     extension,
   };
 }
+
