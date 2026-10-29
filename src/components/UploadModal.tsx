@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { 
   X, UploadCloud, Link as LinkIcon, Sparkles, BookOpen, Award, Coffee, 
-  GraduationCap, CheckCircle2, AlertCircle, FileVideo, Trash2 
+  GraduationCap, CheckCircle2, AlertCircle, FileVideo, Trash2, Lock
 } from 'lucide-react';
 import type { AcademicClass, Language, NoteStyle, Subject, StudyKit } from '../types';
 import { validateEducationalFile, formatFileSize } from '../utils/fileValidation';
@@ -23,6 +23,8 @@ interface UploadModalProps {
   onSuccess: (generatedKit: StudyKit) => void;
   initialLink?: string;
   initialStyle?: NoteStyle;
+  isAuthenticated?: boolean;
+  onRequireAuth?: (pendingData?: { source: 'upload' | 'link'; linkUrl: string; style: NoteStyle }) => void;
 }
 
 export const UploadModal = ({
@@ -31,6 +33,8 @@ export const UploadModal = ({
   onSuccess,
   initialLink = '',
   initialStyle = 'topper',
+  isAuthenticated = false,
+  onRequireAuth,
 }: UploadModalProps) => {
   const [sourceType, setSourceType] = useState<'upload' | 'link'>(initialLink ? 'link' : 'link');
   const [videoLink, setVideoLink] = useState(initialLink || '');
@@ -215,6 +219,17 @@ export const UploadModal = ({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!isAuthenticated) {
+      if (onRequireAuth) {
+        onRequireAuth({
+          source: sourceType,
+          linkUrl: videoLink,
+          style: noteStyle,
+        });
+      }
+      return;
+    }
 
     if (sourceType === 'upload') {
       if (!selectedFile) {
@@ -792,8 +807,17 @@ export const UploadModal = ({
                 type="submit"
                 className="w-full sm:flex-1 btn-primary-green py-3.5 text-base font-semibold flex items-center justify-center gap-2"
               >
-                <Sparkles className="w-5 h-5" />
-                <span>Generate Study Kit</span>
+                {isAuthenticated ? (
+                  <>
+                    <Sparkles className="w-5 h-5" />
+                    <span>Generate Study Kit</span>
+                  </>
+                ) : (
+                  <>
+                    <Lock className="w-5 h-5" />
+                    <span>Sign In to Generate Notes</span>
+                  </>
+                )}
               </button>
             </div>
           </form>

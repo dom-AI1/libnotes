@@ -5,9 +5,11 @@ import type { NoteStyle } from '../types';
 interface HeroProps {
   onStartGeneration: (source: 'upload' | 'link', linkUrl: string, style: NoteStyle) => void;
   onSelectSample: (sampleId: string) => void;
+  isAuthenticated?: boolean;
+  onRequireAuth?: (pendingData: { source: 'upload' | 'link'; linkUrl: string; style: NoteStyle }) => void;
 }
 
-export const Hero = ({ onStartGeneration, onSelectSample }: HeroProps) => {
+export const Hero = ({ onStartGeneration, onSelectSample, isAuthenticated = false, onRequireAuth }: HeroProps) => {
   const [activeTab, setActiveTab] = useState<'upload' | 'link'>('link');
   const [videoUrl, setVideoUrl] = useState('https://www.youtube.com/watch?v=physics-thermo-carnot');
   const [selectedStyle, setSelectedStyle] = useState<NoteStyle>('topper');
@@ -24,6 +26,10 @@ export const Hero = ({ onStartGeneration, onSelectSample }: HeroProps) => {
 
   const handleGenerate = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!isAuthenticated && onRequireAuth) {
+      onRequireAuth({ source: activeTab, linkUrl: videoUrl, style: selectedStyle });
+      return;
+    }
     onStartGeneration(activeTab, videoUrl, selectedStyle);
   };
 

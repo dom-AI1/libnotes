@@ -29,13 +29,32 @@ export const NotesView = ({ kit, onBack, onStyleChange, initialTab }: NotesViewP
     }
   }, [initialTab]);
 
-  const quickContent = kit.content.quick || kit.content.minimal;
-  const chatpataContent = kit.content.chatpata || kit.content.chatpate;
+  if (!kit) {
+    return (
+      <div className="min-h-screen bg-[#F7F5EF] flex items-center justify-center p-4">
+        <div className="max-w-md w-full bg-[#FCFAF6] border-2 border-[#141414] rounded-2xl p-6 sm:p-8 shadow-[4px_4px_0px_#141414] text-center">
+          <BookOpen className="w-10 h-10 text-[#79A94A] mx-auto mb-3" />
+          <h2 className="font-mono-editorial text-xl font-bold text-[#141414] mb-2">Study Kit Loading...</h2>
+          <p className="text-xs font-body text-[#5E5D57] mb-4">Please wait while your study material is being prepared, or return to home.</p>
+          <button onClick={onBack} className="btn-primary-green px-4 py-2 text-xs font-mono font-bold">Return to Home</button>
+        </div>
+      </div>
+    );
+  }
+
+  const quickContent = kit.content?.quick || kit.content?.minimal || {
+    headline: kit.chapter || kit.title || 'Revision Notes',
+    cheatSheet: kit.quickRevisionPoints || [],
+    formulas: [],
+    bulletSummary: kit.quickRevisionPoints || [],
+  };
+  const chatpataContent = kit.content?.chatpata || kit.content?.chatpate;
 
   const handleCopy = () => {
     const formulasText = quickContent?.formulas?.map(f => `${f.name}: ${f.formula} (${f.note})`).join('\n') || '';
-    const textToCopy = `LIBNOTES STUDY KIT: ${kit.title}\nSubject: ${kit.subject} | Class: ${kit.academicClass}\n\n` +
-      `REVISION POINTS:\n` + kit.quickRevisionPoints.join('\n') + `\n\n` +
+    const revisionPts = (kit.quickRevisionPoints || []).join('\n');
+    const textToCopy = `LIBNOTES STUDY KIT: ${kit.title || 'Notes'}\nSubject: ${kit.subject || ''} | Class: ${kit.academicClass || ''}\n\n` +
+      `REVISION POINTS:\n` + revisionPts + `\n\n` +
       `KEY FORMULAE:\n` + formulasText;
     
     navigator.clipboard.writeText(textToCopy);
@@ -61,7 +80,7 @@ export const NotesView = ({ kit, onBack, onStyleChange, initialTab }: NotesViewP
   };
 
   const activeStyleKey: NoteStyle = 
-    kit.noteStyle === 'minimal' ? 'quick' : kit.noteStyle === 'chatpate' ? 'chatpata' : kit.noteStyle;
+    kit.noteStyle === 'minimal' ? 'quick' : kit.noteStyle === 'chatpate' ? 'chatpata' : (kit.noteStyle || 'topper');
 
   return (
     <div className="min-h-screen bg-[#F7F5EF] pb-24">
@@ -367,10 +386,10 @@ export const NotesView = ({ kit, onBack, onStyleChange, initialTab }: NotesViewP
 
               <p className="font-body text-sm sm:text-base text-[#4A4944] mt-3 leading-relaxed">
                 {activeStyleKey === 'chatpata'
-                  ? chatpataContent?.hinglishIntro
+                  ? chatpataContent?.hinglishIntro || 'Conversational summary of this lecture.'
                   : activeStyleKey === 'topper'
-                  ? kit.content.topper.introduction
-                  : quickContent?.headline}
+                  ? kit.content?.topper?.introduction || 'Comprehensive analytical notes.'
+                  : quickContent?.headline || 'High-yield revision notes.'}
               </p>
             </div>
 
@@ -378,7 +397,7 @@ export const NotesView = ({ kit, onBack, onStyleChange, initialTab }: NotesViewP
             {activeStyleKey === 'topper' && (
               <div className="space-y-6">
                 {/* Deep Dive Sections with Timestamps */}
-                {kit.content.topper.deepDive
+                {(kit.content?.topper?.deepDive || [])
                   .filter(sec => !searchQuery || sec.title.toLowerCase().includes(searchQuery.toLowerCase()) || sec.content.toLowerCase().includes(searchQuery.toLowerCase()))
                   .map((section, idx) => (
                     <div
@@ -417,14 +436,14 @@ export const NotesView = ({ kit, onBack, onStyleChange, initialTab }: NotesViewP
                   ))}
 
                 {/* Derivations */}
-                {kit.content.topper.derivations.length > 0 && (
+                {(kit.content?.topper?.derivations || []).length > 0 && (
                   <div className="bg-[#FCFAF6] border-2 border-[#141414] rounded-2xl p-6 sm:p-7 shadow-[3px_3px_0px_#141414]">
                     <h3 className="font-mono-editorial text-lg sm:text-xl font-bold text-[#141414] mb-4 flex items-center gap-2">
                       <Sparkles className="w-5 h-5 text-[#79A94A]" />
                       Mathematical Derivations for Board Exams
                     </h3>
                     <div className="space-y-4">
-                      {kit.content.topper.derivations.map((d, idx) => (
+                      {(kit.content?.topper?.derivations || []).map((d, idx) => (
                         <div key={idx} className="p-4 rounded-xl border border-[#141414] bg-[#FAF9F5]">
                           <div className="font-mono-editorial font-bold text-sm text-[#141414] mb-2">
                             {d.title}
@@ -450,7 +469,7 @@ export const NotesView = ({ kit, onBack, onStyleChange, initialTab }: NotesViewP
                     Topper Pro Tips & Common Traps
                   </h3>
                   <ul className="space-y-2">
-                    {kit.content.topper.proTips.map((tip, i) => (
+                    {(kit.content?.topper?.proTips || []).map((tip, i) => (
                       <li key={i} className="flex items-start gap-2 text-xs sm:text-sm font-body text-[#333333]">
                         <span className="w-1.5 h-1.5 rounded-full bg-[#79A94A] mt-2 shrink-0" />
                         <span>{tip}</span>
@@ -514,7 +533,7 @@ export const NotesView = ({ kit, onBack, onStyleChange, initialTab }: NotesViewP
                     High-Yield Bullet Formula & Concept Cards
                   </h3>
                   <div className="space-y-3">
-                    {quickContent?.cheatSheet
+                    {(quickContent?.cheatSheet || [])
                       .filter(sheet => !searchQuery || sheet.toLowerCase().includes(searchQuery.toLowerCase()))
                       .map((sheet, i) => (
                         <div key={i} className="p-3 rounded-xl border border-[#141414] bg-[#FAF9F5] text-xs sm:text-sm font-body text-[#222222] flex items-start gap-2.5">
@@ -532,7 +551,7 @@ export const NotesView = ({ kit, onBack, onStyleChange, initialTab }: NotesViewP
                     Essential Exam Formulae
                   </h3>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    {quickContent?.formulas
+                    {(quickContent?.formulas || [])
                       .filter(f => !searchQuery || f.name.toLowerCase().includes(searchQuery.toLowerCase()) || f.formula.toLowerCase().includes(searchQuery.toLowerCase()))
                       .map((f, i) => (
                         <div key={i} className="p-3.5 rounded-xl border border-[#141414] bg-[#FFFFFF]">
@@ -559,12 +578,12 @@ export const NotesView = ({ kit, onBack, onStyleChange, initialTab }: NotesViewP
                     Board & Competitive Question Forecast
                   </h3>
                   <p className="font-body text-xs sm:text-sm text-[#4A4944] mt-1">
-                    {kit.content.exam.trendAnalysis}
+                    {kit.content?.exam?.trendAnalysis || 'Analysis of high-weightage topics.'}
                   </p>
                 </div>
 
                 <div className="space-y-4">
-                  {kit.content.exam.questions
+                  {(kit.content?.exam?.questions || [])
                     .filter(q => !searchQuery || q.question.toLowerCase().includes(searchQuery.toLowerCase()))
                     .map((q) => (
                       <div key={q.id} className="bg-[#FCFAF6] border-2 border-[#141414] rounded-2xl p-6 shadow-[3px_3px_0px_#141414]">
@@ -607,7 +626,7 @@ export const NotesView = ({ kit, onBack, onStyleChange, initialTab }: NotesViewP
                 Lecture Timestamps Index
               </h3>
               <div className="divide-y divide-[#DFDBCF]">
-                {kit.timestamps.map((t, idx) => (
+                {(kit.timestamps || []).map((t, idx) => (
                   <div
                     key={idx}
                     onClick={() => setActiveTimestamp(t)}
@@ -654,7 +673,7 @@ export const NotesView = ({ kit, onBack, onStyleChange, initialTab }: NotesViewP
             </div>
 
             <div className="space-y-3">
-              {kit.quickRevisionPoints.map((pt, i) => (
+              {(kit.quickRevisionPoints || []).map((pt, i) => (
                 <div key={i} className="p-3.5 rounded-xl border border-[#141414] bg-[#FFFFFF] flex items-start gap-3">
                   <span className="w-6 h-6 rounded-md bg-[#141414] text-[#FFFFFF] flex items-center justify-center font-mono text-xs font-bold shrink-0 mt-0.5">
                     {i + 1}
@@ -698,7 +717,7 @@ export const NotesView = ({ kit, onBack, onStyleChange, initialTab }: NotesViewP
               </p>
             </div>
 
-            {kit.content.exam.questions.map((q) => (
+            {(kit.content?.exam?.questions || []).map((q) => (
               <div key={q.id} className="bg-[#FCFAF6] border-2 border-[#141414] rounded-2xl p-6 sm:p-7 shadow-[3px_3px_0px_#141414]">
                 <div className="flex items-center justify-between mb-3">
                   <span className="font-mono text-xs font-bold px-3 py-1 rounded-full bg-[#141414] text-[#FFFFFF]">
@@ -749,7 +768,7 @@ export const NotesView = ({ kit, onBack, onStyleChange, initialTab }: NotesViewP
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {kit.flashcards.map((card) => {
+              {(kit.flashcards || []).map((card) => {
                 const isFlipped = !!flippedCards[card.id];
                 return (
                   <div
@@ -806,7 +825,7 @@ export const NotesView = ({ kit, onBack, onStyleChange, initialTab }: NotesViewP
             <QuizComponent
               kitId={kit.id}
               kitTitle={kit.title}
-              questions={kit.quiz}
+              questions={kit.quiz || []}
               onReviewTopic={(topic) => {
                 setActiveTab('full');
                 setSearchQuery(topic);

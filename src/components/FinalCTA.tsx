@@ -2,9 +2,11 @@ import { UploadCloud, Link as LinkIcon, Sparkles } from 'lucide-react';
 
 interface FinalCTAProps {
   onOpenUpload: (source: 'upload' | 'link') => void;
+  isAuthenticated?: boolean;
+  onRequireAuth?: (pendingData?: { source: 'upload' | 'link'; linkUrl: string; style: 'topper' }) => void;
 }
 
-export const FinalCTA = ({ onOpenUpload }: FinalCTAProps) => {
+export const FinalCTA = ({ onOpenUpload, isAuthenticated = false, onRequireAuth }: FinalCTAProps) => {
   return (
     <section className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
       <div className="bg-[#FAF9F5] border-2 border-[#141414] rounded-3xl p-8 sm:p-14 shadow-[6px_6px_0px_#141414] text-center relative overflow-hidden">
@@ -26,7 +28,13 @@ export const FinalCTA = ({ onOpenUpload }: FinalCTAProps) => {
         {/* Buttons */}
         <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3.5 max-w-md mx-auto">
           <button
-            onClick={() => onOpenUpload('upload')}
+            onClick={() => {
+              if (!isAuthenticated && onRequireAuth) {
+                onRequireAuth({ source: 'upload', linkUrl: '', style: 'topper' });
+              } else {
+                onOpenUpload('upload');
+              }
+            }}
             className="w-full sm:w-auto btn-primary-green px-7 py-3.5 text-sm font-semibold flex items-center justify-center gap-2"
           >
             <UploadCloud className="w-4 h-4" />
@@ -34,7 +42,13 @@ export const FinalCTA = ({ onOpenUpload }: FinalCTAProps) => {
           </button>
           
           <button
-            onClick={() => onOpenUpload('link')}
+            onClick={() => {
+              if (!isAuthenticated && onRequireAuth) {
+                onRequireAuth({ source: 'link', linkUrl: '', style: 'topper' });
+              } else {
+                onOpenUpload('link');
+              }
+            }}
             className="w-full sm:w-auto btn-secondary-outline px-7 py-3.5 text-sm font-semibold flex items-center justify-center gap-2 bg-[#FFFFFF]"
           >
             <LinkIcon className="w-4 h-4 text-[#79A94A]" />

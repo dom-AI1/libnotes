@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import type { StudyKit, NoteStyle } from './types';
+import { SAMPLE_STUDY_KITS } from './data/mockData';
 import { loadSavedKits, saveKitsToStorage } from './services/storageService';
 import { fetchStudyKitsFromSupabase } from './services/supabaseService';
 import { 
@@ -223,7 +224,36 @@ export function App() {
     syncCloudKits();
   }, []);
 
-  const activeKit = studyKits.find((k) => k.id === activeKitId) || studyKits[0];
+  const activeKit = studyKits.find((k) => k.id === activeKitId) || (studyKits.length > 0 ? studyKits[0] : SAMPLE_STUDY_KITS[0]);
+
+  // Check for pending lecture generation to resume after login
+  useEffect(() => {
+    if (user && authInitialized) {
+      const pending = sessionStorage.getItem('libnotes_pending_generation');
+      if (pending) {
+        try {
+          const parsed = JSON.parse(pending);
+          sessionStorage.removeItem('libnotes_pending_generation');
+          setUploadInitialLink(parsed.linkUrl || '');
+          setUploadInitialStyle(parsed.style || 'topper');
+          setIsUploadOpen(true);
+          showToast(`Welcome back, ${user.display_name}! Ready to generate notes.`);
+        } catch {
+          sessionStorage.removeItem('libnotes_pending_generation');
+        }
+      }
+    }
+  }, [user, authInitialized, showToast]);
+
+  const handleRequireAuth = (pendingData?: { source: 'upload' | 'link'; linkUrl: string; style: NoteStyle }) => {
+    if (pendingData) {
+      sessionStorage.setItem('libnotes_pending_generation', JSON.stringify(pendingData));
+    }
+    setIsUploadOpen(false);
+    window.location.hash = '#/signup?redirect=%2Fnew-lecture';
+    setCurrentView('signup');
+    showToast('Please create a free account or log in to generate notes.');
+  };
 
   const navigateTo = (
     view: 'home' | 'notes' | 'dashboard' | 'login' | 'signup' | 'forgot-password' | 'reset-password',
@@ -289,6 +319,10 @@ export function App() {
     linkUrl: string,
     style: NoteStyle
   ) => {
+    if (!user) {
+      handleRequireAuth({ source, linkUrl, style });
+      return;
+    }
     setUploadInitialLink(source === 'link' ? linkUrl : '');
     setUploadInitialStyle(style);
     setIsUploadOpen(true);
@@ -318,6 +352,7 @@ export function App() {
 
   const handleUploadSuccess = (generatedKit: StudyKit) => {
     setStudyKits((prev) => [generatedKit, ...prev]);
+    setActiveKitId(generatedKit.id);
     handleCloseUploadModal();
     navigateTo('notes', generatedKit.id, 'full');
     showToast(`Generated study kit: ${generatedKit.chapter}`);
@@ -342,7 +377,13 @@ export function App() {
 
       {/* Global Navigation */}
       <Navbar
-        onOpenUpload={() => setIsUploadOpen(true)}
+        onOpenUpload={() => {
+          if (!user) {
+            handleRequireAuth();
+          } else {
+            setIsUploadOpen(true);
+          }
+        }}
         onNavigateHome={() => navigateTo('home')}
         onNavigateDashboard={() => navigateTo('dashboard')}
         onNavigateLogin={() => navigateTo('login')}
@@ -360,6 +401,8 @@ export function App() {
             <Hero
               onStartGeneration={handleStartGenerationFromHero}
               onSelectSample={handleSelectSample}
+              isAuthenticated={Boolean(user)}
+              onRequireAuth={handleRequireAuth}
             />
             <FeatureCards onCardClick={handleFeatureCardClick} />
             <ProductPreview
@@ -368,9 +411,15 @@ export function App() {
             <HowItWorks />
             <FinalCTA
               onOpenUpload={(source) => {
-                setUploadInitialLink(source === 'link' ? 'https://www.youtube.com/watch?v=sample-lecture' : '');
-                setIsUploadOpen(true);
+                if (!user) {
+                  handleRequireAuth({ source, linkUrl: source === 'link' ? 'https://www.youtube.com/watch?v=sample-lecture' : '', style: 'topper' });
+                } else {
+                  setUploadInitialLink(source === 'link' ? 'https://www.youtube.com/watch?v=sample-lecture' : '');
+                  setIsUploadOpen(true);
+                }
               }}
+              isAuthenticated={Boolean(user)}
+              onRequireAuth={handleRequireAuth}
             />
           </>
         )}
@@ -467,6 +516,8 @@ export function App() {
         onSuccess={handleUploadSuccess}
         initialLink={uploadInitialLink}
         initialStyle={uploadInitialStyle}
+        isAuthenticated={Boolean(user)}
+        onRequireAuth={handleRequireAuth}
       />
 
       {/* First-Time Chatpata Welcome Celebratory Modal */}
