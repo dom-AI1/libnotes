@@ -170,6 +170,7 @@ export interface ExamNotesContent {
 
 export interface StudyKit {
   id: string;
+  userId?: string;
   lectureId?: string;
   title: string;
   subject: Subject;

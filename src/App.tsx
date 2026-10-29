@@ -430,6 +430,7 @@ export function App() {
             onBack={() => navigateTo('home')}
             onStyleChange={handleStyleChange}
             initialTab={notesActiveTab}
+            userId={user?.id}
           />
         )}
 

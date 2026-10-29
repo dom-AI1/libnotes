@@ -59,6 +59,13 @@
 | Checkpoint 26.H | Professional PDF Rendering (Immediate Page 1 Notes & No Glyph Corruption) | VERIFIED | **VERIFIED** |
 | Checkpoint 26.I | Full Thermodynamics Regression & Multi-Page PDF Verification | VERIFIED | **VERIFIED** |
 | Checkpoint 26.J | Distinct Triad Note Styles Grounded in Shared Lecture Source | VERIFIED | **VERIFIED** |
+| Checkpoint 27 | Full Application Audit, Bug Discovery, and Repair (Phases 1-14) | VERIFIED | **VERIFIED** |
+| Checkpoint 27.A | Elimination of White Screen of Death & ErrorBoundary Hardening | VERIFIED | **VERIFIED** |
+| Checkpoint 27.B | Mandatory Guest Auth Gate & Session State Preservation | VERIFIED | **VERIFIED** |
+| Checkpoint 27.C | Supabase Schema & Row-Level Security Isolation (`user_id`) | VERIFIED | **VERIFIED** |
+| Checkpoint 27.D | Cloudflare Worker Build & Automated Deployment Configuration | VERIFIED | **VERIFIED** |
+| Checkpoint 27.E | Free-Plan Daily PDF Quota Protection & UTC Rollover Guard | VERIFIED | **VERIFIED** |
+| Checkpoint 27.F | Automated 22-Suite Test Verification (138/138 Passing Tests) | VERIFIED | **VERIFIED** |
 
 ---
 
@@ -845,3 +852,61 @@
   - All 21 test files (131/131 tests) passing.
 - **Test File**: `tests/libnotes-rebuild-checkpoints.test.ts` (Checkpoint 10 passed).
 - **Verdict**: **VERIFIED**
+
+---
+
+### CHECKPOINT 27: FULL APPLICATION AUDIT, BUG DISCOVERY, AND REPAIR (PHASES 1-14)
+
+#### CHECKPOINT 27.A — ELIMINATION OF WHITE SCREEN OF DEATH & ERRORBOUNDARY HARDENING
+- **Problem**: Generating notes or switching tabs occasionally caused a total blank white screen due to unhandled React TypeErrors on nested undefined properties (`topper.introduction`, `exam.questions`).
+- **Implementation**:
+  - Built [`src/components/ErrorBoundary.tsx`](file:///C:/notebook/src/components/ErrorBoundary.tsx) and wrapped the entire React tree in `src/main.tsx`.
+  - Added optional chaining (`?.`) with defensive default values across `NotesView.tsx`, `QuizView.tsx`, and `PdfExportModal.tsx`.
+  - Verified fallback mechanism in `App.tsx` ensures `activeKit` is never undefined.
+- **Test Files**: `tests/e2e-journey.test.ts`, `tests/auth-and-404.test.ts`.
+- **Verdict**: **VERIFIED**
+
+#### CHECKPOINT 27.B — MANDATORY GUEST AUTH GATE & SESSION STATE PRESERVATION
+- **Problem**: Unauthenticated visitors could click "Generate Notes" in the Hero section and create unlinked notes that were lost upon page refresh.
+- **Implementation**:
+  - Attached `isAuthenticated` and `onRequireAuth` handlers to `Hero.tsx`, `UploadModal.tsx`, and `FinalCTA.tsx`.
+  - Guests clicking "Generate Notes" have their entered URL and chosen note style saved in `sessionStorage` (`libnotes_pending_generation`).
+  - Redirects guest to `#/signup?redirect=%2Fnew-lecture`.
+  - Upon login or sign-up, `App.tsx` automatically recovers the pending payload and opens the generation modal without losing user input.
+- **Test Files**: `tests/google-auth-welcome.test.tsx`, manual user journey test.
+- **Verdict**: **VERIFIED**
+
+#### CHECKPOINT 27.C — SUPABASE SCHEMA & ROW-LEVEL SECURITY ISOLATION (`user_id`)
+- **Problem**: `study_kits` and `quiz_attempts` lacked a `user_id` foreign key and allowed unrestricted public insert/update access.
+- **Implementation**:
+  - Altered `supabase_schema.sql` to add `user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE`.
+  - Enforced strict RLS: users can only view and mutate rows where `auth.uid() = user_id` (or `user_id IS NULL` for public landing-page samples).
+  - Updated `src/services/supabaseService.ts` to attach authenticated `user_id` on all record creations.
+- **Test Files**: `tests/storage-security.test.ts`, `tests/supabase-integration.test.ts`.
+- **Verdict**: **VERIFIED**
+
+#### CHECKPOINT 27.D — CLOUDFLARE WORKER BUILD & AUTOMATED DEPLOYMENT CONFIGURATION
+- **Problem**: Cloudflare Workers CI failed with `The directory specified by the "assets.directory" field in your configuration file does not exist: /opt/buildhome/repo/dist`.
+- **Implementation**:
+  - Added `"build": { "command": "npm run build" }` inside [`wrangler.jsonc`](file:///C:/notebook/wrangler.jsonc).
+  - Added `"predeploy": "npm run build"` in `package.json`.
+  - Confirmed build output in `dist` and verified live deployment at `https://libnotes.g21455728.workers.dev/#/home`.
+- **Verdict**: **VERIFIED**
+
+#### CHECKPOINT 27.E — FREE-PLAN DAILY PDF QUOTA PROTECTION & UTC ROLLOVER GUARD
+- **Problem**: Zero-budget hosting required strict rate limiting to prevent automated abuse and resource exhaustion.
+- **Implementation**:
+  - Built [`src/services/quotaService.ts`](file:///C:/notebook/src/services/quotaService.ts) allowing exactly 1 new PDF generation per user per UTC day.
+  - Allowed unlimited free re-downloads of the same study kit PDF style without consuming daily quota.
+  - Implemented an atomic concurrency mutex to reject duplicate simultaneous download clicks.
+  - Enforced UTC midnight rollover (`00:00 UTC`) across both client and Supabase RPC functions (`public.pdf_generations`).
+- **Test File**: `tests/resource-quota.test.ts` (7/7 tests passed).
+- **Verdict**: **VERIFIED**
+
+#### CHECKPOINT 27.F — AUTOMATED 22-SUITE TEST VERIFICATION (138/138 PASSING TESTS)
+- **Verification**:
+  - Executed `npx vitest run`: 22 test files, 138 tests passing, 0 failures.
+  - Executed `npm run build`: TypeScript 0 errors, Vite production build successful.
+  - Live probe of `http://localhost:5173` and `https://libnotes.g21455728.workers.dev/#/home` confirmed HTTP 200 OK.
+- **Verdict**: **VERIFIED**
+

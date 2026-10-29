@@ -4,6 +4,7 @@ import type { QuizAttemptRecord } from './storageService';
 
 export interface SupabaseStudyKitRow {
   id: string;
+  user_id?: string | null;
   title: string;
   subject: string;
   academic_class: string;
@@ -25,6 +26,7 @@ export interface SupabaseStudyKitRow {
 
 export interface SupabaseQuizAttemptRow {
   id: string;
+  user_id?: string | null;
   kit_id: string;
   kit_title: string;
   timestamp: string;
@@ -36,9 +38,10 @@ export interface SupabaseQuizAttemptRow {
 }
 
 // Convert StudyKit to Supabase Row
-export function mapKitToSupabaseRow(kit: StudyKit): SupabaseStudyKitRow {
+export function mapKitToSupabaseRow(kit: StudyKit, userId?: string | null): SupabaseStudyKitRow {
   return {
     id: kit.id,
+    user_id: userId || kit.userId || null,
     title: kit.title,
     subject: kit.subject,
     academic_class: kit.academicClass,
@@ -62,6 +65,7 @@ export function mapKitToSupabaseRow(kit: StudyKit): SupabaseStudyKitRow {
 export function mapSupabaseRowToKit(row: SupabaseStudyKitRow): StudyKit {
   return {
     id: row.id,
+    userId: row.user_id || undefined,
     title: row.title,
     subject: row.subject as any,
     academicClass: row.academic_class as any,
@@ -109,13 +113,23 @@ export async function fetchStudyKitsFromSupabase(): Promise<{ data: StudyKit[] |
 }
 
 // Upsert a StudyKit to Supabase
-export async function syncStudyKitToSupabase(kit: StudyKit): Promise<{ success: boolean; error?: string }> {
+export async function syncStudyKitToSupabase(kit: StudyKit, userId?: string | null): Promise<{ success: boolean; error?: string }> {
   if (!isSupabaseConfigured()) {
     return { success: false, error: 'Supabase is not configured' };
   }
 
   try {
-    const row = mapKitToSupabaseRow(kit);
+    let effectiveUserId: string | null | undefined = userId || kit.userId;
+    if (!effectiveUserId) {
+      try {
+        const { data: authData } = await supabase.auth.getUser();
+        effectiveUserId = authData?.user?.id || undefined;
+      } catch {
+        effectiveUserId = undefined;
+      }
+    }
+
+    const row = mapKitToSupabaseRow(kit, effectiveUserId);
     const { error } = await supabase
       .from('study_kits')
       .upsert(row, { onConflict: 'id' });
@@ -170,14 +184,25 @@ export async function fetchQuizAttemptsFromSupabase(): Promise<{ data: QuizAttem
 }
 
 // Save Quiz Attempt to Supabase
-export async function syncQuizAttemptToSupabase(attempt: QuizAttemptRecord): Promise<{ success: boolean; error?: string }> {
+export async function syncQuizAttemptToSupabase(attempt: QuizAttemptRecord, userId?: string | null): Promise<{ success: boolean; error?: string }> {
   if (!isSupabaseConfigured()) {
     return { success: false, error: 'Supabase is not configured' };
   }
 
   try {
+    let effectiveUserId = userId;
+    if (!effectiveUserId) {
+      try {
+        const { data: authData } = await supabase.auth.getUser();
+        effectiveUserId = authData?.user?.id || null;
+      } catch {
+        effectiveUserId = null;
+      }
+    }
+
     const row: SupabaseQuizAttemptRow = {
       id: attempt.id,
+      user_id: effectiveUserId,
       kit_id: attempt.kitId,
       kit_title: attempt.kitTitle,
       timestamp: attempt.timestamp,

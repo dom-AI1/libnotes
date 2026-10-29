@@ -12,9 +12,10 @@ interface NotesViewProps {
   onBack: () => void;
   onStyleChange: (newStyle: NoteStyle) => void;
   initialTab?: 'full' | 'revision' | 'exam' | 'cards' | 'quiz';
+  userId?: string | null;
 }
 
-export const NotesView = ({ kit, onBack, onStyleChange, initialTab }: NotesViewProps) => {
+export const NotesView = ({ kit, onBack, onStyleChange, initialTab, userId }: NotesViewProps) => {
   const [activeTab, setActiveTab] = useState<'full' | 'revision' | 'exam' | 'cards' | 'quiz'>(initialTab || 'full');
   const [copied, setCopied] = useState(false);
   const [bookmarked, setBookmarked] = useState(false);
@@ -843,6 +844,7 @@ export const NotesView = ({ kit, onBack, onStyleChange, initialTab }: NotesViewP
         onClose={() => setIsPdfModalOpen(false)}
         kit={kit}
         initialMode={activeTab}
+        userId={userId}
       />
     </div>
   );

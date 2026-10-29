@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import type { StudyKit, NoteStyle } from '../types';
 import { 
   X, FileText, Download, CheckSquare, Square, Sparkles, 
-  BookOpen, Award, Coffee, GraduationCap, CheckCircle2 
+  BookOpen, Award, Coffee, GraduationCap, CheckCircle2, AlertCircle, Clock
 } from 'lucide-react';
 import { 
   DEFAULT_PDF_OPTIONS, 
@@ -11,6 +11,7 @@ import {
   type PdfExportOptions,
   type ExportStyleMode 
 } from '../services/pdfExportService';
+import { checkAndConsumePdfQuota } from '../services/quotaService';
 
 interface PdfExportModalProps {
   isOpen: boolean;
@@ -18,6 +19,7 @@ interface PdfExportModalProps {
   kit: StudyKit;
   initialMode?: NoteStyle | 'full' | 'revision' | 'exam' | 'cards' | 'quiz' | ExportStyleMode;
   onExportSuccess?: (filename: string) => void;
+  userId?: string | null;
 }
 
 export const PdfExportModal = ({
@@ -26,6 +28,7 @@ export const PdfExportModal = ({
   kit,
   initialMode,
   onExportSuccess,
+  userId,
 }: PdfExportModalProps) => {
   // Map NoteStyle / Tab to ExportStyleMode
   const getInitialExportMode = (style?: string): ExportStyleMode => {
@@ -51,6 +54,8 @@ export const PdfExportModal = ({
   }));
   const [isGenerating, setIsGenerating] = useState(false);
   const [downloadCompleted, setDownloadCompleted] = useState(false);
+  const [quotaNotice, setQuotaNotice] = useState<string | null>(null);
+  const [quotaExceededError, setQuotaExceededError] = useState<string | null>(null);
 
   useEffect(() => {
     if (initialMode) {
@@ -58,7 +63,9 @@ export const PdfExportModal = ({
       setSelectedMode(m);
       applyPresetMode(m);
     }
-  }, [initialMode]);
+    setQuotaExceededError(null);
+    setQuotaNotice(null);
+  }, [initialMode, isOpen]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -169,8 +176,22 @@ export const PdfExportModal = ({
   const handleDownloadPdf = async () => {
     setIsGenerating(true);
     setDownloadCompleted(false);
+    setQuotaExceededError(null);
+    setQuotaNotice(null);
 
     try {
+      // Phase 9: Enforce Free-Plan PDF Generation Quota (Atomic Check & Deduplication)
+      const quotaCheck = await checkAndConsumePdfQuota(userId, kit.id, options.exportMode);
+      if (!quotaCheck.allowed) {
+        setIsGenerating(false);
+        setQuotaExceededError(quotaCheck.message);
+        return;
+      }
+
+      if (quotaCheck.isRedownload) {
+        setQuotaNotice('Re-downloading previously generated notes (Free Plan quota preserved).');
+      }
+
       await new Promise((resolve) => setTimeout(resolve, 300));
       
       const doc = generateStudyKitPdf(kit, options);
@@ -295,6 +316,31 @@ export const PdfExportModal = ({
               Select your preferred note style preset or customize individual sections.
             </p>
           </div>
+
+          {/* Quota Exceeded Alert */}
+          {quotaExceededError && (
+            <div className="mb-4 p-4 rounded-xl border-2 border-[#E05B49] bg-[#FDEDE8] text-xs font-body text-[#141414] animate-in fade-in">
+              <div className="flex items-start gap-2.5">
+                <AlertCircle className="w-5 h-5 text-[#E05B49] shrink-0 mt-0.5" />
+                <div>
+                  <div className="font-mono font-bold text-[#E05B49] uppercase">Daily Limit Reached (Free Plan)</div>
+                  <div className="mt-1 text-[#4A4944] leading-relaxed">{quotaExceededError}</div>
+                  <div className="mt-2 flex items-center gap-1.5 text-[11px] font-mono text-[#8A8880]">
+                    <Clock className="w-3.5 h-3.5 text-[#E05B49]" />
+                    <span>Free quota resets at 00:00 UTC daily. All previously generated PDFs remain free to re-download anytime.</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Free Re-Download Notice */}
+          {quotaNotice && !quotaExceededError && (
+            <div className="mb-4 p-3 rounded-xl border border-[#79A94A] bg-[#F1F7EA] text-xs font-mono text-[#141414] flex items-center gap-2 animate-in fade-in">
+              <CheckCircle2 className="w-4 h-4 text-[#79A94A] shrink-0" />
+              <span>{quotaNotice}</span>
+            </div>
+          )}
 
           {/* Style Presets Selector */}
           <div className="mb-4">

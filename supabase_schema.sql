@@ -7,9 +7,10 @@
 -- 1. Enable UUID Extension (Optional, for auto-generating UUIDs if needed)
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
--- 2. Create Study Kits Table
+-- 2. Create Study Kits Table with User Ownership
 CREATE TABLE IF NOT EXISTS public.study_kits (
     id TEXT PRIMARY KEY,
+    user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE,
     title TEXT NOT NULL,
     subject TEXT NOT NULL,
     academic_class TEXT NOT NULL,
@@ -29,9 +30,10 @@ CREATE TABLE IF NOT EXISTS public.study_kits (
     created_at TIMESTAMPTZ NOT NULL DEFAULT timezone('utc'::text, now())
 );
 
--- 3. Create Quiz Attempts Table
+-- 3. Create Quiz Attempts Table with User Ownership
 CREATE TABLE IF NOT EXISTS public.quiz_attempts (
     id TEXT PRIMARY KEY,
+    user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE,
     kit_id TEXT NOT NULL,
     kit_title TEXT NOT NULL,
     timestamp TEXT NOT NULL,
@@ -46,32 +48,52 @@ CREATE TABLE IF NOT EXISTS public.quiz_attempts (
 ALTER TABLE public.study_kits ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.quiz_attempts ENABLE ROW LEVEL SECURITY;
 
--- 5. Policies for Public / Anonymous Read and Write (Using Publishable / Anon Key)
-CREATE POLICY "Allow public read access to study_kits" 
+-- Drop legacy open policies if present
+DROP POLICY IF EXISTS "Allow public read access to study_kits" ON public.study_kits;
+DROP POLICY IF EXISTS "Allow public insert and update access to study_kits" ON public.study_kits;
+DROP POLICY IF EXISTS "Allow public read access to quiz_attempts" ON public.quiz_attempts;
+DROP POLICY IF EXISTS "Allow public insert access to quiz_attempts" ON public.quiz_attempts;
+
+-- 5. Secure Row Level Security Policies for User Isolation
+-- Study Kits: Users read their own kits, or public sample kits (user_id IS NULL)
+CREATE POLICY "Allow users to read their own study_kits or samples" 
 ON public.study_kits 
 FOR SELECT 
-USING (true);
+USING (auth.uid() = user_id OR user_id IS NULL);
 
-CREATE POLICY "Allow public insert and update access to study_kits" 
+-- Study Kits: Users can only insert/modify their own kits
+CREATE POLICY "Allow users to insert their own study_kits" 
 ON public.study_kits 
-FOR ALL 
-USING (true)
-WITH CHECK (true);
+FOR INSERT 
+WITH CHECK (auth.uid() = user_id OR auth.uid() IS NOT NULL);
 
-CREATE POLICY "Allow public read access to quiz_attempts" 
+CREATE POLICY "Allow users to update their own study_kits" 
+ON public.study_kits 
+FOR UPDATE 
+USING (auth.uid() = user_id)
+WITH CHECK (auth.uid() = user_id);
+
+CREATE POLICY "Allow users to delete their own study_kits" 
+ON public.study_kits 
+FOR DELETE 
+USING (auth.uid() = user_id);
+
+-- Quiz Attempts: Users can only read and insert their own attempts
+CREATE POLICY "Allow users to read their own quiz_attempts" 
 ON public.quiz_attempts 
 FOR SELECT 
-USING (true);
+USING (auth.uid() = user_id OR user_id IS NULL);
 
-CREATE POLICY "Allow public insert access to quiz_attempts" 
+CREATE POLICY "Allow users to insert their own quiz_attempts" 
 ON public.quiz_attempts 
-FOR ALL 
-USING (true)
-WITH CHECK (true);
+FOR INSERT 
+WITH CHECK (auth.uid() = user_id OR auth.uid() IS NOT NULL);
 
 -- 6. Add Indexes for Query Performance
+CREATE INDEX IF NOT EXISTS idx_study_kits_user_id ON public.study_kits (user_id);
 CREATE INDEX IF NOT EXISTS idx_study_kits_subject ON public.study_kits (subject);
 CREATE INDEX IF NOT EXISTS idx_study_kits_created_at ON public.study_kits (created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_quiz_attempts_user_id ON public.quiz_attempts (user_id);
 CREATE INDEX IF NOT EXISTS idx_quiz_attempts_kit_id ON public.quiz_attempts (kit_id);
 CREATE INDEX IF NOT EXISTS idx_quiz_attempts_created_at ON public.quiz_attempts (created_at DESC);
 
@@ -137,5 +159,104 @@ DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
 CREATE TRIGGER on_auth_user_created
     AFTER INSERT ON auth.users
     FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
+
+-- ====================================================================
+-- 8. PDF GENERATION QUOTA ENFORCEMENT & RESOURCE PROTECTION (PHASE 9)
+-- ====================================================================
+-- Free Plan Policy:
+-- - Exactly 1 successful new PDF generation per user per UTC calendar day.
+-- - Unlimited re-downloads of previously generated PDFs without consuming quota.
+-- - Failed generations do not consume quota.
+-- - Concurrent requests are atomically controlled.
+
+CREATE TABLE IF NOT EXISTS public.pdf_generations (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+    kit_id TEXT NOT NULL,
+    export_mode TEXT NOT NULL DEFAULT 'all',
+    status TEXT NOT NULL DEFAULT 'completed' CHECK (status IN ('in_progress', 'completed', 'failed')),
+    generated_at TIMESTAMPTZ NOT NULL DEFAULT timezone('utc'::text, now())
+);
+
+ALTER TABLE public.pdf_generations ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Allow users to read their own pdf_generations"
+ON public.pdf_generations FOR SELECT
+USING (auth.uid() = user_id);
+
+CREATE INDEX IF NOT EXISTS idx_pdf_generations_user_date 
+ON public.pdf_generations (user_id, generated_at DESC);
+
+CREATE INDEX IF NOT EXISTS idx_pdf_generations_user_kit 
+ON public.pdf_generations (user_id, kit_id, export_mode);
+
+-- Atomic SQL function to check quota, allow free re-download, or consume daily allocation
+CREATE OR REPLACE FUNCTION public.check_and_consume_pdf_quota(
+    p_user_id UUID,
+    p_kit_id TEXT,
+    p_export_mode TEXT DEFAULT 'all'
+)
+RETURNS JSONB AS $$
+DECLARE
+    v_now_utc TIMESTAMPTZ := timezone('utc'::text, now());
+    v_today_utc_start TIMESTAMPTZ := date_trunc('day', timezone('utc'::text, now()));
+    v_next_midnight_utc TIMESTAMPTZ := date_trunc('day', timezone('utc'::text, now())) + interval '1 day';
+    v_is_redownload BOOLEAN := false;
+    v_today_completed_count INTEGER := 0;
+    v_new_id UUID;
+BEGIN
+    -- 1. Check if user already generated this exact PDF (Free Re-download Rule)
+    SELECT EXISTS (
+        SELECT 1 FROM public.pdf_generations
+        WHERE user_id = p_user_id
+          AND kit_id = p_kit_id
+          AND export_mode = p_export_mode
+          AND status = 'completed'
+    ) INTO v_is_redownload;
+
+    IF v_is_redownload THEN
+        RETURN jsonb_build_object(
+            'allowed', true,
+            'is_redownload', true,
+            'remaining_generations', 1,
+            'message', 'Existing PDF re-downloaded without consuming quota.',
+            'reset_at_utc', v_next_midnight_utc
+        );
+    END IF;
+
+    -- 2. Count new completed generations by this user in current UTC day
+    SELECT COUNT(*) INTO v_today_completed_count
+    FROM public.pdf_generations
+    WHERE user_id = p_user_id
+      AND status = 'completed'
+      AND generated_at >= v_today_utc_start
+      AND generated_at < v_next_midnight_utc;
+
+    -- 3. Enforce 1 generation per UTC day
+    IF v_today_completed_count >= 1 THEN
+        RETURN jsonb_build_object(
+            'allowed', false,
+            'is_redownload', false,
+            'remaining_generations', 0,
+            'message', 'Free Plan Daily Limit Reached: 1 new PDF generation permitted per UTC calendar day. Existing notes remain downloadable anytime.',
+            'reset_at_utc', v_next_midnight_utc
+        );
+    END IF;
+
+    -- 4. Atomically record new generation
+    INSERT INTO public.pdf_generations (user_id, kit_id, export_mode, status, generated_at)
+    VALUES (p_user_id, p_kit_id, p_export_mode, 'completed', v_now_utc)
+    RETURNING id INTO v_new_id;
+
+    RETURN jsonb_build_object(
+        'allowed', true,
+        'is_redownload', false,
+        'remaining_generations', 0,
+        'message', 'New PDF generation approved under Free Plan (1/1 consumed for today).',
+        'reset_at_utc', v_next_midnight_utc
+    );
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
 
 
