@@ -135,6 +135,17 @@ export async function syncStudyKitToSupabase(kit: StudyKit, userId?: string | nu
       .upsert(row, { onConflict: 'id' });
 
     if (error) {
+      // Backward compatibility: If remote Supabase schema has not run user_id migration yet, retry without user_id
+      if (error.message && error.message.includes('user_id') && error.message.includes('schema cache')) {
+        const fallbackRow = { ...row };
+        delete (fallbackRow as any).user_id;
+        const { error: retryError } = await supabase
+          .from('study_kits')
+          .upsert(fallbackRow, { onConflict: 'id' });
+        if (!retryError) {
+          return { success: true };
+        }
+      }
       console.warn('[Libnotes Supabase] Upsert error:', error.message);
       return { success: false, error: error.message };
     }

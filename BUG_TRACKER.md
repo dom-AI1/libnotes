@@ -20,6 +20,7 @@
 | **BUG-P2-04** | P2 | Responsive / UI | Product Preview Style Tabs Overflowing and Breaking Lines on Mobile | `src/components/ProductPreview.tsx` | **VERIFIED FIXED** |
 | **BUG-P2-05** | P2 | PDF Typography | Special Unicode Math & Greek Glyphs (`η`, `Δ`, `∫`) Corrupted to `?` in jsPDF | `src/services/pdfExportService.ts` | **VERIFIED FIXED** |
 | **BUG-P2-06** | P2 | PDF Layout | Oversized Formal Cover Page Pushing Notes to Page 3 Without User Intent | `src/services/pdfExportService.ts`, `src/components/PdfExportModal.tsx` | **VERIFIED FIXED** |
+| **BUG-P1-04** | P1 | Pipeline / Crash | ReferenceError TDZ on `applyPresetMode` in `PdfExportModal.tsx` Triggering Recovery Mode | `src/components/PdfExportModal.tsx`, `src/components/NotesView.tsx` | **VERIFIED FIXED** |
 
 ---
 
@@ -155,3 +156,24 @@
 - **Fix Implemented**: Set `includeCoverPage: false` and `includeTableOfContents: false` by default; notes begin immediately on Page 1 below a compact 25mm header banner.
 - **Regression Test**: `tests/pdf-export.test.ts`.
 - **Status**: **VERIFIED FIXED**
+
+---
+
+### BUG-P1-04: ReferenceError TDZ on `applyPresetMode` in `PdfExportModal.tsx` Triggering Recovery Mode
+- **Severity**: P1 (Runtime Exception / Recovery Mode Loop)
+- **Reproduction**:
+  1. Click "Generate Notes" and generate notes for any lecture link or file.
+  2. As soon as generation completes and the notes workspace mounts, the app crashes and shows `RECOVERY MODE: Something went wrong`.
+  3. Clicking "Return to Home" and repeating causes the crash to happen every time ("after and after and after").
+- **Root Cause**:
+  1. `applyPresetMode` was defined as `const applyPresetMode = ...` on line 84 of `PdfExportModal.tsx`, *below* an early `if (!isOpen) return null;` return on line 80 and *below* a `useEffect` on line 60 that invoked `applyPresetMode(m)`.
+  2. Because `NotesView.tsx` unconditionally rendered `<PdfExportModal isOpen={false} ... />`, the component mounted with `isOpen = false`, hit the early return before `applyPresetMode` was declared, and the `useEffect` closure threw `ReferenceError: Cannot access 'applyPresetMode' before initialization`.
+  3. The top-level `ErrorBoundary` caught the error and rendered the "Something went wrong" card.
+- **Fix Implemented**:
+  1. Moved `applyPresetMode` definition above the `useEffect` and moved `if (!isOpen) return null;` to the very bottom before the JSX return.
+  2. In `NotesView.tsx`, conditionally mounted `<PdfExportModal>` only when `isPdfModalOpen` is true (`{isPdfModalOpen && <PdfExportModal ... />}`).
+  3. Hardened all `.filter()` and `.map()` calls in `NotesView.tsx` with defensive optional chaining.
+- **Regression Test**: `tests/debug-generate.test.tsx` (passes all 4 note styles and tabs without errors).
+- **Status**: **VERIFIED FIXED**
+
+

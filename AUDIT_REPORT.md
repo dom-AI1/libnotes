@@ -287,3 +287,4 @@ Libnotes is now fully audited, fortified, and production-ready. The white screen
 1. **PWA Offline Support**: Add a Service Worker to cache landing assets and sample kits for students with intermittent rural internet connectivity.
 2. **Audio Whisper Model**: Integrate client-side WebAssembly Whisper (e.g., whisper.cpp via Transformers.js) for 100% offline local transcription on high-spec student devices without server dependencies.
 3. **Spaced Repetition Schedule**: Expand Flashcards into a Leitner-system spaced repetition scheduler using local notification reminders.
+

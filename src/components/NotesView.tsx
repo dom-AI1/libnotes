@@ -399,7 +399,7 @@ export const NotesView = ({ kit, onBack, onStyleChange, initialTab, userId }: No
               <div className="space-y-6">
                 {/* Deep Dive Sections with Timestamps */}
                 {(kit.content?.topper?.deepDive || [])
-                  .filter(sec => !searchQuery || sec.title.toLowerCase().includes(searchQuery.toLowerCase()) || sec.content.toLowerCase().includes(searchQuery.toLowerCase()))
+                  .filter(sec => !searchQuery || (sec.title && sec.title.toLowerCase().includes(searchQuery.toLowerCase())) || (sec.content && sec.content.toLowerCase().includes(searchQuery.toLowerCase())))
                   .map((section, idx) => (
                     <div
                       key={idx}
@@ -450,7 +450,7 @@ export const NotesView = ({ kit, onBack, onStyleChange, initialTab, userId }: No
                             {d.title}
                           </div>
                           <div className="space-y-1.5 pl-3 border-l-2 border-[#79A94A] my-3 font-mono text-xs text-[#333333]">
-                            {d.steps.map((st, sIdx) => (
+                            {(d.steps || []).map((st, sIdx) => (
                               <div key={sIdx}>{st}</div>
                             ))}
                           </div>
@@ -485,8 +485,8 @@ export const NotesView = ({ kit, onBack, onStyleChange, initialTab, userId }: No
             {activeStyleKey === 'chatpata' && (
               <div className="space-y-6">
                 <div className="space-y-4">
-                  {chatpataContent?.desiAnalogies
-                    .filter(a => !searchQuery || a.concept.toLowerCase().includes(searchQuery.toLowerCase()) || a.analogy.toLowerCase().includes(searchQuery.toLowerCase()))
+                  {(chatpataContent?.desiAnalogies || [])
+                    .filter(a => !searchQuery || (a.concept && a.concept.toLowerCase().includes(searchQuery.toLowerCase())) || (a.analogy && a.analogy.toLowerCase().includes(searchQuery.toLowerCase())))
                     .map((item, idx) => (
                       <div
                         key={idx}
@@ -535,7 +535,7 @@ export const NotesView = ({ kit, onBack, onStyleChange, initialTab, userId }: No
                   </h3>
                   <div className="space-y-3">
                     {(quickContent?.cheatSheet || [])
-                      .filter(sheet => !searchQuery || sheet.toLowerCase().includes(searchQuery.toLowerCase()))
+                      .filter(sheet => !searchQuery || (typeof sheet === 'string' && sheet.toLowerCase().includes(searchQuery.toLowerCase())))
                       .map((sheet, i) => (
                         <div key={i} className="p-3 rounded-xl border border-[#141414] bg-[#FAF9F5] text-xs sm:text-sm font-body text-[#222222] flex items-start gap-2.5">
                           <span className="w-5 h-5 rounded-md bg-[#E8F2DC] border border-[#79A94A] flex items-center justify-center font-mono text-[10px] font-bold text-[#79A94A] shrink-0 mt-0.5">
@@ -553,7 +553,7 @@ export const NotesView = ({ kit, onBack, onStyleChange, initialTab, userId }: No
                   </h3>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     {(quickContent?.formulas || [])
-                      .filter(f => !searchQuery || f.name.toLowerCase().includes(searchQuery.toLowerCase()) || f.formula.toLowerCase().includes(searchQuery.toLowerCase()))
+                      .filter(f => !searchQuery || (f.name && f.name.toLowerCase().includes(searchQuery.toLowerCase())) || (f.formula && f.formula.toLowerCase().includes(searchQuery.toLowerCase())))
                       .map((f, i) => (
                         <div key={i} className="p-3.5 rounded-xl border border-[#141414] bg-[#FFFFFF]">
                           <div className="text-xs font-mono font-bold text-[#5E5D57] uppercase">{f.name}</div>
@@ -585,7 +585,7 @@ export const NotesView = ({ kit, onBack, onStyleChange, initialTab, userId }: No
 
                 <div className="space-y-4">
                   {(kit.content?.exam?.questions || [])
-                    .filter(q => !searchQuery || q.question.toLowerCase().includes(searchQuery.toLowerCase()))
+                    .filter(q => !searchQuery || (q.question && q.question.toLowerCase().includes(searchQuery.toLowerCase())))
                     .map((q) => (
                       <div key={q.id} className="bg-[#FCFAF6] border-2 border-[#141414] rounded-2xl p-6 shadow-[3px_3px_0px_#141414]">
                         <div className="flex items-center justify-between mb-3">
@@ -609,7 +609,7 @@ export const NotesView = ({ kit, onBack, onStyleChange, initialTab, userId }: No
                         <div className="p-3 rounded-lg bg-[#F1F7EA] border border-[#79A94A] text-xs font-body">
                           <span className="font-mono font-bold text-[#141414] block mb-1">Marking Scheme Rubric:</span>
                           <ul className="list-disc list-inside space-y-0.5 text-[#333333]">
-                            {q.markingScheme.map((item, mIdx) => (
+                            {(q.markingScheme || []).map((item, mIdx) => (
                               <li key={mIdx}>{item}</li>
                             ))}
                           </ul>
@@ -741,7 +741,7 @@ export const NotesView = ({ kit, onBack, onStyleChange, initialTab, userId }: No
                 <div className="p-3.5 rounded-lg bg-[#F1F7EA] border border-[#79A94A] text-xs font-body">
                   <span className="font-mono font-bold text-[#141414] block mb-1">Examiner Rubric:</span>
                   <ul className="list-disc list-inside space-y-0.5 text-[#333333]">
-                    {q.markingScheme.map((item, mIdx) => (
+                    {(q.markingScheme || []).map((item, mIdx) => (
                       <li key={mIdx}>{item}</li>
                     ))}
                   </ul>
@@ -839,13 +839,15 @@ export const NotesView = ({ kit, onBack, onStyleChange, initialTab, userId }: No
       </div>
 
       {/* PDF Export Configuration Modal */}
-      <PdfExportModal
-        isOpen={isPdfModalOpen}
-        onClose={() => setIsPdfModalOpen(false)}
-        kit={kit}
-        initialMode={activeTab}
-        userId={userId}
-      />
+      {isPdfModalOpen && (
+        <PdfExportModal
+          isOpen={isPdfModalOpen}
+          onClose={() => setIsPdfModalOpen(false)}
+          kit={kit}
+          initialMode={activeTab}
+          userId={userId}
+        />
+      )}
     </div>
   );
 };

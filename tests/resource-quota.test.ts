@@ -110,3 +110,4 @@ describe('Phase 9: Free-Plan Resource Protection & PDF Quota', () => {
     expect(res2.message).toContain('Daily Limit Reached');
   });
 });
+

@@ -57,30 +57,6 @@ export const PdfExportModal = ({
   const [quotaNotice, setQuotaNotice] = useState<string | null>(null);
   const [quotaExceededError, setQuotaExceededError] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (initialMode) {
-      const m = getInitialExportMode(initialMode);
-      setSelectedMode(m);
-      applyPresetMode(m);
-    }
-    setQuotaExceededError(null);
-    setQuotaNotice(null);
-  }, [initialMode, isOpen]);
-
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && isOpen && !isGenerating) {
-        onClose();
-      }
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, isGenerating, onClose]);
-
-  if (!isOpen) return null;
-
-  const targetFilename = formatPdfFilename(kit.subject, kit.chapter, options.exportMode);
-
   const applyPresetMode = (mode: ExportStyleMode) => {
     setSelectedMode(mode);
     if (mode === 'chatpata') {
@@ -150,6 +126,28 @@ export const PdfExportModal = ({
       });
     }
   };
+
+  useEffect(() => {
+    if (initialMode) {
+      const m = getInitialExportMode(initialMode);
+      setSelectedMode(m);
+      applyPresetMode(m);
+    }
+    setQuotaExceededError(null);
+    setQuotaNotice(null);
+  }, [initialMode, isOpen]);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isOpen && !isGenerating) {
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, isGenerating, onClose]);
+
+  const targetFilename = formatPdfFilename(kit.subject, kit.chapter, options.exportMode);
 
   const toggleOption = (key: keyof PdfExportOptions) => {
     setOptions((prev) => ({ ...prev, [key]: !prev[key] }));
@@ -264,6 +262,8 @@ export const PdfExportModal = ({
       available: true,
     },
   ];
+
+  if (!isOpen) return null;
 
   return (
     <div 
