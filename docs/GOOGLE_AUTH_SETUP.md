@@ -24,15 +24,14 @@ This guide details how to configure Google Sign-In with Supabase Authentication 
    - **Scopes**: `.../auth/userinfo.email`, `.../auth/userinfo.profile`, `openid`
 4. Create Credentials:
    - Navigate to **APIs & Services > Credentials**.
-   - Click **+ Create Credentials > OAuth client ID**.
-   - **Application Type**: Web application
-   - **Name**: `Libnotes Supabase Client`
+   - Click your Web client under **OAuth 2.0 Client IDs** (or click **+ Create Credentials > OAuth client ID**).
    - **Authorized JavaScript origins**:
      - `http://localhost:5173`
+     - `https://libnotes.g21455728.workers.dev`
      - `https://vidbiyemknmkfswiucsr.supabase.co`
-     - Your production domain (when deployed)
-   - **Authorized redirect URIs**:
+   - **Authorized redirect URIs** (CRITICAL — Do NOT put your app URL here! Google talks to Supabase):
      - `https://vidbiyemknmkfswiucsr.supabase.co/auth/v1/callback`
+     *(Putting localhost or libnotes.workers.dev here causes "Google Error 400: redirect_uri_mismatch")*
 5. Copy your **Client ID** and **Client Secret**.
 
 ---
@@ -40,19 +39,26 @@ This guide details how to configure Google Sign-In with Supabase Authentication 
 ## 3. Configure Supabase Dashboard
 
 1. Navigate to your [Supabase Dashboard](https://supabase.com/dashboard/project/vidbiyemknmkfswiucsr).
-2. Go to **Authentication > Providers > Google**.
-3. Toggle Google to **Enabled**.
-4. Paste the **Client ID** and **Client Secret** obtained from Google Cloud Console.
-5. Click **Save**.
+2. Go to **Authentication > Providers > Google**:
+   - Toggle Google to **Enabled**.
+   - Paste the **Client ID** and **Client Secret** obtained from Google Cloud Console.
+   - Click **Save**.
 
-### Configure URL Configuration in Supabase
-1. Go to **Authentication > URL Configuration**.
-2. Set **Site URL**:
-   - `http://localhost:5173` (or production domain)
-3. Under **Redirect URLs**, add:
-   - `http://localhost:5173/#/auth/callback`
+### Configure URL Configuration in Supabase (Fixes "localhost refused to connect")
+1. In the Supabase Dashboard, go to **Authentication > URL Configuration** (or direct link: `https://supabase.com/dashboard/project/vidbiyemknmkfswiucsr/auth/url-configuration`).
+2. Set **Site URL** to your production domain:
+   - `https://libnotes.g21455728.workers.dev`
+   *(If Site URL is left as `http://localhost:5173`, Supabase falls back to localhost whenever an unwhitelisted redirect occurs, causing Chrome's ERR_CONNECTION_REFUSED error!)*
+3. Under **Redirect URLs**, add the following entries to the allowlist:
+   - `https://libnotes.g21455728.workers.dev/**`
+   - `https://libnotes.g21455728.workers.dev/#/auth/callback`
+   - `https://libnotes.g21455728.workers.dev/`
+   - `https://libnotes.g21455728.workers.dev`
    - `http://localhost:5173/**`
-   - Production domain callbacks (e.g. `https://your-domain.com/#/auth/callback`)
+   - `http://localhost:5173/#/auth/callback`
+   - `http://localhost:5173/`
+   - `http://localhost:5173`
+4. Click **Save Changes**.
 
 ---
 

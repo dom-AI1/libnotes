@@ -192,7 +192,7 @@ export async function sendPasswordResetEmail(email: string): Promise<AuthRespons
 
   try {
     const trimmedEmail = email.trim().toLowerCase();
-    const redirectUrl = `${window.location.origin}/#/reset-password`;
+    const redirectUrl = getAuthRedirectUrl('/#/reset-password');
 
     const { error } = await supabase.auth.resetPasswordForEmail(trimmedEmail, {
       redirectTo: redirectUrl,
@@ -363,6 +363,28 @@ export function isFirstTimeUser(userId: string, profile?: UserProfile | null): b
 }
 
 /**
+ * Resolves the appropriate redirect URL for OAuth and email authentication.
+ * Dynamically detects production edge URL vs local development without breaking either.
+ */
+export function getAuthRedirectUrl(subpath: string = '/#/auth/callback'): string {
+  // Allow explicit override via environment variable if set
+  const envUrl = (import.meta as any).env?.VITE_AUTH_REDIRECT_URL;
+  if (envUrl) {
+    return envUrl;
+  }
+
+  if (typeof window !== 'undefined' && window.location?.origin) {
+    // In browser: dynamically resolves http://localhost:5173 or https://libnotes.g21455728.workers.dev
+    const cleanOrigin = window.location.origin.replace(/\/+$/, '');
+    const cleanSubpath = subpath ? (subpath.startsWith('/') ? subpath : `/${subpath}`) : '';
+    return `${cleanOrigin}${cleanSubpath}`;
+  }
+
+  // Fallback for SSR or non-browser environments
+  return `https://libnotes.g21455728.workers.dev${subpath}`;
+}
+
+/**
  * Sign in with Google OAuth provider.
  */
 export async function signInWithGoogle(redirectTo?: string): Promise<{ success: boolean; error?: string }> {
@@ -374,7 +396,7 @@ export async function signInWithGoogle(redirectTo?: string): Promise<{ success: 
   }
 
   try {
-    const redirectUrl = redirectTo || `${window.location.origin}/#/auth/callback`;
+    const redirectUrl = redirectTo || getAuthRedirectUrl('/#/auth/callback');
 
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',

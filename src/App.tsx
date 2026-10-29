@@ -112,7 +112,9 @@ export function App() {
         setCurrentView('home');
       } else if (
         hash.startsWith('#/auth/callback') ||
+        hash.startsWith('#auth/callback') ||
         hash.includes('access_token=') ||
+        hash.includes('code=') ||
         window.location.search.includes('code=')
       ) {
         // OAuth or Email confirmation callback detected
@@ -123,7 +125,11 @@ export function App() {
               const profile = await syncUserProfile(session.user);
               setUser(profile);
               const isFirst = isFirstTimeUser(session.user.id, profile);
-              window.location.hash = '#/dashboard';
+              if (window.location.search) {
+                window.history.replaceState(null, '', window.location.pathname + '#/dashboard');
+              } else {
+                window.location.hash = '#/dashboard';
+              }
               setCurrentView('dashboard');
               if (isFirst) {
                 setIsWelcomeModalOpen(true);

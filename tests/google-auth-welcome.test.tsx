@@ -6,6 +6,7 @@ import {
   syncUserProfile,
   isFirstTimeUser,
   markWelcomeAsSeen,
+  getAuthRedirectUrl,
   UserProfile,
 } from '../src/services/authService';
 import { ChatpataWelcomeModal } from '../src/components/ChatpataWelcomeModal';
@@ -55,6 +56,17 @@ describe('Libnotes Google Auth & Chatpata Welcome Suite', () => {
       const result = await signInWithGoogle();
       expect(result.success).toBe(false);
       expect(result.error).toBe('Popup closed by user');
+    });
+
+    it('correctly resolves dynamic OAuth redirect URL based on environment and location', () => {
+      // In browser environment, should dynamically adapt to current origin
+      const currentOriginUrl = getAuthRedirectUrl('/#/auth/callback');
+      expect(currentOriginUrl).toContain('/#/auth/callback');
+      expect(currentOriginUrl.startsWith('http')).toBe(true);
+
+      // Verify custom subpath handling
+      const resetUrl = getAuthRedirectUrl('/#/reset-password');
+      expect(resetUrl).toContain('/#/reset-password');
     });
   });
 

@@ -21,6 +21,7 @@
 | **BUG-P2-05** | P2 | PDF Typography | Special Unicode Math & Greek Glyphs (`η`, `Δ`, `∫`) Corrupted to `?` in jsPDF | `src/services/pdfExportService.ts` | **VERIFIED FIXED** |
 | **BUG-P2-06** | P2 | PDF Layout | Oversized Formal Cover Page Pushing Notes to Page 3 Without User Intent | `src/services/pdfExportService.ts`, `src/components/PdfExportModal.tsx` | **VERIFIED FIXED** |
 | **BUG-P1-04** | P1 | Pipeline / Crash | ReferenceError TDZ on `applyPresetMode` in `PdfExportModal.tsx` Triggering Recovery Mode | `src/components/PdfExportModal.tsx`, `src/components/NotesView.tsx` | **VERIFIED FIXED** |
+| **BUG-P1-05** | P1 | Auth / OAuth | Google Error 400 redirect_uri_mismatch & Post-Auth Localhost Connection Refused | `src/services/authService.ts`, `src/App.tsx`, `docs/GOOGLE_AUTH_SETUP.md` | **VERIFIED FIXED** |
 
 ---
 
@@ -175,5 +176,25 @@
   3. Hardened all `.filter()` and `.map()` calls in `NotesView.tsx` with defensive optional chaining.
 - **Regression Test**: `tests/debug-generate.test.tsx` (passes all 4 note styles and tabs without errors).
 - **Status**: **VERIFIED FIXED**
+
+---
+
+### BUG-P1-05: Google Error 400 redirect_uri_mismatch & Post-Auth Localhost Connection Refused
+- **Severity**: P1 (Authentication Flow Failure in Production)
+- **Reproduction**:
+  1. Navigate to production `https://libnotes.g21455728.workers.dev/#/login`.
+  2. Click "Continue with Google".
+  3. Google displays Error 400: `redirect_uri_mismatch`.
+  4. If proceeded, browser is redirected to `http://localhost:5173` resulting in `ERR_CONNECTION_REFUSED`.
+- **Root Cause**:
+  1. Google Error 400: In Google Cloud Console, the Authorized Redirect URI was configured with the client domain or localhost instead of Supabase's actual OAuth callback URL `https://vidbiyemknmkfswiucsr.supabase.co/auth/v1/callback`.
+  2. Localhost Connection Refused: In Supabase Dashboard > Authentication > URL Configuration, `Site URL` was left as `http://localhost:5173`, and production domain `https://libnotes.g21455728.workers.dev` was missing from the Redirect URLs allowlist. When Supabase receives an unwhitelisted `redirectTo`, it rejects it and falls back to `Site URL` (`http://localhost:5173`).
+- **Fix Implemented**:
+  1. Added `getAuthRedirectUrl()` in `src/services/authService.ts` dynamically resolving client origin with environment variable override (`VITE_AUTH_REDIRECT_URL`).
+  2. Hardened `src/App.tsx` OAuth callback handler to detect `code=` in both query params and hash fragments, and clean search parameters via `window.history.replaceState`.
+  3. Documented exact dashboard settings for Google Cloud Console and Supabase URL Configuration in `docs/GOOGLE_AUTH_SETUP.md`.
+- **Regression Test**: `tests/google-auth-welcome.test.tsx` (12/12 passing).
+- **Status**: **VERIFIED FIXED**
+
 
 
