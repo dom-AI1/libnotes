@@ -29,6 +29,7 @@ import { ForgotPasswordView } from './components/ForgotPasswordView';
 import { ResetPasswordView } from './components/ResetPasswordView';
 import { NotFoundView } from './components/NotFoundView';
 import { ChatpataWelcomeModal } from './components/ChatpataWelcomeModal';
+import { ErrorBoundary } from './components/ErrorBoundary';
 import { Footer } from './components/Footer';
 
 export type AppView =
@@ -550,23 +551,27 @@ export function App() {
             )}
 
             {currentView === 'notes' && (
-              <NotesView
-                kit={activeKit}
-                onBack={() => navigateTo('home')}
-                onStyleChange={handleStyleChange}
-                initialTab={notesActiveTab}
-                userId={user?.id}
-              />
+              <ErrorBoundary inline onReset={() => navigateTo('dashboard')}>
+                <NotesView
+                  kit={activeKit}
+                  onBack={() => navigateTo('home')}
+                  onStyleChange={handleStyleChange}
+                  initialTab={notesActiveTab}
+                  userId={user?.id}
+                />
+              </ErrorBoundary>
             )}
 
             {currentView === 'dashboard' && (
-              <DashboardView
-                studyKits={studyKits}
-                user={user}
-                onSelectKit={(kitId) => navigateTo('notes', kitId, 'full')}
-                onOpenUpload={() => setIsUploadOpen(true)}
-                onTakeQuiz={(kitId) => navigateTo('notes', kitId, 'quiz')}
-              />
+              <ErrorBoundary inline onReset={() => navigateTo('home')}>
+                <DashboardView
+                  studyKits={studyKits}
+                  user={user}
+                  onSelectKit={(kitId) => navigateTo('notes', kitId, 'full')}
+                  onOpenUpload={() => setIsUploadOpen(true)}
+                  onTakeQuiz={(kitId) => navigateTo('notes', kitId, 'quiz')}
+                />
+              </ErrorBoundary>
             )}
 
             {/* Auth: Sign Up View */}
@@ -677,15 +682,17 @@ export function App() {
       </main>
 
       {/* Upload & Note Generation Modal */}
-      <UploadModal
-        isOpen={isUploadOpen}
-        onClose={handleCloseUploadModal}
-        onSuccess={handleUploadSuccess}
-        initialLink={uploadInitialLink}
-        initialStyle={uploadInitialStyle}
-        isAuthenticated={Boolean(user)}
-        onRequireAuth={handleRequireAuth}
-      />
+      <ErrorBoundary inline onReset={handleCloseUploadModal}>
+        <UploadModal
+          isOpen={isUploadOpen}
+          onClose={handleCloseUploadModal}
+          onSuccess={handleUploadSuccess}
+          initialLink={uploadInitialLink}
+          initialStyle={uploadInitialStyle}
+          isAuthenticated={Boolean(user)}
+          onRequireAuth={handleRequireAuth}
+        />
+      </ErrorBoundary>
 
       {/* First-Time Chatpata Welcome Celebratory Modal */}
       <ChatpataWelcomeModal

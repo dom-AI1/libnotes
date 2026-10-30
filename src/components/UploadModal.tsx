@@ -88,7 +88,7 @@ export const UploadModal = ({
 
   const handleClassChange = (newClass: AcademicClass) => {
     setAcademicClass(newClass);
-    const config = ACADEMIC_CURRICULUM[newClass];
+    const config = ACADEMIC_CURRICULUM[newClass] || ACADEMIC_CURRICULUM['Class 12'];
     if (config.hasStreams && config.streams) {
       const firstStream = Object.keys(config.streams)[0];
       const streamConfig = config.streams[firstStream];
@@ -104,7 +104,7 @@ export const UploadModal = ({
 
   const handleStreamChange = (newStream: string) => {
     setStream(newStream);
-    const config = ACADEMIC_CURRICULUM[academicClass];
+    const config = ACADEMIC_CURRICULUM[academicClass] || ACADEMIC_CURRICULUM['Class 12'];
     if (config.hasStreams && config.streams && config.streams[newStream]) {
       const streamConfig = config.streams[newStream];
       setSubject(streamConfig.defaultSubject);
@@ -114,7 +114,7 @@ export const UploadModal = ({
 
   const handleSubjectChange = (newSubject: Subject) => {
     setSubject(newSubject);
-    const config = ACADEMIC_CURRICULUM[academicClass];
+    const config = ACADEMIC_CURRICULUM[academicClass] || ACADEMIC_CURRICULUM['Class 12'];
     if (config.hasStreams && config.streams && config.streams[stream]?.chapterSuggestions?.[newSubject]) {
       setChapter(config.streams[stream].chapterSuggestions![newSubject]);
     } else if (!config.hasStreams && config.chapterSuggestions?.[newSubject]) {
@@ -172,6 +172,7 @@ export const UploadModal = ({
   };
 
   const cleanFilenameToTopic = (filename: string): string => {
+    if (!filename) return '';
     const withoutExt = filename.replace(/\.[^/.]+$/, '');
     const cleaned = withoutExt
       .replace(/^gemini_generated_video_[a-z0-9]+/i, '')
@@ -303,7 +304,7 @@ export const UploadModal = ({
     setIsProcessing(true);
 
     try {
-      const currentConfig = ACADEMIC_CURRICULUM[academicClass];
+      const currentConfig = ACADEMIC_CURRICULUM[academicClass] || ACADEMIC_CURRICULUM['Class 12'];
       const isAuto = autoDetect && !showManualSyllabus;
 
       let resolvedTopic = customTopic.trim();
@@ -852,7 +853,7 @@ export const UploadModal = ({
                 </div>
 
                 {(() => {
-                  const currentConfig = ACADEMIC_CURRICULUM[academicClass];
+                  const currentConfig = ACADEMIC_CURRICULUM[academicClass] || ACADEMIC_CURRICULUM['Class 12'];
                   const availableStreams = getStreamsForClass(academicClass);
                   const availableSubjects = getSubjectsForClassAndStream(academicClass, stream);
 

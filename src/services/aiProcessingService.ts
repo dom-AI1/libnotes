@@ -35,9 +35,9 @@ export function detectLectureMetadataFromSource(
   sourceType: 'upload' | 'link',
   customTopic?: string
 ): DetectedLectureMeta {
-  let decodedIdentifier = sourceIdentifier;
+  let decodedIdentifier = sourceIdentifier || '';
   try {
-    decodedIdentifier = decodeURIComponent(sourceIdentifier.replace(/\+/g, ' '));
+    decodedIdentifier = decodeURIComponent((sourceIdentifier || '').replace(/\+/g, ' '));
   } catch {
     // Ignore decode error
   }
