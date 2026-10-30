@@ -827,6 +827,209 @@ export function buildDynamicKitContent(
     };
   }
 
+  // 2.8 MATHEMATICS — QUADRATIC EQUATIONS
+  const isQuadratic = 
+    cLower.includes('quadratic') || 
+    cLower.includes('discriminant') || 
+    (cLower.includes('root') && (cLower.includes('equation') || sLower.includes('math')));
+
+  if (isQuadratic) {
+    return {
+      content: {
+        quick: {
+          headline: `${chapter} — Standard Form, Nature of Roots & Quadratic Formulas`,
+          cheatSheet: [
+            'Standard Form: ax² + bx + c = 0 where a, b, c ∈ ℝ and leading coefficient a ≠ 0.',
+            'Quadratic Formula (Sridharacharya): x = (-b ± √D) / (2a) where D = b² - 4ac is the Discriminant.',
+            'Nature of Roots: If D > 0, two distinct real roots; if D = 0, two equal real roots (-b/2a); if D < 0, two complex conjugate roots (no real roots).',
+            'Relations between Roots & Coefficients: Sum of roots α + β = -b/a; Product of roots αβ = c/a.',
+            'Reconstructing Quadratic Equation: x² - (Sum of Roots)x + (Product of Roots) = 0.',
+          ],
+          formulas: [
+            { name: 'Standard Quadratic Form', formula: 'ax² + bx + c = 0 (a ≠ 0)', note: 'Parabolic curve y = ax² + bx + c with vertex at (-b/2a, -D/4a)' },
+            { name: 'Discriminant Formula', formula: 'D = b² - 4ac', note: 'Determines root multiplicity and real vs non-real character' },
+            { name: 'Sridharacharya Quadratic Formula', formula: 'x = (-b ± √(b² - 4ac)) / (2a)', note: 'Universal solution derived via completing the square' },
+            { name: 'Sum and Product of Roots', formula: 'α + β = -b/a,  αβ = c/a', note: 'Fundamental Vieta relations for degree-2 polynomials' },
+          ],
+          bulletSummary: [
+            'Condition a ≠ 0 is mandatory; otherwise the equation is linear, not quadratic.',
+            'When D is a perfect square and coefficients are rational, roots are rational; otherwise irrational in conjugate pairs (p ± √q).',
+            'For equal roots, set D = 0 to solve for unknown coefficients like k.',
+          ],
+        },
+        minimal: {
+          headline: `${chapter} Quick Formula Card`,
+          cheatSheet: [
+            'ax² + bx + c = 0 (a ≠ 0).',
+            'D = b² - 4ac (D > 0: two distinct real roots; D = 0: equal real roots; D < 0: no real roots).',
+            'x = (-b ± √D) / (2a).',
+            'α + β = -b/a and αβ = c/a.',
+          ],
+          formulas: [
+            { name: 'Quadratic Formula', formula: 'x = (-b ± √(b² - 4ac)) / (2a)', note: 'Universal roots formula' },
+            { name: 'Discriminant', formula: 'D = b² - 4ac', note: 'Determines nature of roots' },
+          ],
+          bulletSummary: [
+            'Set D = 0 when problem mentions equal roots.',
+            'Reconstruct equation via x² - (α + β)x + αβ = 0.',
+          ],
+        },
+        topper: {
+          introduction: `Comprehensive analytical lecture synthesis for ${subject}: ${chapter}. Structured in alignment with CBSE, state boards, university curriculum, and competitive examination standards.`,
+          deepDive: [
+            {
+              title: 'Standard Form & Derivation of Sridharacharya Quadratic Formula',
+              timestamp: '02:00',
+              content: 'A quadratic equation in one variable x is of the form ax² + bx + c = 0 with a ≠ 0. To derive the quadratic formula via completing the square: divide throughout by a to obtain x² + (b/a)x + c/a = 0. Transpose constant term: x² + (b/a)x = -c/a. Add (b/2a)² = b²/(4a²) to both sides: x² + 2(b/2a)x + (b/2a)² = (b² - 4ac)/(4a²). The left side is a perfect square: (x + b/2a)² = (b² - 4ac)/(4a²). Taking the square root of both sides gives x + b/2a = ±√(b² - 4ac) / (2a). Subtracting b/2a yields the celebrated formula: x = (-b ± √(b² - 4ac)) / (2a).',
+              keyTakeaway: 'The derivation relies strictly on completing the square by adding (b/2a)² to both sides.',
+            },
+            {
+              title: 'Discriminant Analysis & Precise Classification of Roots',
+              timestamp: '08:30',
+              content: 'The quantity D = b² - 4ac governs the nature of the roots. Case 1: D > 0 yields two distinct real roots. When a, b, c are rational and D is a perfect square, roots are rational; if D is not a perfect square, roots are irrational and occur in conjugate pairs (p + √q and p - √q). Case 2: D = 0 yields two real and equal (coincident) roots, each equal to -b/(2a). In this case, ax² + bx + c is a perfect square trinomial. Case 3: D < 0 yields no real roots; roots are complex numbers with imaginary components occurring as complex conjugate pairs (p + i q and p - i q).',
+              keyTakeaway: 'Exam questions asking for values of an unknown parameter k for which roots are equal require setting D = b² - 4ac = 0.',
+            },
+            {
+              title: 'Relations Between Roots and Coefficients (Vieta\'s Formulas)',
+              timestamp: '16:00',
+              content: 'Let α = (-b + √D)/(2a) and β = (-b - √D)/(2a). Adding the two roots: α + β = (-b + √D - b - √D)/(2a) = -2b/(2a) = -b/a. Multiplying the two roots: αβ = [(-b)² - (√D)²] / (4a²) = (b² - (b² - 4ac)) / (4a²) = 4ac / (4a²) = c/a. Thus, sum of roots = -(coefficient of x)/(coefficient of x²) and product of roots = (constant term)/(coefficient of x²). Given roots α and β, the quadratic equation is x² - (α + β)x + αβ = 0.',
+              keyTakeaway: 'Symmetric expressions of roots such as α² + β² = (α + β)² - 2αβ and 1/α + 1/β = (α + β)/αβ can be evaluated directly without solving for individual roots.',
+            },
+          ],
+          derivations: [
+            {
+              title: 'Proof of the Quadratic Formula by Completing the Square',
+              steps: [
+                'Given standard quadratic equation: ax² + bx + c = 0 where a ≠ 0.',
+                'Divide the entire equation by leading coefficient a: x² + (b/a)x + c/a = 0.',
+                'Shift the constant term to the right-hand side: x² + (b/a)x = -c/a.',
+                'Add the square of half the coefficient of x, which is (b / 2a)² = b² / (4a²), to both sides: x² + (b/a)x + b²/(4a²) = b²/(4a²) - c/a.',
+                'Factor the left side into a binomial square: (x + b / (2a))² = (b² - 4ac) / (4a²).',
+                'Take square root on both sides: x + b / (2a) = ± √(b² - 4ac) / (2a).',
+                'Isolate x: x = -b / (2a) ± √(b² - 4ac) / (2a) = (-b ± √(b² - 4ac)) / (2a). (Q.E.D.)',
+              ],
+              finalResult: 'x = (-b ± √(b² - 4ac)) / (2a)',
+            },
+          ],
+          proTips: [
+            'Always check leading coefficient a ≠ 0 before applying quadratic formulas.',
+            'For equal roots, set D = b² - 4ac = 0 to evaluate parameter k directly.',
+          ],
+        },
+        chatpata: {
+          hinglishIntro: 'Bhai suno, Quadratic equation (ax² + bx + c = 0) class 10/11 ka sabse scoring topic hai!',
+          desiAnalogies: [
+            {
+              concept: 'Discriminant as Courtroom Judge',
+              analogy: 'D = b² - 4ac ko samjho courtroom ka judge: agar D > 0 hai toh do alag alag real answers milenge, agar D = 0 hai toh dono roots judwa bhai jaise same to same (-b/2a) honge, aur agar D < 0 hai toh real world me koi answer nahi milega (imaginary roots)!',
+              desiPunchline: 'D = 0 dekhte hi samajh jao roots identical hain boss!',
+            },
+            {
+              concept: 'Leading Coefficient Rule (a ≠ 0)',
+              analogy: 'Socho agar cricket team ka captain hi ground se bhaag jaye toh match cancel — waise hi agar a = 0 ho gaya toh quadratic equation linear ban jayegi!',
+              desiPunchline: 'a ≠ 0 condition likhna board exam me mandatory hai!',
+            },
+          ],
+          bhaiKaSummary: [
+            'D = b² - 4ac (D > 0: two distinct real; D = 0: two equal real; D < 0: no real roots).',
+            'Sum of roots α + β = -b/a aur Product αβ = c/a.',
+            'Sridharacharya Formula: x = (-b ± √D) / (2a).',
+          ],
+          jugaadPoints: [
+            'Speed and distance ke word problems me hamesha negative root ko reject karte waqt reason likho: "Speed cannot be negative" — CBSE me iska aadha mark hota hai!',
+          ],
+        },
+        chatpate: {
+          hinglishIntro: 'Bhai suno, Quadratic equation bilkul simple scoring topic hai!',
+          desiAnalogies: [],
+          bhaiKaSummary: [],
+          jugaadPoints: [],
+        },
+        exam: {
+          trendAnalysis: 'Quadratic Equations accounts for 6 to 8 marks in CBSE Class 10/11 Board examinations. High-frequency questions test solving via quadratic formula, finding parameter k for equal roots, and word problems on speed/time.',
+          highWeightageTopics: [
+            'Solving via Sridharacharya Quadratic Formula (3 Marks)',
+            'Condition for Equal Roots D = b² - 4ac = 0 (3-5 Marks)',
+            'Speed, Distance and Geometry Word Problems (5 Marks)',
+          ],
+          questions: [
+            {
+              id: 1,
+              marks: 1,
+              question: 'Find the discriminant of the quadratic equation 2x² - 4x + 3 = 0 and hence state the nature of its roots.',
+              answer: 'For 2x² - 4x + 3 = 0, a = 2, b = -4, c = 3. Discriminant D = b² - 4ac = (-4)² - 4(2)(3) = 16 - 24 = -8. Since D < 0, the given equation has no real roots (roots are complex conjugate numbers).',
+              markingScheme: ['Correct evaluation of D = -8 (½ mark)', 'Stating no real roots (½ mark)'],
+              frequentlyAskedIn: 'CBSE Class 10 Board Exam Section A',
+            },
+            {
+              id: 2,
+              marks: 3,
+              question: 'Find the values of k for which the quadratic equation (k - 12)x² + 2(k - 12)x + 2 = 0 has equal roots.',
+              answer: 'Here a = (k - 12), b = 2(k - 12), c = 2. For equal roots, D = b² - 4ac = 0. Therefore: [2(k - 12)]² - 4(k - 12)(2) = 0 => 4(k - 12)² - 8(k - 12) = 0 => 4(k - 12)(k - 14) = 0. This gives k = 12 or k = 14. But if k = 12, then a = k - 12 = 0, which violates the quadratic condition a ≠ 0. Hence, k = 12 is rejected. The only valid value is k = 14.',
+              markingScheme: ['Condition D = 0 statement (1 mark)', 'Factoring to k = 12, 14 (1 mark)', 'Rejecting k = 12 with a ≠ 0 reasoning (1 mark)'],
+              frequentlyAskedIn: 'CBSE Class 10 Standard Mathematics Board Paper',
+            },
+            {
+              id: 3,
+              marks: 5,
+              question: 'An express train takes 1 hour less than a passenger train to travel 132 km between Mysore and Bangalore. If the average speed of the express train is 11 km/h more than that of the passenger train, find the average speed of the two trains.',
+              answer: 'Let average speed of passenger train be x km/h. Then speed of express train = (x + 11) km/h. Time by passenger train = 132 / x; time by express train = 132 / (x + 11). Given: 132/x - 132/(x + 11) = 1 => 132[11 / (x² + 11x)] = 1 => x² + 11x - 1452 = 0. Factoring: (x + 44)(x - 33) = 0 => x = 33 (since speed > 0). Speed of passenger train = 33 km/h; speed of express train = 44 km/h.',
+              markingScheme: ['Variable definition and equation setup (1.5 marks)', 'Forming quadratic equation x² + 11x - 1452 = 0 (1.5 marks)', 'Factoring and finding x = 33 km/h (1 mark)', 'Final statement of both train speeds (1 mark)'],
+              frequentlyAskedIn: 'NCERT Exemplar & CBSE Board Long Answer',
+            },
+          ],
+        },
+      },
+      timestamps: [
+        { time: '00:00', seconds: 0, title: 'Introduction & Standard Form', summary: 'Standard form ax² + bx + c = 0 with condition a ≠ 0 and geometric parabolic interpretation.' },
+        { time: '06:15', seconds: 375, title: 'Quadratic Formula Proof', summary: 'Derivation of Sridharacharya formula x = (-b ± √D) / (2a) by completing the square.' },
+        { time: '14:30', seconds: 870, title: 'Nature of Roots & Discriminant', summary: 'Detailed classification of roots according to D > 0, D = 0, and D < 0.' },
+        { time: '22:45', seconds: 1365, title: 'Relations of Roots & Coefficients', summary: 'Vieta formulas: sum α + β = -b/a and product αβ = c/a with equation reconstruction.' },
+      ],
+      flashcards: [
+        { id: 1, front: 'What is the Discriminant of a quadratic equation ax² + bx + c = 0?', back: 'D = b² - 4ac. It determines whether roots are real & distinct (D > 0), real & equal (D = 0), or complex (D < 0).', concept: 'Discriminant' },
+        { id: 2, front: 'State Sridharacharya\'s Quadratic Formula.', back: 'x = (-b ± √(b² - 4ac)) / (2a)', concept: 'Quadratic Formula' },
+        { id: 3, front: 'What is the condition for real and equal roots?', back: 'The discriminant must be zero: D = b² - 4ac = 0. Both roots equal -b / (2a).', concept: 'Equal Roots Condition' },
+        { id: 4, front: 'If α and β are the roots, what is α + β and αβ?', back: 'Sum of roots α + β = -b/a; Product of roots αβ = c/a.', concept: 'Vieta Relations' },
+      ],
+      quiz: [
+        {
+          id: 1,
+          question: 'What is the nature of the roots of 3x² - 2x + 1/3 = 0?',
+          options: ['Two distinct real roots', 'Two equal real roots', 'No real roots', 'Infinite roots'],
+          correctIndex: 1,
+          explanation: 'D = b² - 4ac = (-2)² - 4(3)(1/3) = 4 - 4 = 0. When D = 0, the equation has two equal real roots.',
+          topic: 'Nature of Roots',
+        },
+        {
+          id: 2,
+          question: 'If the sum of roots is 5 and product of roots is 6, what is the quadratic equation?',
+          options: ['x² + 5x + 6 = 0', 'x² - 5x + 6 = 0', 'x² - 5x - 6 = 0', 'x² + 5x - 6 = 0'],
+          correctIndex: 1,
+          explanation: 'Formula: x² - (Sum)x + (Product) = 0 => x² - 5x + 6 = 0.',
+          topic: 'Formation of Quadratic Equations',
+        },
+        {
+          id: 3,
+          question: 'For what value of k does 2x² + kx + 3 = 0 have two equal roots?',
+          options: ['k = ±2√6', 'k = ±6', 'k = ±4', 'k = ±8'],
+          correctIndex: 0,
+          explanation: 'D = k² - 4(2)(3) = k² - 24 = 0 => k² = 24 => k = ±√24 = ±2√6.',
+          topic: 'Discriminant Applications',
+        },
+      ],
+      quickRevisionPoints: [
+        'Standard form: ax² + bx + c = 0 with a ≠ 0.',
+        'Discriminant D = b² - 4ac.',
+        'D > 0: Two distinct real roots; D = 0: Two equal real roots; D < 0: No real roots.',
+        'Sridharacharya Formula: x = (-b ± √D) / (2a).',
+        'Sum of roots α + β = -b/a; Product of roots αβ = c/a.',
+        'Equation with given roots: x² - (α + β)x + αβ = 0.',
+        'For equal roots problems, set D = b² - 4ac = 0.',
+      ],
+    };
+  }
+
   // 3. MATHEMATICS — CALCULUS & LINEAR ALGEBRA
   if (
     sLower.includes('math') || 
@@ -998,6 +1201,212 @@ export function buildDynamicKitContent(
         'Antiderivative rule: Indefinite integrals must include "+ C".',
         'ILATE rule: Choose first function in order: Inverse, Log, Algebraic, Trig, Exponential.',
         'Step scoring: Examiners allocate marks to every intermediate substitution line.',
+      ],
+    };
+  }
+
+  // 3.8 BIOLOGY — PHOTOSYNTHESIS IN HIGHER PLANTS (LIGHT REACTIONS & CALVIN CYCLE)
+  const isPhotosynthesis = 
+    cLower.includes('photo') || 
+    cLower.includes('chloroplast') || 
+    cLower.includes('calvin') || 
+    cLower.includes('thylakoid') || 
+    cLower.includes('light reaction') ||
+    cLower.includes('z-scheme');
+
+  if (isPhotosynthesis) {
+    return {
+      content: {
+        quick: {
+          headline: `${chapter} — Chloroplast Anatomy, Z-Scheme & Calvin Cycle Notes`,
+          cheatSheet: [
+            'Site of Photosynthesis: Light reactions occur in the Thylakoid membranes (Grana); Dark reactions (Calvin Cycle) occur in the Stroma.',
+            'Photolysis of Water (Hill Reaction): 2 H₂O → 4 H⁺ + 4 e⁻ + O₂ occurs on the luminal side of PS II; proves oxygen comes from water, NOT CO₂.',
+            'Light Reaction (Z-Scheme): PS II (P680) and PS I (P700) drive non-cyclic photophosphorylation, producing ATP and NADPH.',
+            'Calvin Cycle (C₃ Pathway): 3 steps — Carboxylation (catalyzed by RuBisCO), Reduction (uses 2 ATP + 2 NADPH), Regeneration of RuBP (uses 1 ATP).',
+            'Net Energy Balance for Glucose: Synthesis of 1 glucose molecule requires 6 turns of Calvin cycle, consuming 18 ATP and 12 NADPH.',
+          ],
+          formulas: [
+            { name: 'Overall Photosynthetic Equation', formula: '6 CO₂ + 12 H₂O ──(Light & Chlorophyll)──► C₆H₁₂O₆ + 6 O₂ + 6 H₂O', note: 'Endergonic anabolic reduction of carbon dioxide' },
+            { name: 'Photolysis of Water', formula: '2 H₂O ──► 4 H⁺ + 4 e⁻ + O₂', note: 'Oxygen-evolving complex (OEC) requires Mn²⁺ and Cl⁻ ions' },
+            { name: 'Calvin Cycle Energetic Cost', formula: '6 CO₂ + 18 ATP + 12 NADPH ──► 1 Glucose + 18 ADP + 12 NADP⁺ + 18 Pi', note: '3 ATP + 2 NADPH consumed per CO₂ molecule fixed' },
+            { name: 'Blackman’s Law of Limiting Factors', formula: 'Rate = f(Factor at minimum value)', note: 'Formulated by F.F. Blackman in 1905' },
+          ],
+          bulletSummary: [
+            'RuBisCO is the most abundant enzyme/protein in the biosphere with dual carboxylase and oxygenase activity.',
+            'Chlorophyll a is the primary reaction center pigment; accessory pigments (chlorophyll b, carotenoids) prevent photo-oxidation.',
+            'CO₂ concentration (0.03% - 0.04%) is the major limiting factor for photosynthesis in the atmosphere.',
+          ],
+        },
+        minimal: {
+          headline: `${chapter} Summary Card`,
+          cheatSheet: [
+            'Light reactions in Thylakoids: Produce ATP + NADPH + O₂ (from water).',
+            'Dark reactions in Stroma: Calvin cycle fixes CO₂ using RuBisCO.',
+            '1 Glucose = 6 CO₂ + 18 ATP + 12 NADPH.',
+            'Blackman\'s Law: Process rate is limited by factor closest to minimum.',
+          ],
+          formulas: [
+            { name: 'Photosynthesis Equation', formula: '6 CO₂ + 12 H₂O → C₆H₁₂O₆ + 6 O₂ + 6 H₂O', note: 'Net reaction' },
+            { name: 'Photolysis', formula: '2 H₂O → 4 H⁺ + 4 e⁻ + O₂', note: 'Source of oxygen' },
+          ],
+          bulletSummary: [
+            'Oxygen comes from H₂O, not CO₂.',
+            'RuBisCO catalyzes the carboxylation of RuBP.',
+          ],
+        },
+        topper: {
+          introduction: `Comprehensive analytical lecture synthesis for ${subject}: ${chapter}. Structured in alignment with NCERT, CBSE, NEET, and university biology curriculum.`,
+          deepDive: [
+            {
+              title: 'Chloroplast Architecture & Photosynthetic Pigment Complexes',
+              timestamp: '01:45',
+              content: 'Photosynthesis is compartmentalized within the chloroplast, an endosymbiotic double-membraned organelle. The internal space contains a proteinaceous matrix called the stroma and a membranous network of flattened sacs called thylakoids, stacked into grana connected by stroma lamellae. The thylakoid membranes contain light-harvesting complexes (LHC) composed of hundreds of pigment molecules bound to proteins. Chlorophyll a acts as the primary reaction center, while chlorophyll b, xanthophylls, and carotenoids form antenna complexes that absorb photons across 400–700 nm (Photosynthetically Active Radiation, PAR) and funnel excitation energy to the reaction center while shielding it from photo-oxidative degradation.',
+              keyTakeaway: 'Photochemical light reactions occur exclusively in thylakoid membranes; biochemical enzymatic carbon assimilation occurs in the stroma.',
+            },
+            {
+              title: 'Light-Dependent Reactions: Z-Scheme & Chemiosmotic ATP Synthesis',
+              timestamp: '08:30',
+              content: 'In non-cyclic photophosphorylation, Photosystem II (P680) absorbs 680 nm light, ejecting high-energy electrons that pass through pheophytin, plastoquinone (PQ), cytochrome b6f complex, and plastocyanin (PC) to Photosystem I (P700). Electrons lost from PS II are replenished by the photolysis of water on the luminal surface: 2 H₂O → 4 H⁺ + 4 e⁻ + O₂, catalyzed by the oxygen-evolving complex with Mn²⁺ and Cl⁻ cofactors. Excited electrons from PS I pass through ferredoxin to NADP⁺ reductase, forming NADPH. Concurrently, protons accumulate inside the thylakoid lumen due to water splitting and PQ proton pumping, creating a proton motive force across the membrane. Protons exit through the CF₀-CF₁ ATP synthase complex into the stroma, driving chemiosmotic synthesis of ATP (Peter Mitchell hypothesis).',
+              keyTakeaway: 'The non-cyclic Z-scheme generates both ATP and NADPH alongside molecular oxygen.',
+            },
+            {
+              title: 'The Calvin Cycle (C₃ Pathway) & RuBisCO Enzymatic Regulation',
+              timestamp: '17:00',
+              content: 'Melvin Calvin used radioactive ¹⁴C in green algae to trace the path of carbon. The Calvin cycle proceeds in three phases: 1. Carboxylation: RuBisCO catalyzes the addition of CO₂ to 5-carbon Ribulose 1,5-bisphosphate (RuBP), yielding an unstable 6-carbon intermediate that immediately cleaves into two molecules of 3-phosphoglyceric acid (3-PGA). 2. Reduction: 3-PGA is phosphorylated by ATP and reduced by NADPH to form glyceraldehyde 3-phosphate (triose phosphate). Fixing 1 molecule of CO₂ consumes 2 ATP and 2 NADPH. 3. Regeneration: RuBP is regenerated from triose phosphate, consuming 1 ATP. To form 1 molecule of glucose (C₆H₁₂O₆), 6 turns of the cycle are required, consuming a total of 18 ATP and 12 NADPH.',
+              keyTakeaway: 'Carboxylation is the most crucial step of the Calvin cycle; fixing 1 CO₂ requires 3 ATP and 2 NADPH.',
+            },
+          ],
+          derivations: [
+            {
+              title: 'Stoichiometric Energy Balance of the Calvin Cycle for Glucose Synthesis',
+              steps: [
+                '1 molecule of Glucose (C₆H₁₂O₆) contains 6 carbon atoms; hence 6 molecules of CO₂ must be fixed.',
+                'Carboxylation Phase: 6 RuBP (5C) + 6 CO₂ ──(RuBisCO)──► 12 molecules of 3-PGA (3C).',
+                'Reduction Phase: 12 molecules of 3-PGA are converted to 12 Triose Phosphate (G3P) consuming 12 ATP and 12 NADPH (2 ATP + 2 NADPH per CO₂ fixed).',
+                'Sugar Output: 2 out of 12 Triose Phosphate molecules exit the cycle to synthesize 1 net molecule of Glucose.',
+                'Regeneration Phase: The remaining 10 Triose Phosphate molecules (10 × 3 = 30 carbons) are rearranged into 6 RuBP molecules (6 × 5 = 30 carbons), consuming 6 ATP (1 ATP per CO₂ fixed).',
+                'Total Energy Input per Glucose: (12 ATP in reduction) + (6 ATP in regeneration) = 18 ATP, plus 12 NADPH.',
+                'Net Equation: 6 CO₂ + 18 ATP + 12 NADPH + 12 H₂O ──► C₆H₁₂O₆ + 18 ADP + 18 Pi + 12 NADP⁺. (Verified)',
+              ],
+              finalResult: 'Net Glucose Cost = 18 ATP + 12 NADPH per C₆H₁₂O₆',
+            },
+          ],
+          proTips: [
+            'Oxygen evolved during photosynthesis originates strictly from water (H₂O), not from CO₂.',
+            'In chemiosmosis, protons accumulate inside the thylakoid lumen, driving ATP synthase as they exit into the stroma.',
+          ],
+        },
+        chatpata: {
+          hinglishIntro: 'Bhai suno, plants bina kitchen ke poori duniya ko khana khilate hain — Photosynthesis ka asli funda!',
+          desiAnalogies: [
+            {
+              concept: 'Thylakoid vs Stroma Kitchen',
+              analogy: 'Samajh lo chloroplast ek restaurant hai. Thylakoids iska kitchen counter hai jahan dhoop aate hi water photolysis hota hai aur ATP power bank banta hai. Stroma dining hall hai jahan Calvin cycle khana serve karta hai!',
+              desiPunchline: 'Light reaction kitchen me, dark reaction stroma dining hall me!',
+            },
+            {
+              concept: 'Photolysis of Water',
+              analogy: 'Paani ka tootna (2 H₂O → 4 H⁺ + 4 e⁻ + O₂) waise hi hai jaise coconut todkar paani aur prasad nikaalna — oxygen bonus me milta hai!',
+              desiPunchline: 'Oxygen paani se nikalta hai, carbon dioxide se nahi!',
+            },
+          ],
+          bhaiKaSummary: [
+            'Light reaction (Thylakoids) → ATP + NADPH + O₂ produce karta hai.',
+            'Dark reaction (Stroma) → Calvin cycle me 1 glucose ke liye 18 ATP + 12 NADPH lagte hain.',
+            'RuBisCO enzyme duniya ka sabse abundant protein hai!',
+          ],
+          jugaadPoints: [
+            'Calvin cycle ke 3 steps ka order: Carboxylation → Reduction → Regeneration (CRR rule)!',
+          ],
+        },
+        chatpate: {
+          hinglishIntro: 'Bhai suno, Photosynthesis bilkul visual conceptual topic hai!',
+          desiAnalogies: [],
+          bhaiKaSummary: [],
+          jugaadPoints: [],
+        },
+        exam: {
+          trendAnalysis: 'Photosynthesis in Higher Plants carries 5 to 7 marks in CBSE Class 11 and NEET examinations. Highly recurrent questions focus on the Z-scheme, photolysis of water, Calvin cycle stoichiometry, and photorespiration differences.',
+          highWeightageTopics: [
+            'Calvin Cycle Stoichiometric Yield (18 ATP + 12 NADPH) (5 Marks)',
+            'Non-cyclic vs Cyclic Photophosphorylation (3 Marks)',
+            'Photolysis of Water and Oxygen Origin (1-2 Marks)',
+          ],
+          questions: [
+            {
+              id: 1,
+              marks: 1,
+              question: 'Name the enzyme responsible for initial carbon fixation in C3 plants and state its location in the chloroplast.',
+              answer: 'The enzyme is RuBisCO (Ribulose 1,5-bisphosphate carboxylase-oxygenase). It is located in the stroma of the chloroplast.',
+              markingScheme: ['RuBisCO identification (½ mark)', 'Stroma location (½ mark)'],
+              frequentlyAskedIn: 'CBSE Class 11 Annual Examination & NEET',
+            },
+            {
+              id: 2,
+              marks: 3,
+              question: 'Differentiate between cyclic and non-cyclic photophosphorylation on the basis of: (a) photosystems involved, (b) photolysis of water and oxygen evolution, and (c) end products formed.',
+              answer: '(a) Photosystems: Non-cyclic involves both PS II and PS I; cyclic involves only PS I.\n(b) Photolysis & O₂: Non-cyclic involves photolysis of water and evolution of O₂; cyclic has no water splitting and zero O₂ release.\n(c) End Products: Non-cyclic produces both ATP and NADPH; cyclic produces ATP only.',
+              markingScheme: ['1 mark for photosystem comparison', '1 mark for photolysis/O₂ comparison', '1 mark for end products comparison'],
+              frequentlyAskedIn: 'CBSE Class 11 Biology Theory Paper',
+            },
+            {
+              id: 3,
+              marks: 5,
+              question: 'Explain the three stages of the Calvin cycle (C3 pathway) with a schematic representation. Calculate the total number of ATP and NADPH molecules required to produce one mole of hexose sugar.',
+              answer: '1. Carboxylation: CO₂ is fixed with RuBP catalyzed by RuBisCO to form two molecules of 3-PGA.\n2. Reduction: Series of reactions utilizing 2 ATP and 2 NADPH per CO₂ fixed to convert 3-PGA into triose phosphate.\n3. Regeneration: RuBP is regenerated from triose phosphate consuming 1 ATP per turn.\nStoichiometry: For 1 hexose (6-carbon glucose), 6 CO₂ are fixed. ATP required = (6 × 2 in reduction) + (6 × 1 in regeneration) = 18 ATP. NADPH required = 6 × 2 = 12 NADPH. Net requirement = 18 ATP and 12 NADPH.',
+              markingScheme: ['Carboxylation, reduction, regeneration descriptions (3 marks)', 'Calculations for 18 ATP and 12 NADPH (2 marks)'],
+              frequentlyAskedIn: 'NCERT Exemplar & CBSE Board Long Answer',
+            },
+          ],
+        },
+      },
+      timestamps: [
+        { time: '00:00', seconds: 0, title: 'Chloroplast Anatomy & Pigments', summary: 'Thylakoid structure, stroma, reaction center chlorophyll a, and accessory pigments.' },
+        { time: '07:30', seconds: 450, title: 'Photolysis & Z-Scheme', summary: 'Water splitting, electron transport chain, and non-cyclic photophosphorylation.' },
+        { time: '16:00', seconds: 960, title: 'Calvin Cycle & RuBisCO', summary: 'Carboxylation, reduction, and regeneration steps with 18 ATP + 12 NADPH balance.' },
+        { time: '24:30', seconds: 1470, title: 'Limiting Factors of Photosynthesis', summary: 'Blackman law of limiting factors, light saturation, and carbon dioxide response curves.' },
+      ],
+      flashcards: [
+        { id: 1, front: 'Where does the photolysis of water occur during photosynthesis?', back: 'On the luminal surface of the thylakoid membrane, associated with Photosystem II (PS II).', concept: 'Light Reactions' },
+        { id: 2, front: 'How many ATP and NADPH are consumed to fix one molecule of CO₂ in the Calvin cycle?', back: '3 ATP (2 in reduction, 1 in regeneration) and 2 NADPH (in reduction).', concept: 'Calvin Cycle' },
+        { id: 3, front: 'What is Blackman\'s Law of Limiting Factors?', back: 'When a process is conditioned by several factors, its rate is governed by the slowest factor nearest its minimal value.', concept: 'Limiting Factors' },
+        { id: 4, front: 'What is the primary carboxylating enzyme in C3 plants?', back: 'RuBisCO (Ribulose 1,5-bisphosphate carboxylase-oxygenase), located in the stroma.', concept: 'Calvin Cycle' },
+      ],
+      quiz: [
+        {
+          id: 1,
+          question: 'During photosynthesis, oxygen is evolved from:',
+          options: ['Carbon dioxide (CO₂)', 'Water (H₂O)', 'Glucose (C₆H₁₂O₆)', 'Ribulose 1,5-bisphosphate (RuBP)'],
+          correctIndex: 1,
+          explanation: 'Oxygen liberated during photosynthesis originates from the photolysis of water (2 H₂O → 4 H⁺ + 4 e⁻ + O₂).',
+          topic: 'Light Reactions',
+        },
+        {
+          id: 2,
+          question: 'How many turns of the Calvin cycle are required to synthesize one molecule of glucose?',
+          options: ['1 turn', '3 turns', '6 turns', '12 turns'],
+          correctIndex: 2,
+          explanation: 'Each turn fixes 1 carbon atom from CO₂. Since glucose has 6 carbons, exactly 6 turns are required.',
+          topic: 'Calvin Cycle Stoichiometry',
+        },
+        {
+          id: 3,
+          question: 'Which of the following is synthesized during cyclic photophosphorylation?',
+          options: ['ATP only', 'ATP and NADPH', 'NADPH only', 'ATP, NADPH, and O₂'],
+          correctIndex: 0,
+          explanation: 'Cyclic photophosphorylation involves only Photosystem I and synthesizes ATP only, with zero NADPH or O₂ production.',
+          topic: 'Photophosphorylation',
+        },
+      ],
+      quickRevisionPoints: [
+        'Light reactions occur in Thylakoids; dark reactions (Calvin cycle) occur in Stroma.',
+        'Photolysis of water (2 H₂O → 4 H⁺ + 4 e⁻ + O₂) liberates oxygen at PS II.',
+        'Non-cyclic Z-scheme generates both ATP and NADPH.',
+        'Calvin cycle phases: Carboxylation → Reduction → Regeneration.',
+        'Synthesis of 1 Glucose requires 6 CO₂, 18 ATP, and 12 NADPH.',
+        'RuBisCO is the most abundant protein on Earth with dual carboxylase and oxygenase activity.',
+        'Blackman Law: Rate is governed by the factor present in least amount.',
       ],
     };
   }
@@ -1522,6 +1931,219 @@ export function buildDynamicKitContent(
         'Binary search requirement: Input array must be sorted in monotonic order.',
         'Recursion safety: Base conditions must precede recursive invocations.',
         'Data structure tradeoffs: Hash tables provide O(1) lookups at the expense of memory overhead.',
+      ],
+    };
+  }
+
+  // 6.8 PHYSICS — LAWS OF MOTION & NEWTONIAN DYNAMICS
+  const isLawsOfMotion = 
+    cLower.includes('motion') || 
+    cLower.includes('newton') || 
+    cLower.includes('inertia') || 
+    cLower.includes('momentum') || 
+    cLower.includes('friction') ||
+    cLower.includes('banking');
+
+  if (isLawsOfMotion) {
+    return {
+      content: {
+        quick: {
+          headline: `${chapter} — Newton's Laws, Momentum, Friction & Banking Formula Sheet`,
+          cheatSheet: [
+            'Newton\'s 1st Law (Inertia): A body remains at rest or in uniform motion unless acted upon by a net external force; mass is the measure of inertia.',
+            'Newton\'s 2nd Law (Force): Net force equals time rate of change of momentum: F = dp/dt = m(dv/dt) = ma (for constant mass m).',
+            'Newton\'s 3rd Law (Action-Reaction): Every action has an equal and opposite reaction (F_AB = -F_BA); they act on two different bodies and never cancel.',
+            'Impulse-Momentum Theorem: J = ∫ F dt = F_avg · Δt = Δp = m(v - u); area under F-t graph equals impulse.',
+            'Friction Laws: Static friction is self-adjusting (0 ≤ fs ≤ μs N); Kinetic friction opposes sliding (fk = μk N); μk < μs.',
+            'Road Banking: Optimum speed without friction v = √(rg tan θ); maximum speed with friction v_max = √[rg(μs + tan θ) / (1 - μs tan θ)].',
+          ],
+          formulas: [
+            { name: 'Newton\'s Second Law', formula: 'F = dp/dt = m a', note: 'SI unit is Newton (N) = kg·m/s²; vector formulation' },
+            { name: 'Linear Momentum', formula: 'p = m v', note: 'Vector in direction of velocity; conserved when F_ext = 0' },
+            { name: 'Impulse of a Force', formula: 'J = F_avg · Δt = Δp = m v - m u', note: 'Area under Force-time curve gives impulse' },
+            { name: 'Limiting Static Friction', formula: 'fs_max = μs · N', note: 'N = normal reaction; independent of apparent contact area' },
+            { name: 'Kinetic Friction', formula: 'fk = μk · N', note: 'Constant opposing force during relative sliding' },
+            { name: 'Optimum Road Banking Angle', formula: 'tan θ = v² / (r g) => v_opt = √(r g tan θ)', note: 'Zero lateral friction wear on tires at design speed' },
+          ],
+          bulletSummary: [
+            'Newton\'s 2nd law is the fundamental law of motion (1st and 3rd laws can be derived from it).',
+            'Action and reaction never act on the same body.',
+            'Friction depends on roughness of surfaces and normal reaction, NOT on apparent contact area.',
+          ],
+        },
+        minimal: {
+          headline: `${chapter} Summary Card`,
+          cheatSheet: [
+            'F = ma (Newton\'s 2nd law).',
+            'J = F · Δt = Δp (Impulse = Change in momentum).',
+            'Action = -Reaction (Act on different bodies).',
+            'fs ≤ μs N (Static friction) and fk = μk N (Kinetic friction).',
+            'tan θ = v² / (rg) (Road banking angle).',
+          ],
+          formulas: [
+            { name: 'Force Equation', formula: 'F = m a', note: 'Second law' },
+            { name: 'Impulse Formula', formula: 'J = Δp', note: 'Impulse-momentum' },
+          ],
+          bulletSummary: [
+            'Inertia depends strictly on mass.',
+            'Momentum is conserved when net external force is zero.',
+          ],
+        },
+        topper: {
+          introduction: `Comprehensive analytical lecture synthesis for ${subject}: ${chapter}. Structured in alignment with CBSE, state boards, JEE Main, and university physics curriculum.`,
+          deepDive: [
+            {
+              title: 'Galileo\'s Inertia Principle & Newton\'s First and Second Laws',
+              timestamp: '02:00',
+              content: 'Galileo deduced through double inclined plane experiments that a body in motion on a frictionless horizontal plane continues indefinitely without an external force, dismantling Aristotle\'s fallacy. Newton formalized this as the First Law of Motion: Inertia is the natural property of matter resisting changes in velocity. Newton\'s Second Law defines force quantitatively: Net external force equals the time rate of change of linear momentum: F = dp/dt. Since p = mv: F = d(mv)/dt = m(dv/dt) + v(dm/dt). For systems of constant mass (dm/dt = 0), this simplifies to F = ma. In SI units, 1 Newton is defined as the force which accelerates a 1 kg mass by 1 m/s².',
+              keyTakeaway: 'Force is not required to maintain motion, but to CHANGE velocity; Second Law is a vector equation holding component-wise: Fx = m ax, Fy = m ay, Fz = m az.',
+            },
+            {
+              title: 'Impulse, Third Law, and Conservation of Linear Momentum',
+              timestamp: '11:00',
+              content: 'When a large force acts for a brief duration Δt, the product F_avg · Δt is called Impulse J. Integrating Newton\'s second law: J = ∫ F dt = Δp = mv - mu. Newton\'s Third Law states that forces in nature always occur in matched action-reaction pairs: F_AB = -F_BA. Action and reaction occur simultaneously on two distinct interacting bodies. From the Second and Third Laws, in an isolated two-body system: F_12 = dp1/dt and F_21 = dp2/dt. Since F_12 + F_21 = 0: d(p1 + p2)/dt = 0, proving that total linear momentum is strictly conserved whenever net external force is zero.',
+              keyTakeaway: 'Action and reaction forces can never cancel each other out because they act on different bodies.',
+            },
+            {
+              title: 'Friction Mechanics & Circular Motion on Banked Curved Tracks',
+              timestamp: '19:30',
+              content: 'Friction arises from microscopic interlocking and intermolecular bonding between contacting surfaces. Static friction fs is self-adjusting in magnitude and direction up to the limiting friction value fs_max = μs N, where μs is the static friction coefficient. Once relative sliding commences, kinetic friction fk = μk N opposes motion (with μk < μs). When a vehicle negotiates a curve of radius r at velocity v, a centripetal force mv²/r directed toward the center of curvature is required. On a flat unbanked road, this force is provided solely by static friction: mv²/r ≤ μs mg, giving v_max = √(μs r g). To avoid tire wear and skidding, the outer edge of the road is banked by angle θ. Resolving normal reaction: N sin θ provides centripetal acceleration, while N cos θ balances vehicle weight mg. Dividing gives: tan θ = v² / (rg), yielding the ideal banking design speed v_opt = √(rg tan θ).',
+              keyTakeaway: 'At the optimum banking speed v = √(rg tan θ), the vehicle can round the curve safely even if the road is completely frictionless (ice).',
+            },
+          ],
+          derivations: [
+            {
+              title: 'Derivation of Optimum Road Banking Angle & Maximum Safe Speed',
+              steps: [
+                'Consider a vehicle of mass m negotiating a curve of radius r banked at angle θ to the horizontal.',
+                'The forces acting on the vehicle are: (1) Weight mg acting vertically downward, (2) Normal reaction N perpendicular to the inclined banked surface, and (3) Friction force f directed along the inclined surface.',
+                'Resolve Normal reaction into components: N cos θ vertically upward, and N sin θ horizontally toward the center of the curve.',
+                'Resolve Friction f into components: f cos θ horizontally toward the center, and f sin θ vertically downward.',
+                'Vertical equilibrium condition: N cos θ = mg + f sin θ => mg = N cos θ - f sin θ.',
+                'Centripetal horizontal force condition: N sin θ + f cos θ = m v² / r.',
+                'Case 1: At optimum design speed v_opt, no lateral frictional force is called into play (f = 0). Thus: N cos θ = mg and N sin θ = m v² / r.',
+                'Dividing the two equations: (N sin θ) / (N cos θ) = (m v² / r) / (mg) => tan θ = v² / (r g).',
+                'Therefore, optimum banking speed: v_opt = √(r g tan θ).',
+                'Case 2: For maximum safe speed v_max before outward skidding, friction reaches its limiting value f = μs N. Dividing equations yields: v_max = √[ r g (μs + tan θ) / (1 - μs tan θ) ]. (Q.E.D.)',
+              ],
+              finalResult: 'tan θ = v² / (r g)  and  v_max = √[ r g (μs + tan θ) / (1 - μs tan θ) ]',
+            },
+          ],
+          proTips: [
+            'Newton\'s Second Law is the fundamental law of motion from which both 1st and 3rd laws can be derived.',
+            'Action and reaction forces act on TWO DIFFERENT bodies simultaneously and never cancel.',
+          ],
+        },
+        chatpata: {
+          hinglishIntro: 'Bhai suno, Physics me Newton Baba ke teen niyam poori duniya ko govern karte hain — Laws of Motion ka asli desi funda!',
+          desiAnalogies: [
+            {
+              concept: 'Inertia of Rest & Motion',
+              analogy: 'Socho Sunday ki subah rajai ke andar sona — bina mummy ki daant (external force) ke koi hilna nahi chahta! Wahi hai Inertia of Rest!',
+              desiPunchline: 'Alas hi Inertia hai boss!',
+            },
+            {
+              concept: 'Impulse of a Force (Catching a Ball)',
+              analogy: 'Cricket fielder catch pakadte waqt haath peeche kheenchta hai taaki contact time Δt badh jaye aur haath pe jhatka (force F = Δp/Δt) kam lage!',
+              desiPunchline: 'Time badhao, chot kam khao!',
+            },
+          ],
+          bhaiKaSummary: [
+            'F = ma (Newton ka 2nd law).',
+            'Action = -Reaction (Alag alag bodies par lagte hain).',
+            'Impulse J = F · Δt = Δp.',
+          ],
+          jugaadPoints: [
+            'Elevator upar jaye toh N = m(g + a), neeche jaye toh N = m(g - a)!',
+          ],
+        },
+        chatpate: {
+          hinglishIntro: 'Bhai suno, Laws of Motion bilkul dynamic scoring chapter hai!',
+          desiAnalogies: [],
+          bhaiKaSummary: [],
+          jugaadPoints: [],
+        },
+        exam: {
+          trendAnalysis: 'Laws of Motion carries 7 to 9 marks in CBSE Class 11 and JEE examinations. Critical topics include Free Body Diagrams (FBD), apparent weight in elevators, impulse-momentum theorem, and banked curves.',
+          highWeightageTopics: [
+            'Derivation of Optimum Banking of Curved Road (5 Marks)',
+            'Impulse-Momentum Theorem & Cricket Catch Application (3 Marks)',
+            'Apparent Weight in Elevator Problems (3 Marks)',
+          ],
+          questions: [
+            {
+              id: 1,
+              marks: 1,
+              question: 'Why does a cricket player draw his hands backwards while catching a fast-moving cricket ball?',
+              answer: 'According to the Impulse-Momentum Theorem, Impulse J = F_avg · Δt = Δp. By drawing hands backwards, the player increases the time of contact Δt required to bring the ball to rest. Since the momentum change Δp is constant, increasing Δt significantly reduces the average impulsive force F exerted on the hands, preventing pain or injury.',
+              markingScheme: ['Impulse formula / statement (½ mark)', 'Explanation of increasing time reduces force (½ mark)'],
+              frequentlyAskedIn: 'CBSE Class 11 Physics Board Question Paper',
+            },
+            {
+              id: 2,
+              marks: 3,
+              question: 'A body of mass 10 kg is placed on a rough horizontal surface having coefficient of static friction μs = 0.4 and coefficient of kinetic friction μk = 0.3. A horizontal force of 30 N is applied on the body. Determine: (a) limiting static friction, (b) actual friction force acting on the body, and (c) acceleration of the body (take g = 10 m/s²).',
+              answer: '(a) Limiting static friction fs_max = μs N = μs (mg) = 0.4 × (10 × 10) = 40 N.\n(b) Since the applied horizontal force F = 30 N is less than fs_max (40 N), the body does not move. Static friction is self-adjusting; hence the actual friction force equals the applied force: fs = 30 N.\n(c) Since the body remains at rest in static equilibrium, its acceleration is strictly zero (a = 0 m/s²).',
+              markingScheme: ['Limiting friction calculation fs = 40 N (1 mark)', 'Self-adjusting friction fs = 30 N (1 mark)', 'Zero acceleration deduction (1 mark)'],
+              frequentlyAskedIn: 'NCERT Exemplar & CBSE Term Exam',
+            },
+            {
+              id: 3,
+              marks: 5,
+              question: 'Derive an expression for the optimum banking speed and maximum safe speed of a car on a curved road of radius r banked at angle θ having coefficient of friction μs. What happens when the banking speed is exceeded on a frictionless road?',
+              answer: 'Resolving forces: N cos θ = mg + f sin θ and N sin θ + f cos θ = mv²/r.\nAt optimum speed v_opt, friction f = 0. Dividing gives: tan θ = v_opt² / (rg) => v_opt = √(rg tan θ).\nFor maximum safe speed, f = μs N. Dividing equations yields v_max = √[rg(μs + tan θ) / (1 - μs tan θ)].\nOn a frictionless road (μs = 0), if speed exceeds v_opt, N sin θ becomes insufficient to provide the necessary centripetal force mv²/r, causing the car to skid upward and outward over the banked road.',
+              markingScheme: ['Diagram and force resolution (2 marks)', 'Derivation of optimum speed (1.5 marks)', 'Derivation of maximum safe speed (1.5 marks)'],
+              frequentlyAskedIn: 'CBSE Class 11 Annual Examination 5-Mark Question',
+            },
+          ],
+        },
+      },
+      timestamps: [
+        { time: '00:00', seconds: 0, title: 'Galileo\'s Inertia & First Law', summary: 'Galileo inclined plane experiments, definition of inertia, mass as measure of inertia, and Newton\'s First Law.' },
+        { time: '07:15', seconds: 435, title: 'Second Law & Impulse Theorem', summary: 'Derivation of F = ma from F = dp/dt and impulse-momentum theorem with cricket catch application.' },
+        { time: '15:45', seconds: 945, title: 'Third Law & Momentum Conservation', summary: 'Action-reaction pairs on two different bodies and proof of conservation of linear momentum.' },
+        { time: '23:30', seconds: 1410, title: 'Friction & Banked Road Dynamics', summary: 'Static vs kinetic friction, free body diagrams, and derivation of optimum banking angle tan θ = v²/(rg).' },
+      ],
+      flashcards: [
+        { id: 1, front: 'State Newton\'s Second Law of Motion in mathematical form.', back: 'F = dp/dt = d(mv)/dt = ma (for constant mass m). Net external force equals the rate of change of momentum.', concept: 'Laws of Motion' },
+        { id: 2, front: 'Why do action and reaction forces not cancel each other out?', back: 'Because action and reaction forces act simultaneously on TWO DIFFERENT bodies, never on the same body.', concept: 'Third Law' },
+        { id: 3, front: 'What is the formula for the optimum banking angle of a curved road?', back: 'tan θ = v² / (r g), giving optimum speed v = √(r g tan θ) where tire friction is zero.', concept: 'Circular Motion' },
+        { id: 4, front: 'What is the reading of a spring balance for a person of mass m in an elevator ascending with acceleration a?', back: 'N = m(g + a). Apparent weight increases due to upward inertial reaction.', concept: 'Elevator Dynamics' },
+      ],
+      quiz: [
+        {
+          id: 1,
+          question: 'A force of 5 N acts on a body of mass 2 kg at rest for 4 seconds. What is the final momentum of the body?',
+          options: ['10 kg·m/s', '20 kg·m/s', '40 kg·m/s', '80 kg·m/s'],
+          correctIndex: 1,
+          explanation: 'Impulse J = F · Δt = 5 N × 4 s = 20 N·s = 20 kg·m/s. Since initial momentum is 0, final momentum = 20 kg·m/s.',
+          topic: 'Impulse and Momentum',
+        },
+        {
+          id: 2,
+          question: 'Action and reaction forces:',
+          options: ['Act on the same body', 'Act on different bodies', 'Act along different directions at an angle', 'Cancel each other to produce equilibrium'],
+          correctIndex: 1,
+          explanation: 'Newton\'s Third Law explicitly specifies that action and reaction act on two different bodies simultaneously.',
+          topic: 'Newton\'s Third Law',
+        },
+        {
+          id: 3,
+          question: 'What is the maximum safe speed for a car rounding an unbanked circular curve of radius 40 m if μs = 0.4 (g = 10 m/s²)?',
+          options: ['12.6 m/s', '16 m/s', '4 m/s', '8 m/s'],
+          correctIndex: 0,
+          explanation: 'v_max = √(μs · r · g) = √(0.4 × 40 × 10) = √160 ≈ 12.65 m/s.',
+          topic: 'Circular Motion on Flat Roads',
+        },
+      ],
+      quickRevisionPoints: [
+        'Inertia resists changes in state of motion; mass is the measure of inertia.',
+        'F = dp/dt = ma (Newton\'s 2nd law).',
+        'Impulse J = F_avg · Δt = Δp = m(v - u).',
+        'Action = -Reaction (Act simultaneously on different bodies).',
+        'Static friction fs is self-adjusting: 0 ≤ fs ≤ μs N; Kinetic friction fk = μk N.',
+        'Road banking angle: tan θ = v² / (rg); optimum speed v = √(rg tan θ).',
+        'Elevator apparent weight: N = m(g + a) ascending; N = m(g - a) descending.',
       ],
     };
   }

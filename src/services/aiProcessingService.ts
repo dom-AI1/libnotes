@@ -146,13 +146,28 @@ export function detectLectureMetadataFromSource(
 
   // 4. Check for Biology / Life Science
   if (
+    combined.includes('photo') || 
+    combined.includes('chloroplast') || 
+    combined.includes('calvin') || 
+    combined.includes('thylakoid') || 
+    combined.includes('light reaction')
+  ) {
+    return {
+      academicClass: 'Class 11',
+      stream: 'Science',
+      subject: 'Biology',
+      chapter: customTopic || 'Photosynthesis in Higher Plants (Light Reactions & Calvin Cycle)',
+      detectedTopic: customTopic || 'Photosynthesis & Plant Physiology',
+    };
+  }
+
+  if (
     combined.includes('bio') || 
     combined.includes('cell') || 
     combined.includes('genetics') || 
     combined.includes('dna') || 
     combined.includes('botany') || 
     combined.includes('zoology') ||
-    combined.includes('photo') ||
     combined.includes('plant') ||
     combined.includes('reproduction')
   ) {
@@ -185,6 +200,20 @@ export function detectLectureMetadataFromSource(
   }
 
   // 6. Check for Mathematics
+  if (
+    combined.includes('quadratic') || 
+    combined.includes('discriminant') || 
+    (combined.includes('root') && (combined.includes('equation') || combined.includes('math')))
+  ) {
+    return {
+      academicClass: 'Class 10',
+      stream: 'Science',
+      subject: 'Mathematics',
+      chapter: customTopic || 'Quadratic Equations (Roots, Discriminant & Solutions)',
+      detectedTopic: customTopic || 'Quadratic Equations & Roots Analysis',
+    };
+  }
+
   if (
     combined.includes('math') || 
     combined.includes('calculus') || 
@@ -237,15 +266,43 @@ export function detectLectureMetadataFromSource(
     };
   }
 
-  // 9. If sourceIdentifier has physics keywords:
+  // 9. Check for Physics Sub-disciplines (Laws of Motion, Optics, Thermodynamics)
+  if (
+    combined.includes('motion') || 
+    combined.includes('newton') || 
+    combined.includes('inertia') || 
+    combined.includes('momentum') || 
+    combined.includes('friction')
+  ) {
+    return {
+      academicClass: 'Class 11',
+      stream: 'Science',
+      subject: 'Physics',
+      chapter: 'Laws of Motion (Newton\'s Laws, Friction & Momentum)',
+      detectedTopic: 'Newtonian Dynamics & Laws of Motion',
+    };
+  }
+
+  if (
+    combined.includes('optic') || 
+    combined.includes('light') || 
+    combined.includes('lens') || 
+    combined.includes('mirror') || 
+    combined.includes('refraction')
+  ) {
+    return {
+      academicClass: 'Class 12',
+      stream: 'Science',
+      subject: 'Physics',
+      chapter: 'Ray Optics & Optical Instruments',
+      detectedTopic: 'Geometrical Optics & Refraction',
+    };
+  }
+
   if (
     combined.includes('thermo') || 
     combined.includes('heat') || 
-    combined.includes('physic') || 
-    combined.includes('optic') || 
-    combined.includes('motion') || 
-    combined.includes('force') || 
-    combined.includes('electric')
+    combined.includes('carnot')
   ) {
     return {
       academicClass: 'Class 12',
@@ -253,6 +310,20 @@ export function detectLectureMetadataFromSource(
       subject: 'Physics',
       chapter: 'Thermodynamics & Heat Engines',
       detectedTopic: 'First Law of Thermodynamics & Energy Conservation',
+    };
+  }
+
+  if (
+    combined.includes('physic') || 
+    combined.includes('force') || 
+    combined.includes('electric')
+  ) {
+    return {
+      academicClass: 'Class 11',
+      stream: 'Science',
+      subject: 'Physics',
+      chapter: 'Laws of Motion (Newton\'s Laws, Friction & Momentum)',
+      detectedTopic: 'Physics: Fundamental Mechanics & Forces',
     };
   }
 
@@ -345,7 +416,7 @@ export async function processEducationalLecture(
   });
   await new Promise((resolve) => setTimeout(resolve, 350));
 
-  const id = `kit-${Date.now()}`;
+  const id = `kit-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`;
   const now = new Date();
   const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 

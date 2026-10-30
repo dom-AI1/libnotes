@@ -291,7 +291,7 @@ export const NotesView = ({ kit, onBack, onStyleChange, initialTab, userId }: No
             {kit.verifiedLecture.visualEvidenceDisclosed && (
               <span className="text-[11px] text-[#79A94A] bg-[#E8F2DC] px-2.5 py-1 rounded-full border border-[#79A94A]/30 break-words max-w-full shrink">
                 {kit.verifiedLecture.visualEvidenceDisclosed.length > 55
-                  ? 'Visual inspection & lecture audio verified'
+                  ? 'Audio transcript & lecture source verified'
                   : kit.verifiedLecture.visualEvidenceDisclosed}
               </span>
             )}

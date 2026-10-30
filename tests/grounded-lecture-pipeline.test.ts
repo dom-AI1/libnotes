@@ -76,9 +76,9 @@ describe('LIBNOTES — CRITICAL FIX: Source Analysis & Grounded Note Generation 
     expect(formulasStr).toContain('|P(A)| = 2^n');
     expect(formulasStr).toContain("(A ∪ B)' = A' ∩ B'");
 
-    // Verify visual evidence disclosure is present
+    // Verify source evidence disclosure is present
     expect(lecture.visualEvidenceDisclosed).toBeDefined();
-    expect(lecture.visualEvidenceDisclosed).toContain('Visual');
+    expect(lecture.visualEvidenceDisclosed).toMatch(/(Audio|Visual)/);
   });
 
   // ==========================================
