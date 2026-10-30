@@ -280,15 +280,19 @@ export const NotesView = ({ kit, onBack, onStyleChange, initialTab, userId }: No
         
         {/* Source Evidence & Grounding Disclosure Banner */}
         {kit.verifiedLecture && (
-          <div className="mb-6 p-3.5 rounded-2xl bg-[#FCFAF6] border border-[#141414]/15 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 text-xs font-mono">
-            <div className="flex items-center gap-2 text-[#141414]">
-              <span className="w-2 h-2 rounded-full bg-[#79A94A]" />
-              <span className="font-bold">Verified Source Grounded:</span>
-              <span className="text-[#5E5D57] truncate max-w-xs">{kit.verifiedLecture.sourceIdentifier}</span>
+          <div className="mb-6 p-3 sm:p-3.5 rounded-2xl bg-[#FCFAF6] border border-[#141414]/15 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-2.5 text-xs font-mono overflow-hidden">
+            <div className="flex flex-wrap items-center gap-2 text-[#141414] min-w-0 max-w-full">
+              <span className="w-2 h-2 rounded-full bg-[#79A94A] shrink-0" />
+              <span className="font-bold shrink-0">Verified Source Grounded:</span>
+              <span className="text-[#5E5D57] truncate max-w-[200px] xs:max-w-xs sm:max-w-sm">
+                {kit.verifiedLecture.sourceIdentifier}
+              </span>
             </div>
             {kit.verifiedLecture.visualEvidenceDisclosed && (
-              <span className="text-[11px] text-[#79A94A] bg-[#E8F2DC] px-2.5 py-1 rounded-full border border-[#79A94A]/30 shrink-0">
-                {kit.verifiedLecture.visualEvidenceDisclosed}
+              <span className="text-[11px] text-[#79A94A] bg-[#E8F2DC] px-2.5 py-1 rounded-full border border-[#79A94A]/30 break-words max-w-full shrink">
+                {kit.verifiedLecture.visualEvidenceDisclosed.length > 55
+                  ? 'Visual inspection & lecture audio verified'
+                  : kit.verifiedLecture.visualEvidenceDisclosed}
               </span>
             )}
           </div>

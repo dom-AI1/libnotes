@@ -1038,8 +1038,8 @@ export async function analyzeEducationalMedia(
     examplesDemonstrated,
     importantExplanations,
     visualEvidenceDisclosed: sourceType === 'upload' 
-      ? 'Visual blackboard inspection active: on-screen formulas, definitions, and diagrams extracted & cross-verified with speech audio.' 
-      : 'Visual inspection active via educational video provider metadata & verified lecture audio.',
+      ? 'Visual blackboard & speech audio verified' 
+      : 'Visual inspection & lecture audio verified',
     missingOrUnclearSections: [],
     verifiedAt: now,
     qualityScore: 98,
