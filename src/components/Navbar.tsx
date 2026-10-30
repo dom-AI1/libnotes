@@ -57,7 +57,7 @@ export const Navbar = ({
   };
 
   return (
-    <header className="sticky top-0 z-40 w-full bg-[#FFFFFF]/95 backdrop-blur-md border-b border-[#E2E8F0] shadow-xs">
+    <header className="sticky top-0 z-40 w-full bg-[#FFFFFF]/95 backdrop-blur-md border-b border-[#E2E8F0] shadow-xs no-print">
       <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-18 sm:h-20 flex items-center justify-between">
         
         {/* Wordmark */}
@@ -106,16 +106,6 @@ export const Navbar = ({
           >
             Resources
           </button>
-          {onWatchVideo && (
-            <button
-              onClick={() => onWatchVideo('tutorial')}
-              className="px-3 py-1 text-xs font-mono font-bold text-[#065F46] bg-[#ECFDF5] hover:bg-[#D1FAE5] border border-[#A7F3D0] rounded-full transition-all flex items-center gap-1.5 cursor-pointer shadow-xs"
-              title="Watch AI Explainer Video"
-            >
-              <Film className="w-3.5 h-3.5 text-[#059669]" />
-              <span>Watch Video</span>
-            </button>
-          )}
           <span className="w-[1px] h-4 bg-[#CBD5E1] mx-1" />
           <button
             onClick={onNavigateDashboard}

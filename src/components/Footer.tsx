@@ -2,7 +2,7 @@ import { SparkleDoodle } from './SVGIcons';
 
 export const Footer = () => {
   return (
-    <footer className="border-t border-[#141414]/15 bg-[#FAF9F5] py-14 px-4 sm:px-6 lg:px-8">
+    <footer className="border-t border-[#141414]/15 bg-[#FAF9F5] py-14 px-4 sm:px-6 lg:px-8 no-print">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
         
         {/* Brand */}

@@ -25,21 +25,21 @@ export const AIVideoModal: React.FC<AIVideoModalProps> = ({
       
       {/* Modal Container */}
       <div 
-        className="relative w-full max-w-4xl bg-[#FCFAF6] border-2 border-[#141414] rounded-2xl sm:rounded-3xl shadow-[8px_8px_0px_#141414] overflow-hidden flex flex-col max-h-[92vh]"
+        className="relative w-full max-w-4xl bg-[#FFFFFF] border border-[#E2E8F0] rounded-2xl sm:rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[92vh]"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Modal Top Header with Close Button */}
-        <div className="px-4 py-3 bg-[#FAF9F5] border-b-2 border-[#141414] flex items-center justify-between">
+        <div className="px-4 py-3 bg-[#F8FAFC] border-b border-[#E2E8F0] flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <span className="w-2.5 h-2.5 rounded-full bg-[#79A94A] animate-pulse" />
-            <span className="font-mono text-xs font-bold uppercase text-[#141414]">
+            <span className="w-2.5 h-2.5 rounded-full bg-[#10B981] animate-pulse" />
+            <span className="font-mono text-xs font-bold uppercase text-[#0F172A]">
               Libnotes Interactive Video Guide
             </span>
           </div>
 
           <button
             onClick={onClose}
-            className="w-8 h-8 rounded-lg border border-[#141414] bg-[#FFFFFF] hover:bg-[#FDEDE8] hover:border-[#E05B49] text-[#141414] hover:text-[#E05B49] transition-colors flex items-center justify-center cursor-pointer shadow-[1px_1px_0px_#141414]"
+            className="w-8 h-8 rounded-lg border border-[#E2E8F0] bg-[#FFFFFF] hover:bg-[#F1F5F9] text-[#0F172A] hover:text-[#DC2626] transition-colors flex items-center justify-center cursor-pointer shadow-xs"
             aria-label="Close video player"
           >
             <X className="w-4 h-4" />
@@ -47,7 +47,7 @@ export const AIVideoModal: React.FC<AIVideoModalProps> = ({
         </div>
 
         {/* Video Player Embedded */}
-        <div className="overflow-y-auto p-2 sm:p-4 bg-[#FCFAF6]">
+        <div className="overflow-y-auto p-2 sm:p-4 bg-[#FFFFFF]">
           <AIVideoSection
             isModal={true}
             initialVideo={initialVideo}
