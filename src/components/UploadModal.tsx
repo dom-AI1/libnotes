@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { 
   X, UploadCloud, Link as LinkIcon, Sparkles, BookOpen, Award, Coffee, 
-  GraduationCap, CheckCircle2, AlertCircle, FileVideo, Trash2, Lock
+  GraduationCap, CheckCircle2, AlertCircle, FileVideo, Trash2, Lock,
+  AlertOctagon, Clock, Home
 } from 'lucide-react';
 import type { AcademicClass, Language, NoteStyle, Subject, StudyKit } from '../types';
 import { validateEducationalFile, formatFileSize } from '../utils/fileValidation';
@@ -11,6 +12,7 @@ import {
   detectLectureMetadataFromSource, 
   type ProcessingProgressEvent 
 } from '../services/aiProcessingService';
+import { LectureAnalysisError } from '../services/videoAnalysisService';
 import {
   ACADEMIC_CURRICULUM,
   getSubjectsForClassAndStream,
@@ -59,11 +61,30 @@ export const UploadModal = ({
 
   const [isProcessing, setIsProcessing] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
+  const [notStudyError, setNotStudyError] = useState<{ active: boolean; message: string; countdown: number } | null>(null);
   const [progressEvent, setProgressEvent] = useState<ProcessingProgressEvent>({
     step: 'audio',
     message: '',
     percentage: 0,
   });
+
+  // 5-second countdown timer for non-study material rejection
+  useEffect(() => {
+    if (!notStudyError?.active) return;
+
+    if (notStudyError.countdown <= 0) {
+      setNotStudyError(null);
+      onClose();
+      window.location.hash = '#/home';
+      return;
+    }
+
+    const timer = setTimeout(() => {
+      setNotStudyError((prev) => (prev ? { ...prev, countdown: prev.countdown - 1 } : null));
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, [notStudyError?.active, notStudyError?.countdown, onClose]);
 
   const handleClassChange = (newClass: AcademicClass) => {
     setAcademicClass(newClass);
@@ -326,6 +347,23 @@ export const UploadModal = ({
       onSuccess(generatedKit);
     } catch (err) {
       setIsProcessing(false);
+      const isNotStudy =
+        (err instanceof LectureAnalysisError && err.code === 'NOT_STUDY_MATERIAL') ||
+        (err instanceof Error && (
+          err.message.toLowerCase().includes('not study material') || 
+          err.message.toLowerCase().includes('non-educational') ||
+          err.message.toLowerCase().includes("doesn't study")
+        ));
+
+      if (isNotStudy) {
+        setNotStudyError({
+          active: true,
+          message: 'This is not study material',
+          countdown: 5,
+        });
+        return;
+      }
+
       const errMsg = err instanceof Error ? err.message : 'An error occurred during note generation. Please try again.';
       if (sourceType === 'upload') {
         setFileValidationMessage(errMsg);
@@ -402,7 +440,80 @@ export const UploadModal = ({
             <X className="w-4 h-4 sm:w-5 sm:h-5" />
           </button>
 
-          {isProcessing ? (
+          {notStudyError?.active ? (
+            /* DANGER RED WARNING: NOT STUDY MATERIAL */
+            <div className="py-8 sm:py-12 px-2 sm:px-6 text-center space-y-6 animate-in fade-in zoom-in-95">
+              {/* Pulsing Red Danger Alert Icon */}
+              <div className="w-20 h-20 mx-auto rounded-3xl bg-[#FDEDE8] border-3 border-[#E05B49] flex items-center justify-center shadow-[5px_5px_0px_#E05B49] animate-pulse">
+                <AlertOctagon className="w-10 h-10 text-[#E05B49]" />
+              </div>
+
+              {/* Danger Badge */}
+              <div>
+                <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-mono font-extrabold uppercase tracking-widest bg-[#FDEDE8] text-[#E05B49] border-2 border-[#E05B49] shadow-xs">
+                  <span className="w-2 h-2 rounded-full bg-[#E05B49] animate-ping" />
+                  AI REJECTION • NON-STUDY CONTENT
+                </span>
+              </div>
+
+              {/* Primary Warning Headline */}
+              <div className="space-y-3">
+                <h2 className="font-mono-editorial text-3xl sm:text-4xl font-extrabold text-[#E05B49] tracking-tight">
+                  This is not study material
+                </h2>
+                <p className="font-body text-sm sm:text-base text-[#141414] max-w-lg mx-auto leading-relaxed">
+                  Our AI analyzed this video and determined it does not contain educational or academic study content. Libnotes is strictly built for lectures, syllabus topics, and exam revision. That's why we are not generating notes for this video.
+                </p>
+              </div>
+
+              {/* Dangerous Red Countdown Box */}
+              <div className="p-5 rounded-2xl border-2 border-[#E05B49] bg-[#FDEDE8] max-w-md mx-auto shadow-[4px_4px_0px_#E05B49]">
+                <div className="flex items-center justify-center gap-2 text-[#E05B49] font-mono font-bold text-sm sm:text-base">
+                  <Clock className="w-4 h-4 animate-spin" />
+                  <span>
+                    Returning to Home in <strong className="text-2xl font-black underline font-mono text-[#E05B49]">{notStudyError.countdown}s</strong>...
+                  </span>
+                </div>
+                
+                {/* 5-Second Animated Progress Bar */}
+                <div className="w-full h-2.5 bg-[#FFFFFF] rounded-full mt-3 overflow-hidden border border-[#E05B49]/40 p-0.5">
+                  <div 
+                    className="h-full bg-[#E05B49] rounded-full transition-all duration-1000 ease-linear"
+                    style={{ width: `${(notStudyError.countdown / 5) * 100}%` }}
+                  />
+                </div>
+              </div>
+
+              {/* Explicit Navigation Buttons */}
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setNotStudyError(null);
+                    onClose();
+                    window.location.hash = '#/home';
+                  }}
+                  className="w-full sm:w-auto px-6 py-3 rounded-xl bg-[#E05B49] text-[#FFFFFF] font-mono text-xs font-bold shadow-[3px_3px_0px_#141414] hover:bg-[#C94736] transition-all flex items-center justify-center gap-2 cursor-pointer"
+                >
+                  <Home className="w-4 h-4" />
+                  <span>Return to Home Now</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setNotStudyError(null);
+                    setSelectedFile(null);
+                    setVideoLink('');
+                    setCustomTopic('');
+                  }}
+                  className="w-full sm:w-auto px-5 py-3 rounded-xl border-2 border-[#141414] bg-[#FFFFFF] hover:bg-[#FAF9F5] font-mono text-xs font-bold text-[#141414] shadow-[2px_2px_0px_#141414] transition-all cursor-pointer"
+                >
+                  Upload an Academic Lecture
+                </button>
+              </div>
+            </div>
+          ) : isProcessing ? (
             /* Processing State with Live Pipeline Progress */
             <div className="py-16 text-center">
               <div className="w-16 h-16 rounded-2xl bg-[#E8F2DC] border-2 border-[#141414] shadow-[3px_3px_0px_#141414] flex items-center justify-center mx-auto mb-6 animate-pulse">

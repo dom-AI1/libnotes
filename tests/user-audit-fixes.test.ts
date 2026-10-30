@@ -187,6 +187,60 @@ describe('User Audit Fixes Verification', () => {
       expect(contentStr).not.toContain('dQ = dU + dW');
     });
   });
+
+  describe('Bug Fix 4: AI Non-Study Content Rejection Gate', () => {
+    it('detects gaming video as non-study material and throws NOT_STUDY_MATERIAL error', async () => {
+      const { analyzeEducationalMedia, LectureAnalysisError } = await import('../src/services/videoAnalysisService');
+      
+      await expect(
+        analyzeEducationalMedia({
+          sourceType: 'upload',
+          sourceIdentifier: 'gta_5_gameplay_funny_moments.mp4',
+        })
+      ).rejects.toThrowError(LectureAnalysisError);
+
+      try {
+        await analyzeEducationalMedia({
+          sourceType: 'upload',
+          sourceIdentifier: 'minecraft_survival_walkthrough.mp4',
+        });
+      } catch (err: any) {
+        expect(err.code).toBe('NOT_STUDY_MATERIAL');
+        expect(err.message).toContain('This is not study material');
+      }
+    });
+
+    it('detects music video and movie trailer as non-study material', async () => {
+      const { analyzeEducationalMedia } = await import('../src/services/videoAnalysisService');
+
+      await expect(
+        analyzeEducationalMedia({
+          sourceType: 'upload',
+          sourceIdentifier: 'taylor_swift_official_music_video.mp4',
+        })
+      ).rejects.toThrow('This is not study material');
+
+      await expect(
+        analyzeEducationalMedia({
+          sourceType: 'link',
+          sourceIdentifier: 'https://www.youtube.com/watch?v=movie_official_trailer_2026',
+        })
+      ).rejects.toThrow('This is not study material');
+    });
+
+    it('does NOT reject academic topics that contain words like game theory or music theory', async () => {
+      const { analyzeEducationalMedia } = await import('../src/services/videoAnalysisService');
+
+      const result = await analyzeEducationalMedia({
+        sourceType: 'upload',
+        sourceIdentifier: 'economics_lecture_game_theory_nash_equilibrium.mp4',
+        customTopic: 'Game Theory & Nash Equilibrium',
+      });
+
+      expect(result).toBeDefined();
+      expect(result.subject).toBe('Economics');
+    });
+  });
 });
 
 

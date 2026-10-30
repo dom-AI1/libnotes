@@ -9,13 +9,53 @@ import type {
 } from '../types';
 
 export class LectureAnalysisError extends Error {
-  readonly code: 'CORRUPT_SOURCE' | 'UNSUPPORTED_URL' | 'EMPTY_TRANSCRIPT' | 'METADATA_MISMATCH';
+  readonly code: 'CORRUPT_SOURCE' | 'UNSUPPORTED_URL' | 'EMPTY_TRANSCRIPT' | 'METADATA_MISMATCH' | 'NOT_STUDY_MATERIAL';
 
-  constructor(message: string, code: 'CORRUPT_SOURCE' | 'UNSUPPORTED_URL' | 'EMPTY_TRANSCRIPT' | 'METADATA_MISMATCH') {
+  constructor(message: string, code: 'CORRUPT_SOURCE' | 'UNSUPPORTED_URL' | 'EMPTY_TRANSCRIPT' | 'METADATA_MISMATCH' | 'NOT_STUDY_MATERIAL') {
     super(message);
     this.name = 'LectureAnalysisError';
     this.code = code;
   }
+}
+
+/**
+ * Detects whether a media source or topic is non-educational entertainment / noise
+ * (e.g. gaming, music videos, movie trailers, comedy vlogs, sports).
+ */
+export function isNonEducationalSource(text: string): boolean {
+  const t = (text || '').toLowerCase().trim();
+  if (!t) return false;
+
+  // Normalize delimiters (e.g., underscores in filenames like gta_5_gameplay or movie_official_trailer)
+  const normalized = t.replace(/[_.\-/]+/g, ' ');
+
+  // Academic exemptions: Game Theory (Economics/Math), Music Theory, Sound Waves in Physics
+  if (normalized.includes('game theory') || normalized.includes('theory of games') || normalized.includes('music theory') || normalized.includes('sound waves')) {
+    return false;
+  }
+
+  const nonStudyPatterns = [
+    // Gaming & Esports
+    /\b(gameplay|playthrough|walkthrough|speedrun|streamer|esports|twitch)\b/i,
+    /\b(fortnite|minecraft|roblox|gta\s*5|gta\s*v|gta\s*6|valorant|pubg|call of duty|apex legends|free fire|clash royale)\b/i,
+    
+    // Music & Entertainment tracks
+    /\b(official music video|official audio|lyric video|remix|dj mix|karaoke|full album|song lyrics|dance video|cover song)\b/i,
+    
+    // Movies & TV entertainment
+    /\b(movie trailer|official trailer|teaser trailer|full movie|season finale|episode scene|box office)\b/i,
+    
+    // Non-academic entertainment & social media
+    /\b(prank|standup comedy|funny moments|meme compilation|daily vlog|mukbang|unboxing haul|clothing haul|tiktok compilation)\b/i,
+    
+    // Sports highlights
+    /\b(match highlights|cricket highlights|football highlights|goals highlights|ipl highlights)\b/i,
+
+    // Explicit non-study declaration
+    /\b(not study|not educational|not a lecture|entertainment only|doesn't study|does not study)\b/i,
+  ];
+
+  return nonStudyPatterns.some((pattern) => pattern.test(normalized));
 }
 
 export interface SourceAnalysisInput {
@@ -75,8 +115,16 @@ export async function analyzeEducationalMedia(
     }
   }
 
-  // 2. Identify curriculum metadata without silently overriding user selection
+  // 1.5. Validate whether the media is genuine academic study material
   const rawCombined = `${customTopic || ''} ${input.selectedChapter || ''} ${sourceIdentifier}`.toLowerCase();
+  if (isNonEducationalSource(rawCombined)) {
+    throw new LectureAnalysisError(
+      'This is not study material. Libnotes AI analyzed this video and determined it is not educational content. We do not generate notes for entertainment, gaming, or non-study videos.',
+      'NOT_STUDY_MATERIAL'
+    );
+  }
+
+  // 2. Identify curriculum metadata without silently overriding user selection
 
   let academicClass: AcademicClass = input.selectedClass || 'Class 12';
   let subject: Subject = input.selectedSubject || 'Physics';
