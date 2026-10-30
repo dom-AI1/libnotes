@@ -104,33 +104,67 @@ export function App() {
     };
   }, []);
 
+  // Helper to extract sanitized redirect target from URL hash or query params
+  const extractSafeRedirect = useCallback((urlHash: string, searchStr: string): string | null => {
+    try {
+      const search = urlHash.includes('?') ? urlHash.split('?')[1] : searchStr.replace(/^\?/, '');
+      const params = new URLSearchParams(search);
+      const redirect = params.get('redirect');
+      if (!redirect) return null;
+      const decoded = decodeURIComponent(redirect);
+      // Ensure redirect is internal and relative to prevent open-redirect vulnerabilities
+      if (decoded.startsWith('/') && !decoded.startsWith('//') && !decoded.includes('://')) {
+        return decoded;
+      }
+      return null;
+    } catch {
+      return null;
+    }
+  }, []);
+
   // Synchronize router state with window hash & popstate
   useEffect(() => {
     const parseHashRoute = () => {
       const hash = window.location.hash;
-      if (!hash || hash === '#' || hash === '#/' || hash === '#/home' || hash === '#home') {
-        setCurrentView('home');
-      } else if (
-        hash.startsWith('#/auth/callback') ||
-        hash.startsWith('#auth/callback') ||
-        hash.includes('access_token=') ||
+      const search = window.location.search;
+
+      // 1. Check for OAuth callback, PKCE code, or access tokens FIRST
+      const isOAuthCallback =
+        search.includes('code=') ||
         hash.includes('code=') ||
-        window.location.search.includes('code=')
-      ) {
-        // OAuth or Email confirmation callback detected
+        hash.includes('access_token=') ||
+        hash.startsWith('#/auth/callback') ||
+        hash.startsWith('#auth/callback');
+
+      if (isOAuthCallback) {
         (async () => {
           try {
+            // Give Supabase client a tick to finalize PKCE code exchange if in progress
             const { data: { session } } = await supabase.auth.getSession();
             if (session?.user) {
               const profile = await syncUserProfile(session.user);
               setUser(profile);
               const isFirst = isFirstTimeUser(session.user.id, profile);
+              
+              // Clear code/token parameters from search/hash without reload
+              const safeRedirect = extractSafeRedirect(hash, search);
+              const destination = safeRedirect || '/dashboard';
+              
               if (window.location.search) {
-                window.history.replaceState(null, '', window.location.pathname + '#/dashboard');
+                window.history.replaceState(null, '', window.location.pathname + `#${destination}`);
               } else {
-                window.location.hash = '#/dashboard';
+                window.location.hash = `#${destination}`;
               }
-              setCurrentView('dashboard');
+
+              if (destination.startsWith('/notes')) {
+                const urlParams = new URLSearchParams(destination.split('?')[1] || '');
+                const id = urlParams.get('id');
+                if (id) setActiveKitId(id);
+                setCurrentView('notes');
+              } else {
+                setCurrentView('dashboard');
+              }
+
               if (isFirst) {
                 setIsWelcomeModalOpen(true);
               } else {
@@ -146,17 +180,27 @@ export function App() {
             setCurrentView('login');
           }
         })();
+        return;
+      }
+
+      // 2. Public Home route
+      if (!hash || hash === '#' || hash === '#/' || hash === '#/home' || hash === '#home') {
+        setCurrentView('home');
       } else if (hash.startsWith('#/login') || hash.startsWith('#login')) {
         if (authInitialized && user) {
-          window.location.hash = '#/dashboard';
-          setCurrentView('dashboard');
+          const safeRedirect = extractSafeRedirect(hash, search);
+          const target = safeRedirect || '/dashboard';
+          window.location.hash = `#${target}`;
+          setCurrentView(target.startsWith('/notes') ? 'notes' : 'dashboard');
         } else {
           setCurrentView('login');
         }
       } else if (hash.startsWith('#/signup') || hash.startsWith('#signup')) {
         if (authInitialized && user) {
-          window.location.hash = '#/dashboard';
-          setCurrentView('dashboard');
+          const safeRedirect = extractSafeRedirect(hash, search);
+          const target = safeRedirect || '/dashboard';
+          window.location.hash = `#${target}`;
+          setCurrentView(target.startsWith('/notes') ? 'notes' : 'dashboard');
         } else {
           setCurrentView('signup');
         }
@@ -223,7 +267,7 @@ export function App() {
       window.removeEventListener('hashchange', parseHashRoute);
       window.removeEventListener('popstate', parseHashRoute);
     };
-  }, [authInitialized, user, showToast]);
+  }, [authInitialized, user, showToast, extractSafeRedirect]);
 
   // Sync to local storage when studyKits change
   useEffect(() => {
@@ -278,14 +322,18 @@ export function App() {
     }
   }, [user, authInitialized, showToast]);
 
-  const handleRequireAuth = (pendingData?: { source: 'upload' | 'link'; linkUrl: string; style: NoteStyle }) => {
+  const handleRequireAuth = (
+    pendingData?: { source: 'upload' | 'link'; linkUrl: string; style: NoteStyle },
+    customRedirectTarget?: string
+  ) => {
     if (pendingData) {
       sessionStorage.setItem('libnotes_pending_generation', JSON.stringify(pendingData));
     }
     setIsUploadOpen(false);
-    window.location.hash = '#/signup?redirect=%2Fnew-lecture';
+    const target = customRedirectTarget || (pendingData ? '%2Fnew-lecture' : '%2Fdashboard');
+    window.location.hash = `#/signup?redirect=${target}`;
     setCurrentView('signup');
-    showToast('Please create a free account or log in to generate notes.');
+    showToast('Please create a free account or log in to continue.');
   };
 
   const navigateTo = (
@@ -451,124 +499,180 @@ export function App() {
 
       {/* Body Views */}
       <main className="flex-1">
-        {currentView === 'home' && (
+        {!authInitialized && (
+          window.location.hash.startsWith('#/dashboard') ||
+          window.location.hash.startsWith('#/notes') ||
+          window.location.hash.startsWith('#/new-lecture') ||
+          window.location.hash.includes('auth/callback') ||
+          window.location.search.includes('code=')
+        ) ? (
+          <div className="min-h-[calc(100vh-10rem)] flex items-center justify-center p-4">
+            <div className="text-center p-8 bg-[#FCFAF6] border-2 border-[#141414] rounded-2xl shadow-[4px_4px_0px_#141414] max-w-sm w-full">
+              <div className="w-10 h-10 border-3 border-[#79A94A] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+              <h3 className="font-mono-editorial text-lg font-bold text-[#141414]">Verifying Session...</h3>
+              <p className="text-xs font-mono text-[#5E5D57] mt-1">Connecting securely to Libnotes workspace</p>
+            </div>
+          </div>
+        ) : (
           <>
-            <Hero
-              onStartGeneration={handleStartGenerationFromHero}
-              onSelectSample={handleSelectSample}
-              isAuthenticated={Boolean(user)}
-              onRequireAuth={handleRequireAuth}
-            />
-            <FeatureCards onCardClick={handleFeatureCardClick} />
-            <ProductPreview
-              onOpenWorkspace={() => {
-                if (!user) {
-                  handleRequireAuth({ source: 'link', linkUrl: 'https://www.youtube.com/watch?v=sample-lecture', style: 'topper' });
-                } else {
-                  navigateTo('notes', 'kit-thermodynamics');
-                }
-              }}
-            />
-            <HowItWorks />
-            <FinalCTA
-              onOpenUpload={(source) => {
-                if (!user) {
-                  handleRequireAuth({ source, linkUrl: source === 'link' ? 'https://www.youtube.com/watch?v=sample-lecture' : '', style: 'topper' });
-                } else {
-                  setUploadInitialLink(source === 'link' ? 'https://www.youtube.com/watch?v=sample-lecture' : '');
-                  setIsUploadOpen(true);
-                }
-              }}
-              isAuthenticated={Boolean(user)}
-              onRequireAuth={handleRequireAuth}
-            />
+            {currentView === 'home' && (
+              <>
+                <Hero
+                  onStartGeneration={handleStartGenerationFromHero}
+                  onSelectSample={handleSelectSample}
+                  isAuthenticated={Boolean(user)}
+                  onRequireAuth={handleRequireAuth}
+                />
+                <FeatureCards onCardClick={handleFeatureCardClick} />
+                <ProductPreview
+                  onOpenWorkspace={() => {
+                    if (!user) {
+                      handleRequireAuth(undefined, '%2Fnotes%3Fid%3Dkit-thermodynamics');
+                    } else {
+                      navigateTo('notes', 'kit-thermodynamics');
+                    }
+                  }}
+                />
+                <HowItWorks />
+                <FinalCTA
+                  onOpenUpload={(source) => {
+                    if (!user) {
+                      handleRequireAuth({ source, linkUrl: source === 'link' ? 'https://www.youtube.com/watch?v=sample-lecture' : '', style: 'topper' });
+                    } else {
+                      setUploadInitialLink(source === 'link' ? 'https://www.youtube.com/watch?v=sample-lecture' : '');
+                      setIsUploadOpen(true);
+                    }
+                  }}
+                  isAuthenticated={Boolean(user)}
+                  onRequireAuth={handleRequireAuth}
+                />
+              </>
+            )}
+
+            {currentView === 'notes' && (
+              <NotesView
+                kit={activeKit}
+                onBack={() => navigateTo('home')}
+                onStyleChange={handleStyleChange}
+                initialTab={notesActiveTab}
+                userId={user?.id}
+              />
+            )}
+
+            {currentView === 'dashboard' && (
+              <DashboardView
+                studyKits={studyKits}
+                user={user}
+                onSelectKit={(kitId) => navigateTo('notes', kitId, 'full')}
+                onOpenUpload={() => setIsUploadOpen(true)}
+                onTakeQuiz={(kitId) => navigateTo('notes', kitId, 'quiz')}
+              />
+            )}
+
+            {/* Auth: Sign Up View */}
+            {currentView === 'signup' && (
+              <SignUpView
+                onNavigateLogin={() => {
+                  const redirect = extractSafeRedirect(window.location.hash, window.location.search);
+                  const suffix = redirect ? `?redirect=${encodeURIComponent(redirect)}` : '';
+                  window.location.hash = `#/login${suffix}`;
+                  setCurrentView('login');
+                }}
+                onNavigateHome={() => navigateTo('home')}
+                onSignUpSuccess={async () => {
+                  const session = await getCurrentSession();
+                  if (session?.user) {
+                    const profile = await syncUserProfile(session.user);
+                    setUser(profile);
+                    if (isFirstTimeUser(session.user.id, profile)) {
+                      setIsWelcomeModalOpen(true);
+                      return;
+                    }
+                  }
+                  showToast('Account created successfully! Welcome to Libnotes.');
+                  const redirect = extractSafeRedirect(window.location.hash, window.location.search);
+                  if (redirect) {
+                    if (redirect === '/new-lecture') {
+                      setIsUploadOpen(true);
+                      navigateTo('dashboard');
+                    } else if (redirect.startsWith('/notes')) {
+                      const urlParams = new URLSearchParams(redirect.split('?')[1] || '');
+                      const id = urlParams.get('id') || 'kit-thermodynamics';
+                      const tab = (urlParams.get('tab') as any) || 'full';
+                      navigateTo('notes', id, tab);
+                    } else {
+                      navigateTo('dashboard');
+                    }
+                  } else {
+                    navigateTo('dashboard');
+                  }
+                }}
+              />
+            )}
+
+            {/* Auth: Login View */}
+            {currentView === 'login' && (
+              <LoginView
+                onNavigateSignUp={() => {
+                  const redirect = extractSafeRedirect(window.location.hash, window.location.search);
+                  const suffix = redirect ? `?redirect=${encodeURIComponent(redirect)}` : '';
+                  window.location.hash = `#/signup${suffix}`;
+                  setCurrentView('signup');
+                }}
+                onNavigateForgotPassword={() => navigateTo('forgot-password')}
+                onNavigateHome={() => navigateTo('home')}
+                onLoginSuccess={(target) => {
+                  showToast('Welcome back to Libnotes!');
+                  const redirect = extractSafeRedirect(window.location.hash, window.location.search);
+                  const dest = redirect || target;
+                  if (dest) {
+                    if (dest === '/new-lecture' || dest === 'new-lecture') {
+                      setIsUploadOpen(true);
+                      navigateTo('dashboard');
+                    } else if (dest.startsWith('/notes') || dest.startsWith('notes')) {
+                      const searchStr = dest.includes('?') ? dest.split('?')[1] : '';
+                      const urlParams = new URLSearchParams(searchStr);
+                      const id = urlParams.get('id') || 'kit-thermodynamics';
+                      const tab = (urlParams.get('tab') as any) || 'full';
+                      navigateTo('notes', id, tab);
+                    } else {
+                      navigateTo('dashboard');
+                    }
+                  } else {
+                    navigateTo('dashboard');
+                  }
+                }}
+                redirectTarget={extractSafeRedirect(window.location.hash, window.location.search) || 'dashboard'}
+              />
+            )}
+
+            {/* Auth: Forgot Password View */}
+            {currentView === 'forgot-password' && (
+              <ForgotPasswordView
+                onNavigateLogin={() => navigateTo('login')}
+                onNavigateHome={() => navigateTo('home')}
+              />
+            )}
+
+            {/* Auth: Reset Password View */}
+            {currentView === 'reset-password' && (
+              <ResetPasswordView
+                onNavigateLogin={() => navigateTo('login')}
+                onNavigateHome={() => navigateTo('home')}
+              />
+            )}
+
+            {/* 404 Custom Editorial Not Found Page */}
+            {currentView === 'not-found' && (
+              <NotFoundView
+                onNavigateHome={() => navigateTo('home')}
+                onNavigateDashboard={() => navigateTo('dashboard')}
+                onOpenUpload={() => setIsUploadOpen(true)}
+                onOpenSampleNotes={() => navigateTo('notes', 'kit-thermodynamics', 'full')}
+                isAuthenticated={Boolean(user)}
+              />
+            )}
           </>
-        )}
-
-        {currentView === 'notes' && (
-          <NotesView
-            kit={activeKit}
-            onBack={() => navigateTo('home')}
-            onStyleChange={handleStyleChange}
-            initialTab={notesActiveTab}
-            userId={user?.id}
-          />
-        )}
-
-        {currentView === 'dashboard' && (
-          <DashboardView
-            studyKits={studyKits}
-            user={user}
-            onSelectKit={(kitId) => navigateTo('notes', kitId, 'full')}
-            onOpenUpload={() => setIsUploadOpen(true)}
-            onTakeQuiz={(kitId) => navigateTo('notes', kitId, 'quiz')}
-          />
-        )}
-
-        {/* Auth: Sign Up View */}
-        {currentView === 'signup' && (
-          <SignUpView
-            onNavigateLogin={() => navigateTo('login')}
-            onNavigateHome={() => navigateTo('home')}
-            onSignUpSuccess={async () => {
-              const session = await getCurrentSession();
-              if (session?.user) {
-                const profile = await syncUserProfile(session.user);
-                setUser(profile);
-                if (isFirstTimeUser(session.user.id, profile)) {
-                  setIsWelcomeModalOpen(true);
-                  return;
-                }
-              }
-              showToast('Account created successfully! Welcome to Libnotes.');
-              navigateTo('dashboard');
-            }}
-          />
-        )}
-
-        {/* Auth: Login View */}
-        {currentView === 'login' && (
-          <LoginView
-            onNavigateSignUp={() => navigateTo('signup')}
-            onNavigateForgotPassword={() => navigateTo('forgot-password')}
-            onNavigateHome={() => navigateTo('home')}
-            onLoginSuccess={(target) => {
-              showToast('Welcome back to Libnotes!');
-              navigateTo(target === 'dashboard' ? 'dashboard' : 'home');
-            }}
-            redirectTarget={
-              window.location.hash.includes('redirect=%2Fdashboard') || window.location.hash.includes('redirect=/dashboard')
-                ? 'dashboard'
-                : 'dashboard'
-            }
-          />
-        )}
-
-        {/* Auth: Forgot Password View */}
-        {currentView === 'forgot-password' && (
-          <ForgotPasswordView
-            onNavigateLogin={() => navigateTo('login')}
-            onNavigateHome={() => navigateTo('home')}
-          />
-        )}
-
-        {/* Auth: Reset Password View */}
-        {currentView === 'reset-password' && (
-          <ResetPasswordView
-            onNavigateLogin={() => navigateTo('login')}
-            onNavigateHome={() => navigateTo('home')}
-          />
-        )}
-
-        {/* 404 Custom Editorial Not Found Page */}
-        {currentView === 'not-found' && (
-          <NotFoundView
-            onNavigateHome={() => navigateTo('home')}
-            onNavigateDashboard={() => navigateTo('dashboard')}
-            onOpenUpload={() => setIsUploadOpen(true)}
-            onOpenSampleNotes={() => navigateTo('notes', 'kit-thermodynamics', 'full')}
-            isAuthenticated={Boolean(user)}
-          />
         )}
       </main>
 
