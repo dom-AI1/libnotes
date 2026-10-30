@@ -85,17 +85,23 @@ export function mapSupabaseRowToKit(row: SupabaseStudyKitRow): StudyKit {
   };
 }
 
-// Fetch all Study Kits from Supabase
-export async function fetchStudyKitsFromSupabase(): Promise<{ data: StudyKit[] | null; error: Error | null }> {
+// Fetch Study Kits from Supabase (scoped to user when provided)
+export async function fetchStudyKitsFromSupabase(userId?: string): Promise<{ data: StudyKit[] | null; error: Error | null }> {
   if (!isSupabaseConfigured()) {
     return { data: null, error: new Error('Supabase is not configured') };
   }
 
   try {
-    const { data, error } = await supabase
+    let query = supabase
       .from('study_kits')
       .select('*')
       .order('date_created', { ascending: false });
+
+    if (userId) {
+      query = query.eq('user_id', userId);
+    }
+
+    const { data, error } = await query;
 
     if (error) {
       return { data: null, error: new Error(error.message) };
@@ -157,17 +163,23 @@ export async function syncStudyKitToSupabase(kit: StudyKit, userId?: string | nu
   }
 }
 
-// Fetch Quiz Attempts from Supabase
-export async function fetchQuizAttemptsFromSupabase(): Promise<{ data: QuizAttemptRecord[] | null; error: Error | null }> {
+// Fetch Quiz Attempts from Supabase (scoped to user when provided)
+export async function fetchQuizAttemptsFromSupabase(userId?: string): Promise<{ data: QuizAttemptRecord[] | null; error: Error | null }> {
   if (!isSupabaseConfigured()) {
     return { data: null, error: new Error('Supabase is not configured') };
   }
 
   try {
-    const { data, error } = await supabase
+    let query = supabase
       .from('quiz_attempts')
       .select('*')
       .order('timestamp', { ascending: false });
+
+    if (userId) {
+      query = query.eq('user_id', userId);
+    }
+
+    const { data, error } = await query;
 
     if (error) {
       return { data: null, error: new Error(error.message) };
@@ -179,6 +191,7 @@ export async function fetchQuizAttemptsFromSupabase(): Promise<{ data: QuizAttem
 
     const attempts: QuizAttemptRecord[] = data.map((row: SupabaseQuizAttemptRow) => ({
       id: row.id,
+      userId: row.user_id || undefined,
       kitId: row.kit_id,
       kitTitle: row.kit_title,
       timestamp: row.timestamp,
@@ -201,7 +214,7 @@ export async function syncQuizAttemptToSupabase(attempt: QuizAttemptRecord, user
   }
 
   try {
-    let effectiveUserId = userId;
+    let effectiveUserId: string | null | undefined = userId || attempt.userId;
     if (!effectiveUserId) {
       try {
         const { data: authData } = await supabase.auth.getUser();
@@ -238,4 +251,3 @@ export async function syncQuizAttemptToSupabase(attempt: QuizAttemptRecord, user
     return { success: false, error: err instanceof Error ? err.message : 'Unknown error' };
   }
 }
-

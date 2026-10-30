@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import type { StudyKit, NoteStyle } from './types';
 import { SAMPLE_STUDY_KITS } from './data/mockData';
 import { loadSavedKits, saveKitsToStorage } from './services/storageService';
-import { fetchStudyKitsFromSupabase } from './services/supabaseService';
+import { fetchStudyKitsFromSupabase, syncStudyKitToSupabase } from './services/supabaseService';
 import { 
   getCurrentUserProfile, 
   onAuthStateChange, 
@@ -205,30 +205,35 @@ export function App() {
 
   // Sync to local storage when studyKits change
   useEffect(() => {
-    saveKitsToStorage(studyKits);
-  }, [studyKits]);
+    saveKitsToStorage(studyKits, user?.id);
+  }, [studyKits, user?.id]);
 
-  // Fetch cloud study kits from Supabase and merge
+  // Fetch cloud study kits from Supabase scoped to current user
   useEffect(() => {
     async function syncCloudKits() {
-      try {
-        const { data, error } = await fetchStudyKitsFromSupabase();
-        if (!error && data && data.length > 0) {
-          setStudyKits((prev) => {
-            const map = new Map<string, StudyKit>();
-            data.forEach((k) => map.set(k.id, k));
-            prev.forEach((k) => {
-              if (!map.has(k.id)) map.set(k.id, k);
-            });
-            return Array.from(map.values());
-          });
+      if (!authInitialized) return;
+
+      if (user?.id) {
+        // Authenticated user: load only this user's kits from local storage
+        const userLocalKits = loadSavedKits(user.id);
+        setStudyKits(userLocalKits);
+
+        try {
+          const { data, error } = await fetchStudyKitsFromSupabase(user.id);
+          if (!error && data) {
+            setStudyKits(data);
+            saveKitsToStorage(data, user.id);
+          }
+        } catch (err) {
+          console.warn('[Libnotes App] Remote sync deferred:', err);
         }
-      } catch (err) {
-        console.warn('[Libnotes App] Remote sync deferred:', err);
+      } else {
+        // Guest user: load default / sample kits
+        setStudyKits(loadSavedKits());
       }
     }
     syncCloudKits();
-  }, []);
+  }, [user?.id, authInitialized]);
 
   const activeKit = studyKits.find((k) => k.id === activeKitId) || (studyKits.length > 0 ? studyKits[0] : SAMPLE_STUDY_KITS[0]);
 
@@ -316,6 +321,7 @@ export function App() {
   const handleSignOut = async () => {
     await signOutUser();
     setUser(null);
+    setStudyKits(loadSavedKits());
     showToast('You have been logged out.');
     navigateTo('home');
   };
@@ -357,11 +363,21 @@ export function App() {
   };
 
   const handleUploadSuccess = (generatedKit: StudyKit) => {
-    setStudyKits((prev) => [generatedKit, ...prev]);
-    setActiveKitId(generatedKit.id);
+    const kitWithUser: StudyKit = {
+      ...generatedKit,
+      userId: user?.id || undefined,
+    };
+    setStudyKits((prev) => [kitWithUser, ...prev.filter((k) => k.id !== kitWithUser.id)]);
+    setActiveKitId(kitWithUser.id);
+    saveKitsToStorage([kitWithUser, ...studyKits], user?.id);
+    if (user?.id) {
+      syncStudyKitToSupabase(kitWithUser, user.id).catch((err: unknown) => {
+        console.warn('[Libnotes App] Supabase sync deferred:', err);
+      });
+    }
     handleCloseUploadModal();
-    navigateTo('notes', generatedKit.id, 'full');
-    showToast(`Generated study kit: ${generatedKit.chapter}`);
+    navigateTo('notes', kitWithUser.id, 'full');
+    showToast(`Generated study kit: ${kitWithUser.chapter}`);
   };
 
   const handleStyleChange = (newStyle: NoteStyle) => {
@@ -443,6 +459,7 @@ export function App() {
         {currentView === 'dashboard' && (
           <DashboardView
             studyKits={studyKits}
+            user={user}
             onSelectKit={(kitId) => navigateTo('notes', kitId, 'full')}
             onOpenUpload={() => setIsUploadOpen(true)}
             onTakeQuiz={(kitId) => navigateTo('notes', kitId, 'quiz')}
