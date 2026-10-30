@@ -145,7 +145,25 @@ export async function analyzeEducationalMedia(
     chapter = customTopic || input.selectedChapter || 'Sets (Roster, Set-Builder, Subsets, Venn Diagrams)';
   } else if (!input.selectedSubject || input.autoDetect) {
     // Dynamic topic detection
-    if (rawCombined.includes('econo') || rawCombined.includes('demand') || rawCombined.includes('gdp') || rawCombined.includes('elasticity')) {
+    if (
+      rawCombined.includes('account') ||
+      rawCombined.includes('journal') ||
+      rawCombined.includes('ledger') ||
+      rawCombined.includes('debit') ||
+      rawCombined.includes('credit') ||
+      rawCombined.includes('trial balance') ||
+      rawCombined.includes('balance sheet') ||
+      rawCombined.includes('depreciation') ||
+      rawCombined.includes('partnership') ||
+      rawCombined.includes('cash book') ||
+      rawCombined.includes('bookkeeping')
+    ) {
+      const isClass11 = rawCombined.includes('11') || rawCombined.includes('journal') || rawCombined.includes('ledger') || rawCombined.includes('debit') || input.selectedClass === 'Class 11';
+      academicClass = isClass11 ? 'Class 11' : 'Class 12';
+      subject = 'Accountancy';
+      stream = 'Commerce';
+      chapter = customTopic || (isClass11 ? 'Journal Entries & Rules of Debit and Credit' : 'Partnership Fundamentals & Goodwill Valuation');
+    } else if (rawCombined.includes('econo') || rawCombined.includes('demand') || rawCombined.includes('gdp') || rawCombined.includes('elasticity')) {
       academicClass = input.selectedClass || 'Class 12';
       subject = 'Economics';
       stream = 'Commerce';
@@ -391,9 +409,69 @@ export async function analyzeEducationalMedia(
     ];
   } 
   // ==========================================
-  // CASE B: COMMERCE / ECONOMICS
+  // CASE B1: COMMERCE / ACCOUNTANCY (Journal Entries & Debit/Credit)
   // ==========================================
-  else if (subject === 'Economics' || subject === 'Accountancy') {
+  else if (subject === 'Accountancy' || rawCombined.includes('journal') || rawCombined.includes('debit') || rawCombined.includes('credit') || rawCombined.includes('ledger') || rawCombined.includes('account')) {
+    topicsCovered = [
+      'Fundamental Accounting Principles & The Accounting Equation (Assets = Liabilities + Capital)',
+      'Rules of Debit and Credit: Traditional Golden Rules vs Modern Classification',
+      'The 4-Step Framework for Solving and Journalizing ANY Transaction',
+      'Compound Journal Entries, Cash Discount vs Trade Discount Accounting',
+      'Ledger Posting, Balancing of Accounts, and Trial Balance Verification',
+    ];
+
+    segments = [
+      {
+        id: 1,
+        start: '00:00',
+        end: '06:30',
+        startSeconds: 0,
+        endSeconds: 390,
+        text: 'Welcome students. In this Class 11 Accountancy lecture, we master the fundamental mechanics of Journal Entries using the proven 4-step framework. Every business transaction has a dual effect on the accounting equation: Assets equal Liabilities plus Capital. To record any entry flawlessly: Step 1, identify the two or more accounts involved. Step 2, classify each account under Traditional or Modern rules. Step 3, determine whether the account balance is increasing or decreasing. Step 4, apply the Debit and Credit rules and write the entry with a clear narration starting with "Being...".',
+        topic: '4 Steps to Solve Any Journal Entry & Dual Aspect Rule',
+      },
+      {
+        id: 2,
+        start: '06:30',
+        end: '14:45',
+        startSeconds: 390,
+        endSeconds: 885,
+        text: 'Let us examine the Traditional Golden Rules versus the Modern American classification. Under Golden Rules: Personal Accounts—Debit the receiver, Credit the giver. Real Accounts—Debit what comes in, Credit what goes out. Nominal Accounts—Debit all expenses and losses, Credit all incomes and gains. Under Modern rules (DEAD CLIC): Debit increases Expenses and Assets; Credit increases Liabilities, Income, and Capital. When selling goods with discounts, Trade Discount is deducted immediately from invoice price without opening a discount account. Cash Discount is recorded explicitly in Discount Allowed (debit) or Discount Received (credit) account.',
+        topic: 'Rules of Debit and Credit & Discount Journal Entries',
+      },
+    ];
+
+    definitionsFound = [
+      { term: 'Journal', definition: 'The primary book of original entry where business transactions are recorded chronologically using double-entry bookkeeping.', timestamp: '01:45' },
+      { term: 'Golden Rules of Accounting', definition: 'The foundational rules of debit and credit categorized across Personal, Real, and Nominal accounts.', timestamp: '07:15' },
+      { term: 'Trade Discount', definition: 'A reduction granted by a seller from catalog price, deducted directly and NEVER recorded separately in ledger books.', timestamp: '10:30' },
+      { term: 'Cash Discount', definition: 'A cash deduction granted for prompt payment, explicitly recorded in Discount Allowed or Discount Received account.', timestamp: '12:15' },
+    ];
+
+    formulasExtracted = [
+      { name: 'Fundamental Accounting Equation', formula: 'Assets = Liabilities + Capital', note: 'Balance must remain identical after every journal entry', verifiedTopic: 'Accountancy' },
+      { name: 'Net Invoice Value', formula: 'Net Amount = Catalogue Price - Trade Discount', note: 'Cash discount applies only to amount paid immediately', verifiedTopic: 'Accountancy' },
+    ];
+
+    examplesDemonstrated = [
+      {
+        title: 'Compound Journal Entry for Goods Sold with Trade & Cash Discount',
+        problem: 'Sold goods costing ₹20,000 to Rohit at 10% trade discount and 5% cash discount. Rohit paid 60% immediately by cheque.',
+        solution: 'Catalogue Price = ₹20,000. Less 10% Trade Discount (₹2,000) = Net Invoice ₹18,000. Cheque Received (60% of ₹18,000 = ₹10,800 less 5% Cash Discount ₹540) = ₹10,260. Credit Portion (40% of ₹18,000) = ₹7,200. Journal Entry: Bank A/c Dr. ₹10,260; Discount Allowed A/c Dr. ₹540; Rohit A/c Dr. ₹7,200; To Sales A/c ₹18,000. (Being goods sold to Rohit with trade and cash discounts).',
+        timestamp: '11:15',
+      },
+    ];
+
+    importantExplanations = [
+      'Trade discount is never recorded in ledger accounts; only the net amount is recorded.',
+      'Cash discount is allowed only on the cash portion received, never on credit sales.',
+      'Every journal entry must strictly contain a clear narration ("Being...") to receive full marks in CBSE exams.',
+    ];
+  }
+  // ==========================================
+  // CASE B2: COMMERCE / ECONOMICS
+  // ==========================================
+  else if (subject === 'Economics') {
     topicsCovered = [
       'Macroeconomic Equilibrium: Aggregate Demand & Aggregate Supply',
       'Marginal Propensity to Consume (MPC) and Save (MPS)',

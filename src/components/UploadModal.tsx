@@ -175,10 +175,12 @@ export const UploadModal = ({
     const withoutExt = filename.replace(/\.[^/.]+$/, '');
     const cleaned = withoutExt
       .replace(/^gemini_generated_video_[a-z0-9]+/i, '')
+      .replace(/^(vidssave(\.com)?|y2mate(\.[a-z]+)?|snapsave(\.[a-z]+)?|yt1s(\.[a-z]+)?|ssstik(\.[a-z]+)?|savefrom(\.[a-z]+)?)[_\s-]*/i, '')
+      .replace(/\b(720p|1080p|480p|360p|2160p|4k|hd|webrip)\b/gi, '')
       .replace(/^[a-z0-9_-]{8,}_/i, '')
       .replace(/[_-]+/g, ' ')
       .trim();
-    return cleaned || 'Lecture Key Concepts & Analysis';
+    return cleaned;
   };
 
   const handleDrop = (e: React.DragEvent) => {
@@ -197,6 +199,10 @@ export const UploadModal = ({
         if (derived && !customTopic) {
           setCustomTopic(derived);
           setChapter(derived);
+          const detected = detectLectureMetadataFromSource(derived, 'upload', derived);
+          if (detected.subject) setSubject(detected.subject);
+          if (detected.academicClass) setAcademicClass(detected.academicClass);
+          if (detected.stream) setStream(detected.stream);
         }
       }
     }
@@ -217,6 +223,10 @@ export const UploadModal = ({
       if (derived && !customTopic) {
         setCustomTopic(derived);
         setChapter(derived);
+        const detected = detectLectureMetadataFromSource(derived, 'upload', derived);
+        if (detected.subject) setSubject(detected.subject);
+        if (detected.academicClass) setAcademicClass(detected.academicClass);
+        if (detected.stream) setStream(detected.stream);
       }
     }
   };
@@ -300,23 +310,37 @@ export const UploadModal = ({
       let resolvedSubject = subject;
       let resolvedChapter = chapter.trim();
 
-      if (sourceType === 'link' && !resolvedTopic) {
-        try {
-          const fetchedTitle = await fetchVideoTitleFromUrl(videoLink);
-          if (fetchedTitle) {
-            resolvedTopic = fetchedTitle;
-            resolvedChapter = fetchedTitle;
-            const detected = detectLectureMetadataFromSource(videoLink, 'link', fetchedTitle);
-            resolvedSubject = detected.subject;
+      if (sourceType === 'link') {
+        if (!resolvedTopic) {
+          try {
+            const fetchedTitle = await fetchVideoTitleFromUrl(videoLink);
+            if (fetchedTitle) {
+              resolvedTopic = fetchedTitle;
+              resolvedChapter = fetchedTitle;
+            }
+          } catch {
+            // ignore title fetch failure
           }
-        } catch {
-          // ignore title fetch failure
+        }
+        if (isAuto || !showManualSyllabus) {
+          const detected = detectLectureMetadataFromSource(videoLink, 'link', resolvedTopic);
+          if (detected.subject) resolvedSubject = detected.subject;
+          if (detected.academicClass) setAcademicClass(detected.academicClass);
+          if (detected.stream) setStream(detected.stream);
         }
       }
 
-      if (sourceType === 'upload' && !resolvedTopic && selectedFile) {
-        resolvedTopic = cleanFilenameToTopic(selectedFile.name);
-        resolvedChapter = resolvedTopic;
+      if (sourceType === 'upload' && selectedFile) {
+        if (!resolvedTopic) {
+          resolvedTopic = cleanFilenameToTopic(selectedFile.name);
+          resolvedChapter = resolvedTopic;
+        }
+        if (isAuto || !showManualSyllabus) {
+          const detected = detectLectureMetadataFromSource(selectedFile.name, 'upload', resolvedTopic);
+          if (detected.subject) resolvedSubject = detected.subject;
+          if (detected.academicClass) setAcademicClass(detected.academicClass);
+          if (detected.stream) setStream(detected.stream);
+        }
       }
 
       const effectiveChapter = resolvedTopic || resolvedChapter || 'Lecture Concept Analysis';
@@ -744,54 +768,9 @@ export const UploadModal = ({
                         placeholder="e.g. Wave Optics, Chemical Kinetics, Cell Division, Calculus Derivatives"
                         className="w-full h-10 px-3.5 rounded-xl border border-[#141414]/30 bg-[#FFFFFF] text-xs font-body text-[#141414] focus:outline-none focus:ring-1 focus:ring-[#79A94A] focus:border-[#79A94A]"
                       />
-                      <div className="space-y-1.5 pt-1">
-                        <div className="flex flex-wrap items-center gap-1.5">
-                          <span className="text-[11px] font-mono text-[#8A8880] mr-1">Subject:</span>
-                          {(['Physics', 'Chemistry', 'Biology', 'Mathematics', 'Computer Science', 'Economics', 'History'] as Subject[]).map((subj) => (
-                            <button
-                              key={subj}
-                              type="button"
-                              onClick={() => {
-                                setSubject(subj);
-                                if (!customTopic) {
-                                  setCustomTopic(`${subj} Lecture Concepts`);
-                                  setChapter(`${subj} Lecture Concepts`);
-                                }
-                              }}
-                              className={`text-[10px] font-mono px-2 py-0.5 rounded-md border transition-all ${
-                                subject === subj
-                                  ? 'bg-[#E8F2DC] text-[#141414] border-[#79A94A] font-bold shadow-xs'
-                                  : 'bg-[#FCFAF6] text-[#5E5D57] border-[#141414]/20 hover:border-[#141414]'
-                              }`}
-                            >
-                              {subj}
-                            </button>
-                          ))}
-                        </div>
-                        <div className="flex flex-wrap items-center gap-1.5 pt-0.5">
-                          <span className="text-[11px] font-mono text-[#8A8880] mr-1">Quick Topics:</span>
-                          {[
-                            { label: 'Optics & Light', subj: 'Physics' as Subject, topic: 'Ray & Wave Optics' },
-                            { label: 'Kinetics & Reactions', subj: 'Chemistry' as Subject, topic: 'Chemical Kinetics & Reactions' },
-                            { label: 'DNA & Genetics', subj: 'Biology' as Subject, topic: 'Molecular Genetics & DNA' },
-                            { label: 'Calculus', subj: 'Mathematics' as Subject, topic: 'Calculus: Derivatives & Integrals' },
-                            { label: 'DSA / Algorithms', subj: 'Computer Science' as Subject, topic: 'Data Structures & Algorithms' },
-                          ].map((t) => (
-                            <button
-                              key={t.label}
-                              type="button"
-                              onClick={() => {
-                                setSubject(t.subj);
-                                setCustomTopic(t.topic);
-                                setChapter(t.topic);
-                              }}
-                              className="text-[10px] font-mono px-2 py-0.5 rounded-md border border-[#79A94A]/40 bg-[#E8F2DC]/60 text-[#141414] hover:bg-[#E8F2DC] transition-all"
-                            >
-                              {t.label}
-                            </button>
-                          ))}
-                        </div>
-                      </div>
+                      <p className="text-[11px] font-mono text-[#8A8880] pt-1">
+                        AI will automatically detect the subject and chapter from your lecture content.
+                      </p>
                     </div>
                   </div>
                 )}

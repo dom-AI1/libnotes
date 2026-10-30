@@ -22,7 +22,226 @@ export function buildDynamicKitContent(
   const sLower = (subject || '').toLowerCase();
   const cLower = (chapter || '').toLowerCase();
 
-  // 1. COMMERCE / ECONOMICS / ACCOUNTANCY / BUSINESS
+  // 0. COMMERCE / ACCOUNTANCY & JOURNAL ENTRIES
+  const isAccountancy = 
+    sLower.includes('account') || 
+    cLower.includes('journal') || 
+    cLower.includes('ledger') || 
+    cLower.includes('debit') || 
+    cLower.includes('credit') || 
+    cLower.includes('trial balance') || 
+    cLower.includes('balance sheet') || 
+    cLower.includes('depreciation') || 
+    cLower.includes('partnership') || 
+    cLower.includes('cash book') || 
+    cLower.includes('bookkeeping');
+
+  if (isAccountancy) {
+    return {
+      content: {
+        quick: {
+          headline: `${chapter} — Rules of Debit & Credit, 4-Step Journalizing & Accountancy Notes`,
+          cheatSheet: [
+            'The 4-Step Framework for ANY Journal Entry: 1) Identify 2+ accounts affected. 2) Classify accounts (Personal, Real, Nominal or Modern: Asset, Liability, Capital, Expense, Revenue). 3) Determine Increase or Decrease. 4) Apply Debit/Credit rule and write narration ("Being...").',
+            'Golden Rules (Traditional): Personal Accounts → Debit the Receiver, Credit the Giver; Real Accounts → Debit what comes in, Credit what goes out; Nominal Accounts → Debit all expenses and losses, Credit all incomes and gains.',
+            'Modern Classification (DEAD CLIC): Debit increases Expenses and Assets (DEAD); Credit increases Liabilities, Income, and Capital (CLIC).',
+            'Trade Discount vs Cash Discount: Trade discount is deducted directly from list price and is NEVER recorded in ledger books. Cash discount is recorded in Discount Allowed (Dr) or Discount Received (Cr) account.',
+            'Compound Journal Entry Rule: Total Debit amount must exactly equal Total Credit amount for every single transaction.',
+          ],
+          formulas: [
+            { name: 'Accounting Equation', formula: 'Assets = Liabilities + Capital (Owner\'s Equity)', note: 'Fundamental balance sheet identity; holds true after every entry' },
+            { name: 'Net Invoice Value', formula: 'Net Amount = List Price - Trade Discount', note: 'Cash discount applies only on prompt cash/cheque payment' },
+            { name: 'Closing Capital Equation', formula: 'Closing Capital = Opening Capital + Additional Capital + Net Profit - Drawings', note: 'Balance sheet reconciliation formula' },
+          ],
+          bulletSummary: [
+            'Narration Rule: Always write a brief explanation starting with "Being..." below each entry.',
+            'Discount Rule: Calculate trade discount first on list price; then calculate cash discount on the cash receivable.',
+            'Entity Principle: Always analyze transactions from the perspective of the business enterprise, not the owner.',
+          ],
+        },
+        minimal: {
+          headline: `${chapter} Quick Accountancy Summary`,
+          cheatSheet: [
+            '4-Step Framework: Identify accounts, classify type, determine increase/decrease, apply debit/credit rules.',
+            'Personal: Debit receiver, Credit giver. Real: Debit in, Credit out. Nominal: Debit expenses, Credit incomes.',
+            'Trade discount is never recorded in ledger accounts; cash discount is explicitly journalized.',
+            'Assets = Liabilities + Capital must balance after every journal entry.',
+          ],
+          formulas: [
+            { name: 'Accounting Equation', formula: 'Assets = Liabilities + Capital', note: 'Fundamental identity' },
+          ],
+          bulletSummary: [
+            'Always add narrations ("Being...") for full marks.',
+            'Debit what comes in, Credit what goes out.',
+          ],
+        },
+        topper: {
+          introduction: `Comprehensive analytical lecture synthesis for ${subject}: ${chapter}. Structured in alignment with CBSE, state boards, university curriculum, and professional accounting standards.`,
+          deepDive: [
+            {
+              title: 'The 4-Step Framework for Solving ANY Journal Entry',
+              timestamp: '02:15',
+              content: 'To journalize any transaction without mistakes, follow the 4-step framework: Step 1: Read the transaction carefully and identify which two or more accounts are affected (e.g., Cash A/c and Sales A/c). Step 2: Classify each account under Traditional (Personal, Real, Nominal) or Modern rules (Asset, Liability, Capital, Expense, Revenue). Step 3: Determine whether the account balance is increasing or decreasing from the business\'s perspective. Step 4: Apply the Debit and Credit rules, write the journal entry with Date, Particulars, L.F., Debit (₹), and Credit (₹), and conclude with a concise narration starting with "Being...".',
+              keyTakeaway: 'Always analyze transactions strictly from the viewpoint of the business enterprise, not the owner (Business Entity Concept).',
+            },
+            {
+              title: 'Traditional Golden Rules vs Modern Classification of Accounts',
+              timestamp: '07:30',
+              content: 'Traditional rules classify accounts into Personal (Natural, Artificial, Representative), Real (Tangible & Intangible assets), and Nominal (Expenses, Losses, Incomes, Gains). Modern classification uses DEAD CLIC: Debit increases Expenses and Assets (DEAD), while Credit increases Liabilities, Income, and Capital (CLIC). Both methods produce identical debit and credit entries. For example, when rent is paid in cash, Rent A/c is an expense (Dr) and Cash A/c is an asset decreasing (Cr).',
+              keyTakeaway: 'Personal: Debit Receiver, Credit Giver. Real: Debit In, Credit Out. Nominal: Debit Expenses/Losses, Credit Incomes/Gains.',
+            },
+            {
+              title: 'Compound Entries, Discounts, Bad Debts, and Drawings',
+              timestamp: '13:00',
+              content: 'Trade discount is granted by sellers for bulk orders and is deducted directly from list price without opening a separate account. Cash discount is allowed for prompt payment and must be recorded in "Discount Allowed A/c" (nominal loss/debit) or "Discount Received A/c" (nominal gain/credit). Goods taken by the proprietor for domestic use are debited to "Drawings A/c" and credited to "Purchases A/c" at cost price. When bad debts are recovered, Cash A/c is debited and Bad Debts Recovered A/c is credited.',
+              keyTakeaway: 'Never record trade discount in journal entries; only record cash discount on actual cash paid or received.',
+            },
+          ],
+          derivations: [
+            {
+              title: '4-Step Solution for Compound Discount Transaction',
+              steps: [
+                'Transaction: Purchased goods from Mohan of list price ₹50,000 at 20% trade discount and 4% cash discount. Paid 75% immediately by cheque.',
+                'Step 1: Calculate List Price = ₹50,000. Less 20% Trade Discount (₹10,000) = Net Purchase Price ₹40,000.',
+                'Step 2: Determine Cash vs Credit portions: Cheque portion (75% of ₹40,000) = ₹30,000. Credit portion (25% of ₹40,000) = ₹10,000.',
+                'Step 3: Calculate Cash Discount on cash portion: 4% of ₹30,000 = ₹1,200. Net Cheque Paid = ₹30,000 - ₹1,200 = ₹28,800.',
+                'Step 4: Journal Entry: Purchases A/c Dr. ₹40,000; To Bank A/c ₹28,800; To Discount Received A/c ₹1,200; To Mohan ₹10,000. (Being goods purchased with trade and cash discounts).',
+              ],
+              finalResult: 'Purchases A/c Dr. ₹40,000 | To Bank A/c ₹28,800, To Discount Received A/c ₹1,200, To Mohan ₹10,000',
+            },
+          ],
+          proTips: [
+            'CBSE step-marking strictly awards marks for Date, Particulars, L.F., Debit (₹), Credit (₹), and Narration. Omitting narration deducts 0.5 marks per entry.',
+            'Never write "To" before debit accounts; indent credit accounts by one tab space and prefix with "To".',
+            'Goods given as charity, free samples, or destroyed by fire must always be credited to Purchases A/c at cost price.',
+            'Trade discount is calculated before GST; cash discount is calculated on the net cash receivable.',
+          ],
+        },
+        chatpata: {
+          hinglishIntro: `Bhai dekho, ${chapter} bilkul simple bhasha mein samjho! Journal entry koi rocket science nahi hai — bas ye 4 steps follow karo aur har transaction me debit aur credit pe full marks pao!`,
+          desiAnalogies: [
+            {
+              concept: 'The 4-Step Journal Entry Mantra',
+              analogy: 'Sabse pehle dekho transaction me kiska lena-dena hua (Cash, Goods, Rohit, ya Bank). Phir dekho business ke andar kya aaya aur kya gaya. Jo aaya use Debit maar, jo gaya use Credit kar!',
+              desiPunchline: 'Jo aave use Debit maar, jo jaave use Credit! Simple funda, full marks!',
+            },
+            {
+              concept: 'Trade Discount vs Cash Discount',
+              analogy: 'Trade discount sabzi mandi ki bargaining hai (sabko milti hai, parchi pe alag se nahi likhte). Cash discount turant cash dene ka inam hai (isko Discount Allowed/Received account me dhoom-dhaam se likhte hain)!',
+              desiPunchline: 'Trade discount chupchap ghatao, Cash discount dhoom-dhaam se ledger me dikhao!',
+            },
+            {
+              concept: 'Drawings vs Capital',
+              analogy: 'Malik ne business me paisa lagaya to Capital (Credit). Malik ne ghar ke kharche ke liye business ki tijori se paisa ya dukan se samaan nikaal liya to Drawings (Debit)! Business aur Malik alag-alag hain!',
+              desiPunchline: 'Dukan ki tijori se ghar ka kharcha = Drawings Debit, Purchases/Cash Credit!',
+            },
+          ],
+          bhaiKaSummary: [
+            'Step 1: Accounts pehchano (Cash, Bank, Mohan, Purchases).',
+            'Step 2: Debit/Credit rule lagao: Debit what comes in, Credit what goes out.',
+            'Step 3: Trade discount bill me ghatao par entry mat banao; Cash discount ka entry banao.',
+            'Step 4: Niche "Being..." likhna mat bhoolna, warna examiner aadha number kaat lega!',
+          ],
+          jugaadPoints: [
+            'Agar transaction me kisi ka naam likha hai aur "Cash" nahi likha, to wo pakka udhaar (Credit) transaction hai!',
+            'Purchases hamesha Debit hota hai (except free sample, charity, drawings ya fire, jisme Purchases Credit hota hai)!',
+          ],
+        },
+        exam: {
+          trendAnalysis: 'Class 11 & 12 Accountancy exams allocate 12 to 16 marks to Journal Entries, Compound Entries, Discounts, and Bad Debts adjustments.',
+          highWeightageTopics: [
+            'Compound Journal Entries with Trade Discount and Cash Discount',
+            'Banking Transactions & Dishonour of Cheques',
+            'Bad Debts and Bad Debts Recovered Entries',
+            'Goods Used for Personal Use, Charity, and Free Samples',
+          ],
+          questions: [
+            {
+              id: 1,
+              marks: 1,
+              question: 'Why is Trade Discount not recorded in the books of accounts?',
+              answer: 'Trade discount is an allowance granted by a seller to reduce the catalog price. It is not an expense or a realized financial gain, but a pricing mechanism. Therefore, sales and purchases are recorded strictly at the net invoice price (List Price - Trade Discount).',
+              markingScheme: [
+                'State that it is a pricing reduction on list price (½ mark)',
+                'Explain that transactions are recorded at net invoice price without opening discount account (½ mark)',
+              ],
+              frequentlyAskedIn: 'CBSE Class 11 Annual Exam & Commerce Boards',
+            },
+            {
+              id: 2,
+              marks: 3,
+              question: 'Pass journal entries for the following transactions:\n(a) Received ₹1,200 from Suresh which were written off as bad debts last year.\n(b) Goods costing ₹5,000 given away as charity.\n(c) Proprietor withdrew goods costing ₹3,000 for personal use.',
+              answer: '(a) Cash / Bank A/c Dr. ₹1,200\n      To Bad Debts Recovered A/c ₹1,200\n   (Being bad debts previously written off now recovered)\n\n(b) Charity A/c Dr. ₹5,000\n      To Purchases A/c ₹5,000\n   (Being goods given away as charity at cost)\n\n(c) Drawings A/c Dr. ₹3,000\n      To Purchases A/c ₹3,000\n   (Being goods withdrawn by proprietor for personal use)',
+              markingScheme: [
+                'Correct Bad debts recovery entry with narration (1 mark)',
+                'Correct Charity entry crediting Purchases with narration (1 mark)',
+                'Correct Drawings entry crediting Purchases with narration (1 mark)',
+              ],
+              frequentlyAskedIn: 'CBSE Class 11 Final Examination',
+            },
+            {
+              id: 3,
+              marks: 5,
+              question: 'Pass compound journal entries in the books of Sharma & Co.:\n(a) Sold goods to Rohit of list price ₹40,000 at 10% trade discount and 5% cash discount. Rohit paid 60% immediately by cheque.\n(b) Paid ₹9,800 to Mohan in full settlement of his account of ₹10,000 by cheque.',
+              answer: '(a) Calculation:\nList Price = ₹40,000\nLess: 10% Trade Discount = ₹4,000\nNet Invoice Price = ₹36,000\nCheque portion (60% of ₹36,000) = ₹21,600\nCash Discount allowed (5% of ₹21,600) = ₹1,080\nNet Cheque Received = ₹21,600 - ₹1,080 = ₹20,520\nCredit portion (40% of ₹36,000) = ₹14,400\n\nJournal Entry:\nBank A/c Dr. ₹20,520\nDiscount Allowed A/c Dr. ₹1,080\nRohit A/c Dr. ₹14,400\n      To Sales A/c ₹36,000\n(Being goods sold with trade and cash discount, 60% received by cheque)\n\n(b) Mohan Dr. ₹10,000\n      To Bank A/c ₹9,800\n      To Discount Received A/c ₹200\n(Being cheque paid to Mohan in full settlement of his account)',
+              markingScheme: [
+                'Working notes for trade discount and cash discount calculations (1 mark)',
+                'Correct compound sales journal entry with correct debit/credit values (2.5 marks)',
+                'Correct settlement journal entry with discount received (1.5 marks)',
+              ],
+              frequentlyAskedIn: 'CBSE Class 11 Annual Examination & Board Sample Papers',
+            },
+          ],
+        },
+      },
+      timestamps: [
+        { time: '02:15', seconds: 135, title: 'The 4-Step Framework for Any Journal Entry', summary: 'Identify accounts, classify, check balance increase/decrease, apply debit/credit rules.' },
+        { time: '07:30', seconds: 450, title: 'Golden Rules vs Modern Classification', summary: 'Personal, Real, Nominal rules compared with DEAD CLIC modern accounts.' },
+        { time: '13:00', seconds: 780, title: 'Trade Discount vs Cash Discount Accounting', summary: 'Net invoice recording vs Discount Allowed and Discount Received entries.' },
+        { time: '18:45', seconds: 1125, title: 'Compound Journal Entries & Banking Transactions', summary: 'Cheque deposits, partial settlements, and dual aspect balancing.' },
+      ],
+      flashcards: [
+        { id: 1, front: 'What are the 4 steps to solve ANY Journal Entry?', back: '1) Identify accounts involved. 2) Classify account type. 3) Determine increase or decrease. 4) Apply Debit/Credit rule and write narration.', concept: '4-Step Framework' },
+        { id: 2, front: 'What is the Golden Rule for Nominal Accounts?', back: 'Debit all expenses and losses; Credit all incomes and gains.', concept: 'Nominal Accounts' },
+        { id: 3, front: 'How is Trade Discount treated in accounting records?', back: 'Deducted directly from list price; NEVER recorded in any ledger or journal account.', concept: 'Trade Discount' },
+        { id: 4, front: 'What is the modern DEAD CLIC rule?', back: 'DEAD: Debit increases Expenses & Assets. CLIC: Credit increases Liabilities, Income, Capital.', concept: 'Modern Rules' },
+      ],
+      quiz: [
+        {
+          id: 1,
+          question: 'In the 4-step framework for solving journal entries, what is the first step?',
+          options: ['Identify which two or more accounts are involved in the transaction', 'Write the narration', 'Calculate cash discount', 'Post to the ledger'],
+          correctIndex: 0,
+          explanation: 'Step 1 is identifying the specific accounts (e.g. Cash, Sales, Mohan) affected by the business transaction.',
+          topic: '4-Step Framework',
+        },
+        {
+          id: 2,
+          question: 'Goods costing ₹10,000 given as charity should be credited to which account?',
+          options: ['Purchases Account', 'Charity Account', 'Sales Account', 'Cash Account'],
+          correctIndex: 0,
+          explanation: 'When goods are taken out of business without generating revenue (charity, drawings, free sample), Purchases A/c is credited at cost price.',
+          topic: 'Special Journal Entries',
+        },
+        {
+          id: 3,
+          question: 'Which of the following is true regarding Trade Discount?',
+          options: ['It is deducted from list price and never recorded separately in the ledger', 'It is debited to Discount Allowed A/c', 'It is credited to Discount Received A/c', 'It is only allowed on cheque payments'],
+          correctIndex: 0,
+          explanation: 'Trade discount is a price adjustment deducted on the invoice and is never recorded in any separate account.',
+          topic: 'Discount Rules',
+        },
+      ],
+      quickRevisionPoints: [
+        '4-Step Framework: Identify accounts → Classify type → Determine increase/decrease → Apply debit/credit.',
+        'Golden Rules: Personal (Dr Receiver, Cr Giver), Real (Dr In, Cr Out), Nominal (Dr Expenses, Cr Incomes).',
+        'Trade discount is never journalized; Cash discount is recorded in Discount Allowed (Dr) or Discount Received (Cr).',
+        'Goods given for personal use (Drawings) or charity must strictly be credited to Purchases A/c at cost price.',
+      ],
+    };
+  }
+
+  // 1. COMMERCE / ECONOMICS / BUSINESS
   if (
     sLower.includes('econo') || 
     sLower.includes('account') || 

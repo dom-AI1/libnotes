@@ -252,6 +252,55 @@ describe('User Audit Fixes Verification', () => {
       ).rejects.toThrow('This is not study material');
     });
   });
+
+  describe('Bug Fix 5: Automatic Accountancy Subject & Journal Entries Detection', () => {
+    it('analyzes Class 11 Accountancy Journal Entry video and produces genuine Accountancy notes', async () => {
+      const kit = await processEducationalLecture({
+        title: 'Accountancy: 4 Steps to Solve ANY Journal Entry Class 11 Accountancy',
+        subject: 'Accountancy',
+        academicClass: 'Class 11',
+        stream: 'Commerce',
+        chapter: '4 Steps to Solve ANY Journal Entry Class 11 Accountancy',
+        customTopic: '4 Steps to Solve ANY Journal Entry Class 11 Accountancy',
+        noteStyle: 'topper',
+        language: 'Hinglish',
+        sourceType: 'upload',
+        sourceIdentifier: 'vidssave.com 4 Steps to Solve ANY Journal Entry Class 11 Accountancy 720P.mp4',
+        fileSizeFormatted: '10.9 MB',
+      });
+
+      expect(kit.subject).toBe('Accountancy');
+      expect(kit.academicClass).toBe('Class 11');
+      expect(kit.stream).toBe('Commerce');
+
+      const contentStr = JSON.stringify(kit.content);
+      // Must contain authentic Accountancy concepts
+      expect(contentStr).toContain('Journal Entry');
+      expect(contentStr).toContain('Debit');
+      expect(contentStr).toContain('Credit');
+      expect(contentStr).toContain('Golden Rules');
+      expect(contentStr).toContain('Trade Discount');
+
+      // Must NOT contain Physics, Thermodynamics, or Economics
+      expect(contentStr).not.toContain('Thermodynamics');
+      expect(contentStr).not.toContain('Carnot');
+      expect(contentStr).not.toContain('Marginal Propensity to Consume');
+      expect(contentStr).not.toContain('Aggregate Demand');
+    });
+
+    it('detects Accountancy and Class 11 automatically from source filename', async () => {
+      const { detectLectureMetadataFromSource } = await import('../src/services/aiProcessingService');
+      const meta = detectLectureMetadataFromSource(
+        'vidssave.com 4 Steps to Solve ANY Journal Entry Class 11 Accountancy 720P.mp4',
+        'upload',
+        'vidssave.com 4 Steps to Solve ANY Journal Entry Class 11 Accountancy 720P'
+      );
+
+      expect(meta.subject).toBe('Accountancy');
+      expect(meta.academicClass).toBe('Class 11');
+      expect(meta.stream).toBe('Commerce');
+    });
+  });
 });
 
 

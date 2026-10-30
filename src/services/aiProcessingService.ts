@@ -78,10 +78,34 @@ export function detectLectureMetadataFromSource(
     };
   }
 
-  // 2. Check for Commerce / Economics
+  // 1.8 Check for Accountancy & Bookkeeping (Journal Entries, Ledger, Debit/Credit)
+  const isAccountancy = 
+    combined.includes('account') ||
+    combined.includes('journal') ||
+    combined.includes('ledger') ||
+    combined.includes('debit') ||
+    combined.includes('credit') ||
+    combined.includes('trial balance') ||
+    combined.includes('balance sheet') ||
+    combined.includes('depreciation') ||
+    combined.includes('partnership') ||
+    combined.includes('cash book') ||
+    combined.includes('bookkeeping');
+
+  if (isAccountancy) {
+    const isClass11 = combined.includes('11') || combined.includes('journal') || combined.includes('ledger') || combined.includes('debit');
+    return {
+      academicClass: isClass11 ? 'Class 11' : 'Class 12',
+      stream: 'Commerce',
+      subject: 'Accountancy',
+      chapter: customTopic || (isClass11 ? 'Journal Entries & Rules of Debit and Credit' : 'Partnership Fundamentals & Goodwill Valuation'),
+      detectedTopic: customTopic || 'Senior Secondary Accountancy',
+    };
+  }
+
+  // 2. Check for Economics & Commerce
   if (
     combined.includes('econo') ||
-    combined.includes('account') ||
     combined.includes('commerce') ||
     combined.includes('business') ||
     combined.includes('gdp') ||
@@ -93,11 +117,9 @@ export function detectLectureMetadataFromSource(
     return {
       academicClass: 'Class 12',
       stream: 'Commerce',
-      subject: combined.includes('account') ? 'Accountancy' : 'Economics',
-      chapter: customTopic || (combined.includes('account')
-        ? 'Partnership Fundamentals & Goodwill Valuation'
-        : 'National Income Accounting & Macroeconomics'),
-      detectedTopic: customTopic || 'Senior Secondary Commerce',
+      subject: 'Economics',
+      chapter: customTopic || 'National Income Accounting & Macroeconomics',
+      detectedTopic: customTopic || 'Senior Secondary Economics',
     };
   }
 
