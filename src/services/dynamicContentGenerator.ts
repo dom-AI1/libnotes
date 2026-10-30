@@ -1705,29 +1705,29 @@ export function buildDynamicKitContent(
         ],
       },
       chatpata: {
-        hinglishIntro: `Bhai dekho, ${chapter} bilkul rocket science nahi hai! Bas simple bhasha mein samjho: jitni energy doge, thoda hissa save hoga aur thoda hissa doston ke saath kharch hoga.`,
+        hinglishIntro: `Bhai dekho, ${chapter} ko bilkul simple Hinglish mein samajhte hain! Yeh ${subject} ka super-scoring chapter hai aur iske concepts ek baar dimaag mein baith gaye toh exam mein marks pakke hain.`,
         desiAnalogies: [
           {
-            concept: `${chapter} Core Law`,
-            analogy: 'Mummy ne Pocket Money di (dQ = ₹1000). Tumne ₹400 apni Gullak mein jama kiye (dU = Internal Energy), aur ₹600 se doston ke saath momos party kar li (dW = Work Done). Total barabar!',
-            desiPunchline: 'Gullak + Party = Mummy Ki Pocket Money!',
+            concept: `${chapter} Core Foundation`,
+            analogy: `Jaise daily life mein balance aur rules hote hain, waise hi ${subject} mein ${chapter} exact relationships follow karta hai. Bas inputs aur outputs ka hisaab theek rakho!`,
+            desiPunchline: `Fundamentals clear toh full marks guaranteed!`,
           },
           {
-            concept: 'Efficiency & Reality',
-            analogy: 'Yeh bilkul class ke topper jaisa hai — maximum 99% la sakta hai, lekin 100% full attendance aur zero loss phir bhi possible nahi hai.',
-            desiPunchline: '100% efficiency is myth, bro!',
+            concept: `Exam Scoring Trap in ${chapter}`,
+            analogy: `Examiner hamesha boundary values aur units mein ghumane ki koshish karta hai — jaise traffic police rule book check karti hai, waise hi har step pe formula aur dimensions verify karo.`,
+            desiPunchline: `Units aur steps hamesha dhyan se likho!`,
           },
         ],
         bhaiKaSummary: [
-          'Graph ka area = Kitna kaam hua. Clockwise matlab fayda, anti-clockwise matlab kharcha.',
-          'Formula short-code: "Captain - Vice Captain = Referee" (Cp - Cv = R).',
+          `Key concept 1: ${chapter} ke core formulas ko direct step-by-step apply karo.`,
+          `Key concept 2: Numerical problems mein given parameters aur final units verify karna mat bhoolna.`,
         ],
         jugaadPoints: [
-          'Agar question mein "sudden process" likha ho, toh aankh band karke ADIABATIC tick karna!',
+          `Board exam mein full marks ke liye definition ke saath formal diagram aur formula zaroor likhna!`,
         ],
       },
       chatpate: {
-        hinglishIntro: `Bhai dekho, ${chapter} bilkul simple hai!`,
+        hinglishIntro: `Bhai dekho, ${chapter} bilkul simple hai! Yeh ${subject} ka essential topic hai.`,
         desiAnalogies: [],
         bhaiKaSummary: [],
         jugaadPoints: [],

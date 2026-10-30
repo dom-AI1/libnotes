@@ -57,3 +57,4 @@ describe('Checkpoint 1: Mobile Responsiveness Verification across Viewports', ()
     expect(notesViewTsx).toContain('truncate max-w-[180px]');
   });
 });
+

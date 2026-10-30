@@ -24,10 +24,13 @@ export const DashboardView = ({
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedSubjectFilter, setSelectedSubjectFilter] = useState<string>('All');
 
-  // Filter studyKits strictly for this user if user is logged in
+  // Filter studyKits strictly for this user if user is logged in.
+  // Never show sample/guest kits as the user's converted notes.
   const userKits = user?.id
     ? studyKits.filter((k) => k.userId === user.id)
-    : studyKits;
+    : [];
+
+  const userGreeting = user?.display_name || (user?.email ? user.email.split('@')[0] : 'Learner');
 
   // Load quiz attempts for this specific user
   const [quizAttempts, setQuizAttempts] = useState(() => loadQuizAttempts(user?.id));
@@ -81,7 +84,7 @@ export const DashboardView = ({
             STUDENT DASHBOARD
           </span>
           <h1 className="font-mono-editorial text-3xl sm:text-4xl font-bold text-[#141414] mt-2">
-            Welcome back, {user?.display_name || 'Learner'}.
+            Welcome back, {userGreeting}.
           </h1>
           <p className="font-body text-sm sm:text-base text-[#5E5D57] mt-1">
             {userKits.length === 0

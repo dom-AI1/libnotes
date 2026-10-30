@@ -165,14 +165,27 @@ export function App() {
       } else if (hash.startsWith('#/reset-password') || hash.startsWith('#reset-password')) {
         setCurrentView('reset-password');
       } else if (hash.startsWith('#/dashboard') || hash.startsWith('#dashboard')) {
-        if (authInitialized && !user) {
-          window.location.hash = '#/login?redirect=%2Fdashboard';
-          setCurrentView('login');
-          showToast('Please log in to access your dashboard');
+        if (!authInitialized) {
+          return;
+        }
+        if (!user) {
+          window.location.hash = '#/signup?redirect=%2Fdashboard';
+          setCurrentView('signup');
+          showToast('Please sign up or log in to access your dashboard');
         } else {
           setCurrentView('dashboard');
         }
       } else if (hash.startsWith('#/notes') || hash.startsWith('#notes')) {
+        if (!authInitialized) {
+          return;
+        }
+        if (!user) {
+          const rawHash = hash.replace(/^#\/?/, '');
+          window.location.hash = `#/signup?redirect=%2F${encodeURIComponent(rawHash)}`;
+          setCurrentView('signup');
+          showToast('Please sign up or log in to access study workspace');
+          return;
+        }
         const urlParams = new URLSearchParams(hash.split('?')[1] || '');
         const id = urlParams.get('id');
         if (id) {
@@ -186,6 +199,15 @@ export function App() {
         }
         setCurrentView('notes');
       } else if (hash.startsWith('#/new-lecture') || hash.startsWith('#new-lecture')) {
+        if (!authInitialized) {
+          return;
+        }
+        if (!user) {
+          window.location.hash = '#/signup?redirect=%2Fnew-lecture';
+          setCurrentView('signup');
+          showToast('Please sign up or log in to generate notes');
+          return;
+        }
         setIsUploadOpen(true);
       } else {
         // Unknown route -> 404 page
@@ -341,11 +363,19 @@ export function App() {
   };
 
   const handleSelectSample = (sampleId: string) => {
+    if (!user) {
+      handleRequireAuth({ source: 'link', linkUrl: 'https://www.youtube.com/watch?v=sample-lecture', style: 'topper' });
+      return;
+    }
     navigateTo('notes', sampleId, 'full');
     showToast('Loaded sample study kit');
   };
 
   const handleFeatureCardClick = (cardType: 'learn' | 'exam' | 'quiz') => {
+    if (!user) {
+      handleRequireAuth({ source: 'link', linkUrl: 'https://www.youtube.com/watch?v=sample-lecture', style: 'topper' });
+      return;
+    }
     if (cardType === 'learn') {
       navigateTo('notes', 'kit-thermodynamics', 'full');
     } else if (cardType === 'exam') {
@@ -369,11 +399,14 @@ export function App() {
     };
     setStudyKits((prev) => [kitWithUser, ...prev.filter((k) => k.id !== kitWithUser.id)]);
     setActiveKitId(kitWithUser.id);
-    saveKitsToStorage([kitWithUser, ...studyKits], user?.id);
     if (user?.id) {
+      const owned = [kitWithUser, ...studyKits.filter((k) => k.userId === user.id && k.id !== kitWithUser.id)];
+      saveKitsToStorage(owned, user.id);
       syncStudyKitToSupabase(kitWithUser, user.id).catch((err: unknown) => {
         console.warn('[Libnotes App] Supabase sync deferred:', err);
       });
+    } else {
+      saveKitsToStorage([kitWithUser, ...studyKits]);
     }
     handleCloseUploadModal();
     navigateTo('notes', kitWithUser.id, 'full');
@@ -428,7 +461,13 @@ export function App() {
             />
             <FeatureCards onCardClick={handleFeatureCardClick} />
             <ProductPreview
-              onOpenWorkspace={() => navigateTo('notes', 'kit-thermodynamics')}
+              onOpenWorkspace={() => {
+                if (!user) {
+                  handleRequireAuth({ source: 'link', linkUrl: 'https://www.youtube.com/watch?v=sample-lecture', style: 'topper' });
+                } else {
+                  navigateTo('notes', 'kit-thermodynamics');
+                }
+              }}
             />
             <HowItWorks />
             <FinalCTA

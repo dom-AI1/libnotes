@@ -150,6 +150,16 @@ export const UploadModal = ({
     setIsDragging(false);
   };
 
+  const cleanFilenameToTopic = (filename: string): string => {
+    const withoutExt = filename.replace(/\.[^/.]+$/, '');
+    const cleaned = withoutExt
+      .replace(/^gemini_generated_video_[a-z0-9]+/i, '')
+      .replace(/^[a-z0-9_-]{8,}_/i, '')
+      .replace(/[_-]+/g, ' ')
+      .trim();
+    return cleaned;
+  };
+
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
     setIsDragging(false);
@@ -162,6 +172,11 @@ export const UploadModal = ({
       } else {
         setSelectedFile(file);
         setFileValidationMessage(null);
+        const derived = cleanFilenameToTopic(file.name);
+        if (derived && !customTopic) {
+          setCustomTopic(derived);
+          setChapter(derived);
+        }
       }
     }
   };
@@ -177,6 +192,11 @@ export const UploadModal = ({
     } else {
       setSelectedFile(file);
       setFileValidationMessage(null);
+      const derived = cleanFilenameToTopic(file.name);
+      if (derived && !customTopic) {
+        setCustomTopic(derived);
+        setChapter(derived);
+      }
     }
   };
 
@@ -255,19 +275,20 @@ export const UploadModal = ({
       const currentConfig = ACADEMIC_CURRICULUM[academicClass];
       const isAuto = autoDetect && !showManualSyllabus;
 
-      const effectiveChapter = customTopic.trim() || (isAuto ? undefined : chapter);
+      const effectiveChapter = customTopic.trim() || chapter || 'Key Lecture Principles';
+      const effectiveSubject = subject || 'Science';
       const effectiveTitle = customTopic.trim() 
-        ? `${subject}: ${customTopic.trim()}` 
-        : (isAuto ? undefined : `${subject}: ${chapter}`);
+        ? `${effectiveSubject}: ${customTopic.trim()}` 
+        : `${effectiveSubject}: ${effectiveChapter}`;
 
       const generatedKit = await processEducationalLecture(
         {
           title: effectiveTitle,
-          subject: isAuto ? undefined : subject,
-          academicClass: isAuto ? undefined : academicClass,
-          stream: isAuto ? undefined : (currentConfig.hasStreams ? stream : undefined),
+          subject: effectiveSubject,
+          academicClass: academicClass || 'Class 12',
+          stream: currentConfig.hasStreams ? stream : undefined,
           chapter: effectiveChapter,
-          customTopic: customTopic.trim() || undefined,
+          customTopic: customTopic.trim() || effectiveChapter,
           autoDetect: isAuto,
           noteStyle,
           language,
@@ -546,29 +567,75 @@ export const UploadModal = ({
                   </div>
                 ) : (
                   /* File Selected Display with Size and Remove Option */
-                  <div className="p-4 rounded-xl border-2 border-[#141414] bg-[#FFFFFF] shadow-[2px_2px_0px_#141414] flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-lg bg-[#E8F2DC] border border-[#141414] flex items-center justify-center">
-                        <FileVideo className="w-5 h-5 text-[#79A94A]" />
-                      </div>
-                      <div>
-                        <div className="text-sm font-bold font-mono text-[#141414] truncate max-w-sm">
-                          {selectedFile.name}
+                  <div className="space-y-3">
+                    <div className="p-4 rounded-xl border-2 border-[#141414] bg-[#FFFFFF] shadow-[2px_2px_0px_#141414] flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-lg bg-[#E8F2DC] border border-[#141414] flex items-center justify-center">
+                          <FileVideo className="w-5 h-5 text-[#79A94A]" />
                         </div>
-                        <div className="text-xs font-mono text-[#5E5D57]">
-                          Size: {formatFileSize(selectedFile.size)} • Ready for extraction
+                        <div>
+                          <div className="text-sm font-bold font-mono text-[#141414] truncate max-w-sm">
+                            {selectedFile.name}
+                          </div>
+                          <div className="text-xs font-mono text-[#5E5D57]">
+                            Size: {formatFileSize(selectedFile.size)} • Ready for extraction
+                          </div>
                         </div>
                       </div>
+
+                      <button
+                        type="button"
+                        onClick={() => setSelectedFile(null)}
+                        className="p-2 text-[#E05B49] hover:bg-[#FDEDE8] rounded-lg transition-colors border border-transparent hover:border-[#E05B49]"
+                        title="Remove file"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
                     </div>
 
-                    <button
-                      type="button"
-                      onClick={() => setSelectedFile(null)}
-                      className="p-2 text-[#E05B49] hover:bg-[#FDEDE8] rounded-lg transition-colors border border-transparent hover:border-[#E05B49]"
-                      title="Remove file"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </button>
+                    <div className="space-y-1.5 pt-1">
+                      <div className="flex items-center justify-between">
+                        <label className="block text-xs font-mono font-semibold text-[#141414] uppercase">
+                          Lecture Topic / Chapter Title
+                        </label>
+                        <span className="text-[10px] font-mono font-bold text-[#79A94A] bg-[#E8F2DC] px-2 py-0.5 rounded-full border border-[#79A94A]/30">
+                          RECOMMENDED
+                        </span>
+                      </div>
+                      <input
+                        type="text"
+                        value={customTopic}
+                        onChange={(e) => {
+                          setCustomTopic(e.target.value);
+                          setChapter(e.target.value);
+                        }}
+                        placeholder="e.g. Thermodynamics, SN1 vs SN2 Mechanisms, DNA Replication, Calculus Derivatives"
+                        className="w-full h-10 px-3.5 rounded-xl border border-[#141414]/30 bg-[#FFFFFF] text-xs font-body text-[#141414] focus:outline-none focus:ring-1 focus:ring-[#79A94A] focus:border-[#79A94A]"
+                      />
+                      <div className="flex flex-wrap items-center gap-1.5 pt-1">
+                        <span className="text-[11px] font-mono text-[#8A8880] mr-1">Subject:</span>
+                        {(['Physics', 'Chemistry', 'Biology', 'Mathematics', 'Computer Science', 'Economics', 'History'] as Subject[]).map((subj) => (
+                          <button
+                            key={subj}
+                            type="button"
+                            onClick={() => {
+                              setSubject(subj);
+                              if (!customTopic) {
+                                setCustomTopic(subj);
+                                setChapter(subj);
+                              }
+                            }}
+                            className={`text-[10px] font-mono px-2 py-0.5 rounded-md border transition-all ${
+                              subject === subj
+                                ? 'bg-[#E8F2DC] text-[#141414] border-[#79A94A] font-bold shadow-xs'
+                                : 'bg-[#FCFAF6] text-[#5E5D57] border-[#141414]/20 hover:border-[#141414]'
+                            }`}
+                          >
+                            {subj}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
                   </div>
                 )}
 

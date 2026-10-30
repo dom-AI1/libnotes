@@ -26,7 +26,9 @@ export function loadSavedKits(userId?: string): StudyKit[] {
       const rawUser = localStorage.getItem(userKey);
       if (rawUser) {
         const parsed = JSON.parse(rawUser);
-        if (Array.isArray(parsed)) return parsed;
+        if (Array.isArray(parsed)) {
+          return parsed.filter((k: StudyKit) => k.userId === userId);
+        }
       }
 
       // Check general storage filtered by userId
@@ -61,7 +63,7 @@ export function saveKitsToStorage(kits: StudyKit[], userId?: string): boolean {
   try {
     if (userId) {
       const userKey = `${STORAGE_KEY_KITS}_${userId}`;
-      const userKits = kits.filter((k) => !k.userId || k.userId === userId);
+      const userKits = kits.filter((k) => k.userId === userId);
       localStorage.setItem(userKey, JSON.stringify(userKits));
     }
     localStorage.setItem(STORAGE_KEY_KITS, JSON.stringify(kits));
