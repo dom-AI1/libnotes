@@ -35,6 +35,9 @@ export function isNonEducationalSource(text: string): boolean {
   }
 
   const nonStudyPatterns = [
+    // AI generated clips, non-lecture synthetic videos & screen tests
+    /\b(gemini\s*generated\s*video|ai\s*generated\s*video|generated\s*video|random\s*clip|untitled\s*video|sample\s*clip)\b/i,
+
     // Gaming & Esports
     /\b(gameplay|playthrough|walkthrough|speedrun|streamer|esports|twitch)\b/i,
     /\b(fortnite|minecraft|roblox|gta\s*5|gta\s*v|gta\s*6|valorant|pubg|call of duty|apex legends|free fire|clash royale)\b/i,

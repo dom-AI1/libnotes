@@ -20,7 +20,7 @@ describe('User Audit Fixes Verification', () => {
         noteStyle: 'chatpata',
         language: 'Hinglish',
         sourceType: 'upload',
-        sourceIdentifier: 'gemini_generated_video_3d9252f1.mp4',
+        sourceIdentifier: 'chemistry_kinetics_lecture.mp4',
         fileSizeFormatted: '7.6 MB',
       });
 
@@ -66,7 +66,7 @@ describe('User Audit Fixes Verification', () => {
         noteStyle: 'quick',
         language: 'English',
         sourceType: 'upload',
-        sourceIdentifier: 'gemini_generated_video_3d9252f1.mp4',
+        sourceIdentifier: 'cs_binary_search_lecture.mp4',
         fileSizeFormatted: '15.2 MB',
       });
 
@@ -175,7 +175,7 @@ describe('User Audit Fixes Verification', () => {
         noteStyle: 'topper',
         language: 'English',
         sourceType: 'upload',
-        sourceIdentifier: 'gemini_generated_video_3d9252f1.mp4',
+        sourceIdentifier: 'physics_ray_optics_lecture.mp4',
         fileSizeFormatted: '8.4 MB',
       });
 
@@ -239,6 +239,17 @@ describe('User Audit Fixes Verification', () => {
 
       expect(result).toBeDefined();
       expect(result.subject).toBe('Economics');
+    });
+
+    it('detects gemini_generated_video as non-study material and rejects it', async () => {
+      const { analyzeEducationalMedia } = await import('../src/services/videoAnalysisService');
+
+      await expect(
+        analyzeEducationalMedia({
+          sourceType: 'upload',
+          sourceIdentifier: 'gemini_generated_video_3d9252f1.mp4',
+        })
+      ).rejects.toThrow('This is not study material');
     });
   });
 });
