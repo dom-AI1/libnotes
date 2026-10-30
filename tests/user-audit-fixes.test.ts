@@ -126,5 +126,67 @@ describe('User Audit Fixes Verification', () => {
       expect(otherUserLoaded.length).toBe(0);
     });
   });
+
+  describe('Bug Fix 3: Resilience against Undefined Properties & Non-Thermodynamics Physics', () => {
+    it('formatPdfFilename handles undefined/null subject or chapter without throwing', async () => {
+      const { formatPdfFilename } = await import('../src/services/pdfExportService');
+      expect(() => formatPdfFilename(undefined as any, undefined as any)).not.toThrow();
+      expect(formatPdfFilename(undefined as any, undefined as any)).toBe('Study_Notes.pdf');
+      expect(formatPdfFilename(null as any, null as any, 'topper')).toBe('Study_Notes_TOPPER.pdf');
+    });
+
+    it('mapSupabaseRowToKit populates robust fallbacks for null row properties', async () => {
+      const { mapSupabaseRowToKit } = await import('../src/services/supabaseService');
+      const mapped = mapSupabaseRowToKit({
+        id: 'test-row-1',
+        title: null as any,
+        subject: null as any,
+        academic_class: null as any,
+        chapter: null as any,
+        duration: null as any,
+        video_url: null,
+        file_name: null,
+        file_size: null,
+        date_created: '2026-10-30',
+        note_style: null as any,
+        language: null as any,
+        content: null,
+        timestamps: null,
+        flashcards: null,
+        quiz: null,
+        quick_revision_points: null,
+      });
+
+      expect(mapped.title).toBe('Untitled Lecture');
+      expect(mapped.subject).toBe('General');
+      expect(mapped.chapter).toBe('Lecture Notes');
+      expect(mapped.content).toEqual({});
+      expect(mapped.timestamps).toEqual([]);
+      expect(mapped.quiz).toEqual([]);
+    });
+
+    it('generates authentic Ray Optics notes for Physics without injecting Thermodynamics', async () => {
+      const kit = await processEducationalLecture({
+        title: 'Physics: Ray Optics & Snell Law',
+        subject: 'Physics',
+        academicClass: 'Class 12',
+        chapter: 'Ray Optics & Snell Law',
+        customTopic: 'Ray Optics & Snell Law',
+        noteStyle: 'topper',
+        language: 'English',
+        sourceType: 'upload',
+        sourceIdentifier: 'gemini_generated_video_3d9252f1.mp4',
+        fileSizeFormatted: '8.4 MB',
+      });
+
+      expect(kit.subject).toBe('Physics');
+      expect(kit.chapter).toBe('Ray Optics & Snell Law');
+      const contentStr = JSON.stringify(kit.content);
+      expect(contentStr).not.toContain('Carnot Cycle');
+      expect(contentStr).not.toContain('Kelvin-Planck');
+      expect(contentStr).not.toContain('dQ = dU + dW');
+    });
+  });
 });
+
 

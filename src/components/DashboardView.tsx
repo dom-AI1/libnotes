@@ -46,7 +46,7 @@ export const DashboardView = ({
     }
   }, [user?.id]);
 
-  const subjectCount = new Set(userKits.map((k) => k.subject)).size;
+  const subjectCount = new Set(userKits.map((k) => k.subject).filter(Boolean)).size;
   const totalQuizSets = quizAttempts.length;
   const avgAccuracy =
     totalQuizSets > 0
@@ -57,13 +57,14 @@ export const DashboardView = ({
       : 0;
 
   const uniqueWeakTopics = Array.from(
-    new Set(quizAttempts.flatMap((a) => a.weakTopics))
+    new Set(quizAttempts.flatMap((a) => a.weakTopics || []))
   );
 
   const filteredKits = userKits.filter((kit) => {
-    const matchesSearch =
-      kit.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      kit.chapter.toLowerCase().includes(searchQuery.toLowerCase());
+    const title = (kit.title || '').toLowerCase();
+    const chapter = (kit.chapter || '').toLowerCase();
+    const query = (searchQuery || '').toLowerCase();
+    const matchesSearch = title.includes(query) || chapter.includes(query);
     const matchesSubject =
       selectedSubjectFilter === 'All' || kit.subject === selectedSubjectFilter;
     return matchesSearch && matchesSubject;
@@ -71,7 +72,7 @@ export const DashboardView = ({
 
   const availableSubjects = [
     'All',
-    ...Array.from(new Set(userKits.map((k) => k.subject))),
+    ...Array.from(new Set(userKits.map((k) => k.subject).filter(Boolean))),
   ];
 
   return (
@@ -260,7 +261,7 @@ export const DashboardView = ({
                     </div>
 
                     <p className="text-xs font-body text-[#4A4944] line-clamp-2 mb-4">
-                      {(kit.content.quick || kit.content.minimal)?.headline}
+                      {kit?.content?.quick?.headline || kit?.content?.minimal?.headline || kit?.content?.topper?.introduction || kit?.title || 'Lecture study kit'}
                     </p>
                   </div>
 

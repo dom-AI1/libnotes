@@ -49,7 +49,7 @@ export const UploadModal = ({
   const [academicClass, setAcademicClass] = useState<AcademicClass>('Class 12');
   const [stream, setStream] = useState<string>('Science');
   const [subject, setSubject] = useState<Subject>('Physics');
-  const [chapter, setChapter] = useState('Thermodynamics & Heat Engines');
+  const [chapter, setChapter] = useState('');
   const [language, setLanguage] = useState<Language>('Hinglish');
   const [autoDetect, setAutoDetect] = useState(true);
   const [showManualSyllabus, setShowManualSyllabus] = useState(false);
@@ -275,11 +275,32 @@ export const UploadModal = ({
       const currentConfig = ACADEMIC_CURRICULUM[academicClass];
       const isAuto = autoDetect && !showManualSyllabus;
 
-      const effectiveChapter = customTopic.trim() || chapter || 'Key Lecture Principles';
-      const effectiveSubject = subject || 'Science';
-      const effectiveTitle = customTopic.trim() 
-        ? `${effectiveSubject}: ${customTopic.trim()}` 
-        : `${effectiveSubject}: ${effectiveChapter}`;
+      let resolvedTopic = customTopic.trim();
+      let resolvedSubject = subject;
+      let resolvedChapter = chapter.trim();
+
+      if (sourceType === 'link' && !resolvedTopic) {
+        try {
+          const fetchedTitle = await fetchVideoTitleFromUrl(videoLink);
+          if (fetchedTitle) {
+            resolvedTopic = fetchedTitle;
+            resolvedChapter = fetchedTitle;
+            const detected = detectLectureMetadataFromSource(videoLink, 'link', fetchedTitle);
+            resolvedSubject = detected.subject;
+          }
+        } catch {
+          // ignore title fetch failure
+        }
+      }
+
+      if (sourceType === 'upload' && !resolvedTopic && selectedFile) {
+        resolvedTopic = cleanFilenameToTopic(selectedFile.name);
+        resolvedChapter = resolvedTopic;
+      }
+
+      const effectiveChapter = resolvedTopic || resolvedChapter || 'Lecture Concept Analysis';
+      const effectiveSubject = resolvedSubject || 'Physics';
+      const effectiveTitle = `${effectiveSubject}: ${effectiveChapter}`;
 
       const generatedKit = await processEducationalLecture(
         {
@@ -288,7 +309,7 @@ export const UploadModal = ({
           academicClass: academicClass || 'Class 12',
           stream: currentConfig.hasStreams ? stream : undefined,
           chapter: effectiveChapter,
-          customTopic: customTopic.trim() || effectiveChapter,
+          customTopic: effectiveChapter,
           autoDetect: isAuto,
           noteStyle,
           language,
@@ -599,7 +620,7 @@ export const UploadModal = ({
                           Lecture Topic / Chapter Title
                         </label>
                         <span className="text-[10px] font-mono font-bold text-[#79A94A] bg-[#E8F2DC] px-2 py-0.5 rounded-full border border-[#79A94A]/30">
-                          RECOMMENDED
+                          CUSTOMIZE NOTES
                         </span>
                       </div>
                       <input
@@ -609,31 +630,56 @@ export const UploadModal = ({
                           setCustomTopic(e.target.value);
                           setChapter(e.target.value);
                         }}
-                        placeholder="e.g. Thermodynamics, SN1 vs SN2 Mechanisms, DNA Replication, Calculus Derivatives"
+                        placeholder="e.g. Wave Optics, Chemical Kinetics, Cell Division, Calculus Derivatives"
                         className="w-full h-10 px-3.5 rounded-xl border border-[#141414]/30 bg-[#FFFFFF] text-xs font-body text-[#141414] focus:outline-none focus:ring-1 focus:ring-[#79A94A] focus:border-[#79A94A]"
                       />
-                      <div className="flex flex-wrap items-center gap-1.5 pt-1">
-                        <span className="text-[11px] font-mono text-[#8A8880] mr-1">Subject:</span>
-                        {(['Physics', 'Chemistry', 'Biology', 'Mathematics', 'Computer Science', 'Economics', 'History'] as Subject[]).map((subj) => (
-                          <button
-                            key={subj}
-                            type="button"
-                            onClick={() => {
-                              setSubject(subj);
-                              if (!customTopic) {
-                                setCustomTopic(subj);
-                                setChapter(subj);
-                              }
-                            }}
-                            className={`text-[10px] font-mono px-2 py-0.5 rounded-md border transition-all ${
-                              subject === subj
-                                ? 'bg-[#E8F2DC] text-[#141414] border-[#79A94A] font-bold shadow-xs'
-                                : 'bg-[#FCFAF6] text-[#5E5D57] border-[#141414]/20 hover:border-[#141414]'
-                            }`}
-                          >
-                            {subj}
-                          </button>
-                        ))}
+                      <div className="space-y-1.5 pt-1">
+                        <div className="flex flex-wrap items-center gap-1.5">
+                          <span className="text-[11px] font-mono text-[#8A8880] mr-1">Subject:</span>
+                          {(['Physics', 'Chemistry', 'Biology', 'Mathematics', 'Computer Science', 'Economics', 'History'] as Subject[]).map((subj) => (
+                            <button
+                              key={subj}
+                              type="button"
+                              onClick={() => {
+                                setSubject(subj);
+                                if (!customTopic) {
+                                  setCustomTopic(`${subj} Lecture Concepts`);
+                                  setChapter(`${subj} Lecture Concepts`);
+                                }
+                              }}
+                              className={`text-[10px] font-mono px-2 py-0.5 rounded-md border transition-all ${
+                                subject === subj
+                                  ? 'bg-[#E8F2DC] text-[#141414] border-[#79A94A] font-bold shadow-xs'
+                                  : 'bg-[#FCFAF6] text-[#5E5D57] border-[#141414]/20 hover:border-[#141414]'
+                              }`}
+                            >
+                              {subj}
+                            </button>
+                          ))}
+                        </div>
+                        <div className="flex flex-wrap items-center gap-1.5 pt-0.5">
+                          <span className="text-[11px] font-mono text-[#8A8880] mr-1">Quick Topics:</span>
+                          {[
+                            { label: 'Optics & Light', subj: 'Physics' as Subject, topic: 'Ray & Wave Optics' },
+                            { label: 'Kinetics & Reactions', subj: 'Chemistry' as Subject, topic: 'Chemical Kinetics & Reactions' },
+                            { label: 'DNA & Genetics', subj: 'Biology' as Subject, topic: 'Molecular Genetics & DNA' },
+                            { label: 'Calculus', subj: 'Mathematics' as Subject, topic: 'Calculus: Derivatives & Integrals' },
+                            { label: 'DSA / Algorithms', subj: 'Computer Science' as Subject, topic: 'Data Structures & Algorithms' },
+                          ].map((t) => (
+                            <button
+                              key={t.label}
+                              type="button"
+                              onClick={() => {
+                                setSubject(t.subj);
+                                setCustomTopic(t.topic);
+                                setChapter(t.topic);
+                              }}
+                              className="text-[10px] font-mono px-2 py-0.5 rounded-md border border-[#79A94A]/40 bg-[#E8F2DC]/60 text-[#141414] hover:bg-[#E8F2DC] transition-all"
+                            >
+                              {t.label}
+                            </button>
+                          ))}
+                        </div>
                       </div>
                     </div>
                   </div>

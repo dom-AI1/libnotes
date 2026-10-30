@@ -637,10 +637,10 @@ export async function analyzeEducationalMedia(
     ];
   }
   // ==========================================
-  // CASE G: DYNAMIC TOPIC SYNTHESIZER (For any custom lecture)
+  // CASE G: DYNAMIC TOPIC SYNTHESIZER (For any custom or non-thermodynamics lecture)
   // ==========================================
-  else if (customTopic && !rawCombined.includes('thermo') && subject !== 'Physics') {
-    const cleanTopicName = customTopic.trim();
+  else if (!rawCombined.includes('thermo') && !chapter.toLowerCase().includes('thermo')) {
+    const cleanTopicName = (customTopic || chapter || 'Lecture Key Concepts').trim();
     topicsCovered = [
       `Foundations & Core Principles of ${cleanTopicName}`,
       `Analytical Framework & Primary Formulations in ${cleanTopicName}`,

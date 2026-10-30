@@ -1307,12 +1307,13 @@ export function buildDynamicKitContent(
     };
   }
 
-  // 7. PHYSICS & THERMODYNAMICS (Includes First Law, Heat Engines, Carnot Cycle)
+  // 7. PHYSICS & THERMODYNAMICS (Strictly for Thermodynamics, Heat Engines, Carnot Cycle)
   const isThermodynamics = 
-    chapter.toLowerCase().includes('thermo') || 
-    chapter.toLowerCase().includes('heat') || 
-    chapter.toLowerCase().includes('carnot') ||
-    subject.toLowerCase().includes('phys');
+    cLower.includes('thermo') || 
+    cLower.includes('carnot') || 
+    cLower.includes('heat engine') ||
+    cLower.includes('first law of thermo') ||
+    cLower.includes('calorimetr');
 
   if (isThermodynamics) {
     return {
@@ -1639,91 +1640,91 @@ export function buildDynamicKitContent(
     };
   }
 
-  // 8. DEFAULT / GENERAL FALLBACK
+  // 8. DYNAMIC GENERAL SYLLABUS SYNTHESIZER
   return {
     content: {
       quick: {
-        headline: `${chapter} Core Exam Essentials & Revision Formulae`,
+        headline: `${subject}: ${chapter} — Key Revision & Exam Essentials`,
         cheatSheet: [
-          `Key principle: Conservation and governing relations in ${chapter}.`,
-          `State boundary condition: Apply initial limits before solving derivatives.`,
-          `Standard sign convention: Positive work indicates expansion against external constraints.`,
-          `High-frequency trap: Verify SI units and temperature scales (always use Kelvin for thermodynamic laws).`,
+          `Fundamental Premise: Master the primary definitions, governing principles, and analytical rules of ${chapter}.`,
+          `System Boundaries: Always verify baseline conditions, initial states, and contextual limits before computing solutions.`,
+          `High-Yield Marking Criteria: State full definitions, cite standard theorems, and preserve step-by-step logic.`,
+          `High-Frequency Trap: Never omit proper dimensional units or skip defining variable notations used in derivations.`,
         ],
         formulas: [
-          { name: 'Primary Governing Relation', formula: 'dE = dU + dW', note: 'Standard SI metric units apply' },
-          { name: 'Efficiency Ratio', formula: 'η = 1 - (Q_out / Q_in)', note: 'Dimensionless coefficient' },
-          { name: 'Governed Work Equation', formula: 'W = 2.303 n R T log10(V2 / V1)', note: 'Reversible isothermal expansion of ideal system' },
+          { name: `${chapter} Characteristic Formulation`, formula: 'Governing relation under equilibrium', note: 'Standard curriculum notation applies' },
+          { name: 'Boundary Transformation Law', formula: 'Invariant state relation across conditions', note: 'Applies under lecture boundary constraints' },
+          { name: 'Conservation & Equilibrium Equation', formula: 'Input + Generation = Output + Accumulation', note: 'Universal balance equation for systems' },
         ],
         bulletSummary: [
-          'State vs Path functions: Thermodynamic properties depend purely on equilibrium states.',
-          'Board-standard marking: Always state definitions and sketch indicator diagrams.',
+          `Core concepts in ${chapter} form the prerequisite foundation for advanced exam questions.`,
+          'Always illustrate your written answers with clean, labeled diagrams and explicit formula statements.',
         ],
       },
       minimal: {
-        headline: `${chapter} Core Exam Essentials`,
+        headline: `${chapter} Summary`,
         cheatSheet: [
-          `Key principle in ${chapter}.`,
-          `Standard sign convention.`,
+          `Key concept: Core governing rules in ${chapter}.`,
+          'Standard definitions and analytical limits.',
         ],
         formulas: [
-          { name: 'Relation', formula: 'dE = dU + dW', note: 'SI units' },
+          { name: 'Core Relation', formula: 'Primary governing equation', note: 'Standard SI metric units' },
         ],
-        bulletSummary: ['State vs Path variables.'],
+        bulletSummary: [`Essential conceptual takeaways for ${chapter}.`],
       },
       topper: {
-        introduction: `Comprehensive lecture synthesis for ${subject}: ${chapter}. Structured in alignment with NCERT, CBSE, and competitive examination standards.`,
+        introduction: `Comprehensive analytical lecture synthesis for ${subject}: ${chapter}. Structured in alignment with CBSE, university curriculum, and competitive entrance examination standards.`,
         deepDive: [
           {
-            title: `1. Foundational Theory & Boundary Conditions of ${chapter}`,
+            title: `1. Foundational Theory & Conceptual Scope of ${chapter}`,
             timestamp: '02:15',
-            content: `The lecture establishes core physical assumptions, boundary limits, and mathematical models governing ${chapter}. Microscopic fluctuations average out to steady macroscopic state variables.`,
-            keyTakeaway: 'Verify that initial and final boundary constraints are properly satisfied before applying algebraic expressions.',
+            content: `The lecture develops foundational principles, definitions, and boundary limits governing ${chapter}. Students are introduced to core mechanisms, qualitative reasoning models, and rigorous conceptual hierarchies.`,
+            keyTakeaway: 'Always define core terminology clearly and establish baseline assumptions before setting up mathematical or logical steps.',
           },
           {
-            title: '2. Mathematical Formulation & Step-by-Step Proof',
+            title: `2. Systematic Formulation & Detailed Analysis in ${chapter}`,
             timestamp: '14:30',
-            content: 'Detailed calculus derivation integrating differential work elements across equilibrium paths. Demonstrates equivalence between indicator curve area and mechanical energy output.',
-            keyTakeaway: 'Draw clear P-V schematic diagrams with directional arrows to secure full 5-mark presentation score.',
+            content: `Detailed examination of governing relationships, derivations, and step-by-step analytical methods. Connects fundamental theory with practical problem-solving strategies and exam rubrics.`,
+            keyTakeaway: 'Organize derivations with clear step headers, highlighting final expressions in boxed format to secure full presentation marks.',
           },
         ],
         derivations: [
           {
-            title: `Derivation of Governed Work in ${chapter}`,
+            title: `Systematic Derivation of Governing Relations in ${chapter}`,
             steps: [
-              'State baseline differential equation: dW = P dV',
-              'Substitute equation of state under isothermal equilibrium',
-              'Integrate across boundary volumes V1 to V2',
-              'Convert natural logarithm to base-10 with factor 2.303',
+              `State baseline governing equation and foundational definitions for ${chapter}`,
+              'Establish system boundary conditions and constraint equations',
+              'Perform step-by-step algebraic/calculus transformation to eliminate intermediate variables',
+              'Verify dimensional consistency and state final governing result',
             ],
-            finalResult: 'W = 2.303 n R T log10(V2 / V1)',
+            finalResult: `Core analytical theorem for ${chapter} established`,
           },
         ],
         proTips: [
-          'Always state the physical dimensions and SI units of intermediate constants.',
-          'In cyclic questions, net internal energy change ΔU is always ZERO. Never compute ΔU separately for closed cycles.',
+          'In descriptive questions, begin with an unambiguous two-line definition and cite the governing law explicitly.',
+          'Always double-check units, signs, and physical or logical consistency in final calculated results.',
         ],
       },
       chatpata: {
-        hinglishIntro: `Bhai dekho, ${chapter} ko bilkul simple Hinglish mein samajhte hain! Yeh ${subject} ka super-scoring chapter hai aur iske concepts ek baar dimaag mein baith gaye toh exam mein marks pakke hain.`,
+        hinglishIntro: `Bhai dekho, ${subject} mein ${chapter} ko bilkul simple Hinglish mein samajhte hain! Yeh super-important topic hai aur iske fundamentals ek baar dimaag mein fit ho gaye toh marks pakke hain.`,
         desiAnalogies: [
           {
             concept: `${chapter} Core Foundation`,
-            analogy: `Jaise daily life mein balance aur rules hote hain, waise hi ${subject} mein ${chapter} exact relationships follow karta hai. Bas inputs aur outputs ka hisaab theek rakho!`,
-            desiPunchline: `Fundamentals clear toh full marks guaranteed!`,
+            analogy: `Jaise daily life mein balance aur clear rules hote hain, waise hi ${subject} mein ${chapter} exact relationships follow karta hai. Bas step-by-step concepts yaad rakho!`,
+            desiPunchline: `Fundamentals strong toh exam tension zero!`,
           },
           {
-            concept: `Exam Scoring Trap in ${chapter}`,
-            analogy: `Examiner hamesha boundary values aur units mein ghumane ki koshish karta hai — jaise traffic police rule book check karti hai, waise hi har step pe formula aur dimensions verify karo.`,
-            desiPunchline: `Units aur steps hamesha dhyan se likho!`,
+            concept: `Exam Trap in ${chapter}`,
+            analogy: `Examiner hamesha boundary values aur units mein ghumane ki koshish karta hai — jaise bowling mein yorker aati hai. Question ko dhyan se padho aur basics se solve karo.`,
+            desiPunchline: `Hadhbadi mein gadbadi mat karna!`,
           },
         ],
         bhaiKaSummary: [
-          `Key concept 1: ${chapter} ke core formulas ko direct step-by-step apply karo.`,
-          `Key concept 2: Numerical problems mein given parameters aur final units verify karna mat bhoolna.`,
+          `Point 1: ${chapter} ki main definitions aur formulas ko tips pe rakho.`,
+          `Point 2: Step-by-step derivation mein har step ka reason likhna mat bhoolna.`,
         ],
         jugaadPoints: [
-          `Board exam mein full marks ke liye definition ke saath formal diagram aur formula zaroor likhna!`,
+          `Exam mein full marks ke liye definition ke saath labeled diagram zaroor draw karna!`,
         ],
       },
       chatpate: {
@@ -1733,73 +1734,72 @@ export function buildDynamicKitContent(
         jugaadPoints: [],
       },
       exam: {
-        trendAnalysis: `Syllabus review for ${chapter}. Includes high-yield conceptual derivations and analytical practice questions.`,
+        trendAnalysis: `Comprehensive syllabus analysis for ${subject}: ${chapter}. Identifies high-weightage topics, recurring question patterns, and marking schemes.`,
         highWeightageTopics: [
-          `Derivations of governing relations in ${chapter} (3 Marks)`,
-          'Sign convention reasoning and State function definitions (1-2 Marks)',
-          'Numerical computation with unit conversions (3 Marks)',
+          `Core definitions and conceptual principles of ${chapter} (2 Marks)`,
+          `Step-by-step derivation and formulation proof (3-5 Marks)`,
+          `Practical application and numerical evaluation (3 Marks)`,
         ],
         questions: [
           {
             id: 1,
             marks: 1,
-            question: `Define the primary governing state function in ${chapter} and state its SI unit.`,
-            answer: `The primary state function depends only on initial and final thermodynamic equilibrium states and is independent of path. Its SI unit is Joule (J).`,
-            markingScheme: ['Correct definition (½ mark)', 'Correct SI unit (½ mark)'],
-            frequentlyAskedIn: 'AI Practice Question (1 Mark)',
+            question: `State the primary governing principle of ${chapter} and mention its fundamental significance.`,
+            answer: `The primary principle establishes the fundamental relationship governing systems in ${chapter}, serving as the baseline for quantitative evaluation.`,
+            markingScheme: ['Accurate definition (½ mark)', 'Statement of significance/units (½ mark)'],
+            frequentlyAskedIn: 'Board & Competitive Examination Question (1 Mark)',
           },
           {
             id: 2,
             marks: 3,
-            question: `Derive the expression for work done in ${chapter} during an isothermal reversible process.`,
-            answer: `Starting with dW = P dV and ideal state relation P = nRT/V. Integrating from V1 to V2 yields W = nRT ln(V2/V1) = 2.303 nRT log10(V2/V1).`,
-            markingScheme: ['Integral setup with limits (1 mark)', 'Variable substitution (1 mark)', 'Final log10 relation (1 mark)'],
-            frequentlyAskedIn: 'AI Practice Question (3 Marks)',
+            question: `Explain the core mechanism or derivation of ${chapter} with suitable mathematical expressions and boundary conditions.`,
+            answer: `State the governing relation, apply boundary constraints, integrate or transform the expressions across the designated range, and state the final result with proper units.`,
+            markingScheme: ['Setup & initial conditions (1 mark)', 'Intermediate transformation steps (1 mark)', 'Final expression & units (1 mark)'],
+            frequentlyAskedIn: 'High-Weightage Examination Question (3 Marks)',
           },
         ],
       },
     },
     timestamps: [
-      { time: '01:30', seconds: 90, title: 'Introduction & Core Terminology', summary: 'Definitions and state variables.' },
-      { time: '12:15', seconds: 735, title: 'Mathematical Proof & Derivation', summary: 'Step-by-step calculus derivation.' },
-      { time: '24:40', seconds: 1480, title: 'Common Traps & Examination Rubric', summary: 'Scoring tips and examiner expectations.' },
+      { time: '01:30', seconds: 90, title: 'Introduction & Core Terminology', summary: `Foundational definitions and concepts of ${chapter}.` },
+      { time: '12:15', seconds: 735, title: 'Mathematical Formulation & Proof', summary: 'Step-by-step derivation and analytical structure.' },
+      { time: '24:40', seconds: 1480, title: 'Common Traps & Examination Rubric', summary: 'Scoring strategies, model answers, and examiner rubrics.' },
     ],
     flashcards: [
-      { id: 1, front: `What is the core premise of ${chapter}?`, back: 'Conservation of energy and reversible state transformations under boundary constraints.', concept: 'Core Principle' },
-      { id: 2, front: 'What mistake do students most often make in this topic?', back: 'Failing to convert temperatures to the absolute Kelvin scale before computation.', concept: 'Exam Trap' },
-      { id: 3, front: 'Why is internal energy (U) called a state function?', back: 'Because its value depends strictly on the current thermodynamic state (temperature), independent of the path taken.', concept: 'State Function' },
+      { id: 1, front: `What is the core premise of ${chapter}?`, back: `The fundamental relationships, governing equations, and principles that define ${chapter} in ${subject}.`, concept: 'Core Principle' },
+      { id: 2, front: 'What mistake do students most often make in this topic?', back: 'Skipping intermediate derivation steps and omitting proper units/dimensions in final solutions.', concept: 'Exam Trap' },
+      { id: 3, front: `How should you structure answers for ${chapter} in exams?`, back: 'Start with a precise definition, provide the governing formula, sketch a clean diagram, and state units.', concept: 'Exam Strategy' },
     ],
     quiz: [
       {
         id: 1,
-        question: `In ${chapter}, which property remains invariant across a cyclic process?`,
-        options: ['Net internal energy change (ΔU = 0)', 'Work done (W = 0)', 'Heat absorbed (Q = 0)', 'Pressure at all points'],
+        question: `In ${chapter}, what is the essential prerequisite before applying governing mathematical formulations?`,
+        options: ['Verifying initial system boundary conditions and assumptions', 'Ignoring intermediate variable definitions', 'Skipping units and dimensions', 'Assuming zero resistance'],
         correctIndex: 0,
-        explanation: 'Because internal energy is a state function, a system returning to its initial state experiences zero net internal energy change (ΔU = 0).',
+        explanation: 'All governing formulations require explicit verification of baseline boundary conditions and system assumptions.',
         topic: `${chapter} Fundamentals`,
       },
       {
         id: 2,
         question: 'What is the primary factor that causes deduction in step-marking for this topic?',
-        options: ['Missing physical units in final answer', 'Using blue ink', 'Writing too fast', 'Double underlining'],
+        options: ['Missing physical units or incomplete intermediate steps', 'Using blue ink', 'Writing too fast', 'Double underlining'],
         correctIndex: 0,
-        explanation: 'Examiner rubrics explicitly allocate ½ to 1 mark for physical units (Joules, Kelvin, Pascals).',
+        explanation: 'Examiner rubrics allocate dedicated marks for intermediate steps, dimensional consistency, and final units.',
         topic: 'Exam Presentation',
       },
       {
         id: 3,
-        question: 'Under adiabatic expansion without heat exchange, work is done at the expense of what?',
-        options: ['Internal energy of the gas', 'External heater', 'Atmospheric gravity', 'Intermolecular friction'],
+        question: `How does understanding the core theory of ${chapter} benefit problem-solving?`,
+        options: ['It allows direct setup of governing equations from first principles', 'It replaces the need to practice numericals', 'It eliminates boundary condition constraints', 'It guarantees zero errors without checking'],
         correctIndex: 0,
-        explanation: 'In an adiabatic process dQ = 0, so dW = -dU. The gas does work by expending its own internal energy, lowering its temperature.',
-        topic: 'Adiabatic Processes',
+        explanation: 'Grounded comprehension of foundational theory allows students to set up problems from first principles without memorizing edge cases.',
+        topic: 'Conceptual Mastery',
       },
     ],
     quickRevisionPoints: [
-      `Governing principle: First law applies conservation of energy to ${chapter}.`,
-      'Indicator diagram: Clockwise cycle yields positive work output.',
-      'Sign convention: Work done by gas is positive; work done on gas is negative.',
-      'Conversion rule: Always express temperatures in Kelvin (T_K = T_C + 273.15).',
+      `Governing principle: Foundational formulations define the core relationships in ${chapter}.`,
+      'Step-marking rule: Always show full algebraic/calculus setups with units.',
+      'Examination tip: Highlight final boxed answers with explicit dimensional units.',
     ],
   };
 }

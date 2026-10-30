@@ -69,7 +69,7 @@ export function cleanTextForPdf(str: string): string {
 
 export function formatPdfFilename(subject: string, chapter: string, mode?: ExportStyleMode): string {
   const sanitize = (str: string) =>
-    str
+    (str || '')
       .replace(/[^a-zA-Z0-9_\-\s]/g, '')
       .trim()
       .replace(/\s+/g, '_');

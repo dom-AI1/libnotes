@@ -11,7 +11,7 @@ interface HeroProps {
 
 export const Hero = ({ onStartGeneration, onSelectSample, isAuthenticated = false, onRequireAuth }: HeroProps) => {
   const [activeTab, setActiveTab] = useState<'upload' | 'link'>('link');
-  const [videoUrl, setVideoUrl] = useState('https://www.youtube.com/watch?v=physics-thermo-carnot');
+  const [videoUrl, setVideoUrl] = useState('');
   const [selectedStyle, setSelectedStyle] = useState<NoteStyle>('topper');
   const [isStyleDropdownOpen, setIsStyleDropdownOpen] = useState(false);
 
