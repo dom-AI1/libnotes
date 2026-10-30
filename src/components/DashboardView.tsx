@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import type { StudyKit } from '../types';
 import type { UserProfile } from '../services/authService';
-import { BookOpen, Clock, Award, Sparkles, Plus, Search, ArrowRight } from 'lucide-react';
+import { BookOpen, Clock, Award, Sparkles, Plus, Search, ArrowRight, Film } from 'lucide-react';
 import { loadQuizAttempts } from '../services/storageService';
 import { fetchQuizAttemptsFromSupabase } from '../services/supabaseService';
 import { isSupabaseConfigured } from '../services/supabaseClient';
@@ -12,6 +12,7 @@ interface DashboardViewProps {
   onSelectKit: (kitId: string) => void;
   onOpenUpload: () => void;
   onTakeQuiz: (kitId: string) => void;
+  onWatchVideo?: (type?: 'about' | 'tutorial') => void;
 }
 
 export const DashboardView = ({
@@ -20,6 +21,7 @@ export const DashboardView = ({
   onSelectKit,
   onOpenUpload,
   onTakeQuiz,
+  onWatchVideo,
 }: DashboardViewProps) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedSubjectFilter, setSelectedSubjectFilter] = useState<string>('All');
@@ -110,6 +112,46 @@ export const DashboardView = ({
           <span>New Lecture Video</span>
         </button>
       </div>
+
+      {/* Interactive AI Video Guide Banner (Eliminates excessive text scrolling) */}
+      {onWatchVideo && (
+        <div className="bg-[#FCFAF6] border-2 border-[#141414] rounded-2xl p-4 sm:p-5 shadow-[3px_3px_0px_#141414] mb-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-[#E8F2DC] border border-[#141414] flex items-center justify-center text-[#141414] shrink-0 shadow-[1px_1px_0px_#141414]">
+              <Film className="w-5 h-5 text-[#79A94A]" />
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="font-mono-editorial text-base font-bold text-[#141414]">
+                  Need a quick tour of Libnotes AI?
+                </span>
+                <span className="px-2 py-0.5 rounded-full bg-[#E8F2DC] text-[#446A1D] text-[10px] font-mono font-bold border border-[#79A94A]/30">
+                  60s VIDEO
+                </span>
+              </div>
+              <p className="text-xs text-[#5E5D57] font-body mt-0.5">
+                Watch how to paste YouTube links, auto-detect subjects, and generate conversational Chatbot/Chatpata notes.
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2 shrink-0 w-full sm:w-auto">
+            <button
+              onClick={() => onWatchVideo('tutorial')}
+              className="flex-1 sm:flex-initial px-4 py-2 rounded-xl bg-[#141414] text-[#FFFFFF] hover:bg-[#2A2A2A] text-xs font-mono font-bold transition-all shadow-[1.5px_1.5px_0px_#141414] flex items-center justify-center gap-1.5 cursor-pointer"
+            >
+              <Film className="w-3.5 h-3.5 text-[#79A94A]" />
+              <span>Watch Tutorial Video</span>
+            </button>
+            <button
+              onClick={() => onWatchVideo('about')}
+              className="flex-1 sm:flex-initial px-3.5 py-2 rounded-xl bg-[#FFFFFF] border border-[#141414] text-[#141414] hover:bg-[#EFECE1] text-xs font-mono font-medium transition-all shadow-[1.5px_1.5px_0px_#141414] flex items-center justify-center gap-1.5 cursor-pointer"
+            >
+              <span>About Us Video</span>
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Lightweight Summary Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-10">

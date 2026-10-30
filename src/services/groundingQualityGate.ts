@@ -62,9 +62,14 @@ export function validateLectureGrounding(
 
   // 4. Topic Relevance & Contamination Check
   const contentStr = JSON.stringify(kit.content).toLowerCase();
-  const isSets = lecture.chapter.toLowerCase().includes('set');
+  const chapLower = lecture.chapter.toLowerCase();
+  const subjLower = lecture.subject.toLowerCase();
+  const isSets = chapLower.includes('set');
+  const isMotion = chapLower.includes('motion') || chapLower.includes('newton') || chapLower.includes('friction');
+  const isPhotosynthesis = chapLower.includes('photo') || chapLower.includes('chloroplast') || chapLower.includes('calvin');
+  const isQuadratic = chapLower.includes('quadratic');
+  const isAccountancy = subjLower.includes('account') || chapLower.includes('journal') || chapLower.includes('cash flow');
 
-  // Grounding Rule for Sets: NO calculus, NO integration, NO matrix inverses!
   let isFreeFromContamination = true;
   if (isSets) {
     const forbiddenCalculusTerms = ['d/dx', 'integral', '∫', 'matrix inverse', 'differentiation', 'dy/dx', 'ilate', 'bayes'];
@@ -72,6 +77,30 @@ export function validateLectureGrounding(
     if (foundForbidden.length > 0) {
       isFreeFromContamination = false;
       errors.push(`Quality Gate Failure: Sets lecture contaminated with calculus/matrix terms: ${foundForbidden.join(', ')}.`);
+      score -= 30;
+    }
+  } else if (isMotion) {
+    const forbiddenTerms = ['chloroplast', 'calvin cycle', 'debit the receiver', 'journal entry', 'photosystem'];
+    const found = forbiddenTerms.filter((term) => contentStr.includes(term));
+    if (found.length > 0) {
+      isFreeFromContamination = false;
+      errors.push(`Quality Gate Failure: Laws of Motion lecture contaminated with off-topic terms: ${found.join(', ')}.`);
+      score -= 30;
+    }
+  } else if (isPhotosynthesis) {
+    const forbiddenTerms = ['f = ma', 'impulse-momentum', 'debit what comes in', 'journal entry', 'banking of roads'];
+    const found = forbiddenTerms.filter((term) => contentStr.includes(term));
+    if (found.length > 0) {
+      isFreeFromContamination = false;
+      errors.push(`Quality Gate Failure: Photosynthesis lecture contaminated with off-topic terms: ${found.join(', ')}.`);
+      score -= 30;
+    }
+  } else if (isAccountancy) {
+    const forbiddenTerms = ['f = ma', 'chloroplast', 'photosynthesis', 'd/dx'];
+    const found = forbiddenTerms.filter((term) => contentStr.includes(term));
+    if (found.length > 0) {
+      isFreeFromContamination = false;
+      errors.push(`Quality Gate Failure: Accountancy lecture contaminated with off-topic terms: ${found.join(', ')}.`);
       score -= 30;
     }
   }
@@ -96,7 +125,43 @@ export function validateLectureGrounding(
         f.name.toLowerCase().includes('morgan')
       );
     }
-    return true;
+    if (isMotion) {
+      const fStr = (f.name + ' ' + f.formula).toLowerCase();
+      return fStr.includes('f') || fStr.includes('p') || fStr.includes('μ') || fStr.includes('tan') || fStr.includes('mass') || fStr.includes('newton') || fStr.includes('friction') || fStr.includes('v²');
+    }
+    if (isPhotosynthesis) {
+      const fStr = (f.name + ' ' + f.formula).toLowerCase();
+      return (
+        fStr.includes('h2o') || 
+        fStr.includes('h₂o') ||
+        fStr.includes('water') ||
+        fStr.includes('photolysis') ||
+        fStr.includes('co2') || 
+        fStr.includes('co₂') ||
+        fStr.includes('atp') || 
+        fStr.includes('nadph') ||
+        fStr.includes('calvin') || 
+        fStr.includes('chlorophyll') || 
+        fStr.includes('light') || 
+        fStr.includes('blackman') || 
+        fStr.includes('limiting') || 
+        fStr.includes('rate') || 
+        fStr.includes('glucose') ||
+        fStr.includes('o2') ||
+        fStr.includes('o₂') ||
+        fStr.includes('rubisco') ||
+        fStr.includes('photo')
+      );
+    }
+    if (isQuadratic) {
+      const fStr = (f.name + ' ' + f.formula).toLowerCase();
+      return fStr.includes('ax²') || fStr.includes('b² - 4ac') || fStr.includes('√d') || fStr.includes('root') || fStr.includes('-b/a') || fStr.includes('c/a');
+    }
+    if (isAccountancy) {
+      const fStr = (f.name + ' ' + f.formula).toLowerCase();
+      return fStr.includes('asset') || fStr.includes('debit') || fStr.includes('cash') || fStr.includes('cfo') || fStr.includes('invoice') || fStr.includes('discount') || fStr.includes('profit');
+    }
+    return Boolean(f.formula && f.formula.trim().length > 3);
   });
 
   if (!formulasGroundingPassed) {
@@ -112,8 +177,8 @@ export function validateLectureGrounding(
   // 6. Question Relevance
   const examQuestions = kit.content.exam?.questions || [];
   const questionsGrounded = examQuestions.length > 0 && examQuestions.every((q) => {
+    const qLower = (q.question + ' ' + q.answer).toLowerCase();
     if (isSets) {
-      const qLower = (q.question + q.answer).toLowerCase();
       return (
         qLower.includes('set') || 
         qLower.includes('union') || 
@@ -126,7 +191,19 @@ export function validateLectureGrounding(
         qLower.includes('cardinality')
       );
     }
-    return true;
+    if (isMotion) {
+      return qLower.includes('force') || qLower.includes('inertia') || qLower.includes('momentum') || qLower.includes('friction') || qLower.includes('banking') || qLower.includes('newton');
+    }
+    if (isPhotosynthesis) {
+      return qLower.includes('rubisco') || qLower.includes('calvin') || qLower.includes('atp') || qLower.includes('chloroplast') || qLower.includes('photosynthesis') || qLower.includes('photophosphorylation');
+    }
+    if (isQuadratic) {
+      return qLower.includes('root') || qLower.includes('quadratic') || qLower.includes('discriminant') || qLower.includes('equation') || qLower.includes('speed');
+    }
+    if (isAccountancy) {
+      return qLower.includes('journal') || qLower.includes('cash') || qLower.includes('discount') || qLower.includes('debit') || qLower.includes('operating') || qLower.includes('bad debt');
+    }
+    return qLower.length > 20;
   });
 
   if (!questionsGrounded) {
@@ -140,7 +217,17 @@ export function validateLectureGrounding(
   });
 
   // 7. Mathematical & Factual Correctness
-  const mathCorrect = isSets ? quickFormulas.some((f) => f.formula.includes('n(A ∪ B)') || f.formula.includes('2^n')) : true;
+  const mathCorrect = isSets 
+    ? quickFormulas.some((f) => f.formula.includes('n(A ∪ B)') || f.formula.includes('2^n'))
+    : isMotion
+    ? quickFormulas.some((f) => f.formula.includes('F =') || f.formula.includes('m a') || f.formula.includes('Δp'))
+    : isPhotosynthesis
+    ? quickFormulas.some((f) => f.formula.includes('ATP') || f.formula.includes('H2O') || f.formula.includes('CO2'))
+    : isQuadratic
+    ? quickFormulas.some((f) => f.formula.includes('b² - 4ac') || f.formula.includes('ax²'))
+    : isAccountancy
+    ? quickFormulas.some((f) => f.formula.includes('Net') || f.formula.includes('DEAD') || f.formula.includes('Assets') || f.formula.includes('CFO'))
+    : true;
   checks.push({
     name: '7. Mathematical & Factual Correctness',
     passed: mathCorrect,

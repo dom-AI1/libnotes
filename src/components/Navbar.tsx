@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { SparkleDoodle } from './SVGIcons';
-import { Menu, X, BookOpen, Layers, HelpCircle, Sparkles, LogIn, LogOut, User as UserIcon } from 'lucide-react';
+import { Menu, X, BookOpen, Layers, HelpCircle, Sparkles, LogIn, LogOut, User as UserIcon, Film } from 'lucide-react';
 import type { UserProfile } from '../services/authService';
 
 interface NavbarProps {
@@ -10,6 +10,7 @@ interface NavbarProps {
   onNavigateLogin?: () => void;
   onNavigateSignUp?: () => void;
   onSignOut?: () => void;
+  onWatchVideo?: (type?: 'about' | 'tutorial') => void;
   currentView: string;
   user?: UserProfile | null;
   isAuthenticated?: boolean;
@@ -22,6 +23,7 @@ export const Navbar = ({
   onNavigateLogin,
   onNavigateSignUp,
   onSignOut,
+  onWatchVideo,
   currentView,
   user,
   isAuthenticated = false,
@@ -93,10 +95,10 @@ export const Navbar = ({
             How It Works
           </button>
           <button
-            onClick={() => scrollToSection('about')}
-            className="px-3.5 py-1.5 text-sm font-medium text-[#2A2A2A] hover:text-[#141414] hover:bg-[#E8F2DC]/60 rounded-full transition-all cursor-pointer"
+            onClick={() => onWatchVideo ? onWatchVideo('about') : scrollToSection('about')}
+            className="px-3.5 py-1.5 text-sm font-medium text-[#2A2A2A] hover:text-[#141414] hover:bg-[#E8F2DC]/60 rounded-full transition-all cursor-pointer flex items-center gap-1.5"
           >
-            About Us
+            <span>About Us</span>
           </button>
           <button
             onClick={() => scrollToSection('resources')}
@@ -104,6 +106,16 @@ export const Navbar = ({
           >
             Resources
           </button>
+          {onWatchVideo && (
+            <button
+              onClick={() => onWatchVideo('tutorial')}
+              className="px-3 py-1.5 text-xs font-mono font-bold text-[#141414] bg-[#E8F2DC] hover:bg-[#D5E8C0] border border-[#79A94A]/40 rounded-full transition-all flex items-center gap-1.5 cursor-pointer shadow-sm"
+              title="Watch AI Explainer Video"
+            >
+              <Film className="w-3.5 h-3.5 text-[#79A94A]" />
+              <span>Watch Video</span>
+            </button>
+          )}
           <span className="w-[1px] h-4 bg-[#141414]/20 mx-1" />
           <button
             onClick={onNavigateDashboard}
@@ -250,12 +262,27 @@ export const Navbar = ({
               <SparkleDoodle className="w-4 h-4 text-[#79A94A]" />
             </button>
             <button
-              onClick={() => scrollToSection('about')}
+              onClick={() => {
+                setMobileMenuOpen(false);
+                onWatchVideo ? onWatchVideo('about') : scrollToSection('about');
+              }}
               className="text-left py-2 border-b border-[#DFDBCF] flex items-center justify-between"
             >
-              <span>About Us</span>
+              <span>About Us Video & Story</span>
               <HelpCircle className="w-4 h-4 text-[#79A94A]" />
             </button>
+            {onWatchVideo && (
+              <button
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  onWatchVideo('tutorial');
+                }}
+                className="text-left py-2 border-b border-[#DFDBCF] flex items-center justify-between text-[#141414] font-semibold bg-[#E8F2DC]/50 px-2 rounded-lg"
+              >
+                <span>▶ Watch AI Video Guide</span>
+                <Film className="w-4 h-4 text-[#79A94A]" />
+              </button>
+            )}
             <button
               onClick={() => scrollToSection('resources')}
               className="text-left py-2 border-b border-[#DFDBCF] flex items-center justify-between"

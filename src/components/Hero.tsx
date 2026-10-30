@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { UploadCloud, Link as LinkIcon, Sparkles, ChevronDown, CheckCircle2, PlayCircle } from 'lucide-react';
+import { UploadCloud, Link as LinkIcon, Sparkles, ChevronDown, CheckCircle2, PlayCircle, Film } from 'lucide-react';
 import type { NoteStyle } from '../types';
 
 interface HeroProps {
@@ -7,9 +7,10 @@ interface HeroProps {
   onSelectSample: (sampleId: string) => void;
   isAuthenticated?: boolean;
   onRequireAuth?: (pendingData: { source: 'upload' | 'link'; linkUrl: string; style: NoteStyle }) => void;
+  onWatchVideo?: (videoType?: 'about' | 'tutorial') => void;
 }
 
-export const Hero = ({ onStartGeneration, onSelectSample, isAuthenticated = false, onRequireAuth }: HeroProps) => {
+export const Hero = ({ onStartGeneration, onSelectSample, isAuthenticated = false, onRequireAuth, onWatchVideo }: HeroProps) => {
   const [activeTab, setActiveTab] = useState<'upload' | 'link'>('link');
   const [videoUrl, setVideoUrl] = useState('');
   const [selectedStyle, setSelectedStyle] = useState<NoteStyle>('topper');
@@ -186,8 +187,28 @@ export const Hero = ({ onStartGeneration, onSelectSample, isAuthenticated = fals
         </span>
       </div>
 
-      {/* Quick Sample Selector for Live Demonstration */}
-      <div className="mt-8 pt-6 border-t border-[#141414]/10 max-w-2xl mx-auto">
+      {/* Watch Video & Quick Sample Selector */}
+      <div className="mt-8 pt-6 border-t border-[#141414]/10 max-w-2xl mx-auto flex flex-col items-center">
+        {onWatchVideo && (
+          <div className="flex flex-wrap items-center justify-center gap-2 mb-4">
+            <button
+              type="button"
+              onClick={() => onWatchVideo('tutorial')}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#E8F2DC] border-2 border-[#141414] shadow-[2px_2px_0px_#141414] hover:shadow-[3px_3px_0px_#141414] text-xs font-mono font-bold text-[#141414] hover:bg-[#D5E8C0] transition-all cursor-pointer active:translate-y-0.5"
+            >
+              <Film className="w-3.5 h-3.5 text-[#79A94A]" />
+              <span>▶ Watch 60s Guide: Login to Chatbot Notes</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => onWatchVideo('about')}
+              className="inline-flex items-center gap-2 px-3.5 py-2 rounded-full bg-[#FCFAF6] border border-[#141414] shadow-[1.5px_1.5px_0px_#141414] hover:bg-[#EFECE1] text-xs font-mono font-medium text-[#141414] transition-all cursor-pointer active:translate-y-0.5"
+            >
+              <span>🎬 About Us Video</span>
+            </button>
+          </div>
+        )}
+
         <p className="text-xs font-mono uppercase tracking-wider text-[#8A8880] mb-3">
           Or explore an instant sample study kit:
         </p>

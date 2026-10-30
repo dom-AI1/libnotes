@@ -1,6 +1,12 @@
-import { Video, FileText, CheckCircle, Brain, BookOpen } from 'lucide-react';
+import { Video, FileText, CheckCircle, Brain } from 'lucide-react';
+import { AIVideoSection } from './AIVideoSection';
 
-export const HowItWorks = () => {
+interface HowItWorksProps {
+  onOpenUpload?: () => void;
+  onNavigateLogin?: () => void;
+}
+
+export const HowItWorks = ({ onOpenUpload, onNavigateLogin }: HowItWorksProps = {}) => {
   const steps = [
     {
       step: '01',
@@ -81,44 +87,22 @@ export const HowItWorks = () => {
         })}
       </div>
 
-      {/* About Us / Philosophy section */}
-      <div id="about" className="mt-16 bg-[#FAF9F5] border-2 border-[#141414] rounded-2xl p-8 sm:p-12 shadow-[4px_4px_0px_#141414]">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-          <div className="lg:col-span-8">
-            <span className="text-xs font-mono font-semibold uppercase tracking-widest text-[#79A94A] bg-[#E8F2DC] px-3 py-1 rounded-full border border-[#79A94A]/30">
-              OUR MANIFESTO
-            </span>
-            <h3 className="font-mono-editorial text-2xl sm:text-3xl font-bold text-[#141414] mt-3">
-              We believe students shouldn't spend 80% of their study time pausing videos.
-            </h3>
-            <p className="font-body text-base text-[#4A4944] mt-4 leading-relaxed">
-              Every college student and board exam aspirant knows the pain: watching a 2-hour recording at 1.75x speed while frantically trying to copy down diagrams. Libnotes was built as a calm, editorial study workspace that distills what actually appears in exams, letting you focus on understanding and practice.
-            </p>
-            <div className="mt-6 flex flex-wrap gap-4 text-xs font-mono text-[#141414]">
-              <span className="px-3 py-1.5 rounded-lg bg-[#FCFAF6] border border-[#141414] shadow-[1.5px_1.5px_0px_#141414]">
-                ✓ Made for Indian curricula (CBSE, ISC, JEE, NEET)
-              </span>
-              <span className="px-3 py-1.5 rounded-lg bg-[#FCFAF6] border border-[#141414] shadow-[1.5px_1.5px_0px_#141414]">
-                ✓ Hinglish audio comprehension
-              </span>
-              <span className="px-3 py-1.5 rounded-lg bg-[#FCFAF6] border border-[#141414] shadow-[1.5px_1.5px_0px_#141414]">
-                ✓ 100% human-readable printable notes
-              </span>
-            </div>
-          </div>
-          
-          <div className="lg:col-span-4 bg-[#FCFAF6] border-2 border-[#141414] rounded-xl p-6 shadow-[3px_3px_0px_#141414] text-center">
-            <div className="w-12 h-12 rounded-full bg-[#E8F2DC] border border-[#141414] flex items-center justify-center mx-auto mb-3">
-              <BookOpen className="w-6 h-6 text-[#79A94A]" />
-            </div>
-            <div className="font-mono-editorial font-bold text-xl text-[#141414]">
-              4 Distinct Styles
-            </div>
-            <p className="text-xs text-[#5E5D57] mt-1 font-body">
-              Because a formula sheet isn't what you need when you're learning a concept for the first time.
-            </p>
-          </div>
+      {/* About Us & Video Studio */}
+      <div id="about" className="mt-16">
+        <div className="mb-6 text-center">
+          <span className="text-xs font-mono font-semibold uppercase tracking-widest text-[#79A94A] bg-[#E8F2DC] px-3 py-1 rounded-full border border-[#79A94A]/30">
+            ABOUT US · OUR MANIFESTO
+          </span>
+          <h3 className="font-mono-editorial text-2xl sm:text-3xl font-bold text-[#141414] mt-2">
+            Watch our story instead of reading walls of text.
+          </h3>
         </div>
+
+        <AIVideoSection
+          onOpenUpload={onOpenUpload}
+          onNavigateLogin={onNavigateLogin}
+          initialVideo="about"
+        />
       </div>
 
       {/* Resources & Curricula Hub */}

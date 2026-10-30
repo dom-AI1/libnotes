@@ -246,7 +246,7 @@ export const NotesView = ({ kit, onBack, onStyleChange, initialTab, userId }: No
             }`}
           >
             <GraduationCap className="w-4 h-4" />
-            <span>Exam Mode (PYQs)</span>
+            <span>Exam Mode (Practice & Rubrics)</span>
           </button>
 
           <button
@@ -280,18 +280,18 @@ export const NotesView = ({ kit, onBack, onStyleChange, initialTab, userId }: No
         
         {/* Source Evidence & Grounding Disclosure Banner */}
         {kit.verifiedLecture && (
-          <div className="mb-6 p-3 sm:p-3.5 rounded-2xl bg-[#FCFAF6] border border-[#141414]/15 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-2.5 text-xs font-mono overflow-hidden">
-            <div className="flex flex-wrap items-center gap-2 text-[#141414] min-w-0 max-w-full">
+          <div className="mb-6 p-3 sm:p-3.5 rounded-2xl bg-[#FCFAF6] border border-[#141414]/15 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 text-xs font-mono">
+            <div className="flex items-center gap-2 text-[#141414] min-w-0 max-w-full">
               <span className="w-2 h-2 rounded-full bg-[#79A94A] shrink-0" />
               <span className="font-bold shrink-0">Verified Source Grounded:</span>
-              <span className="text-[#5E5D57] truncate max-w-[200px] xs:max-w-xs sm:max-w-sm">
+              <span className="text-[#5E5D57] truncate max-w-[180px] xs:max-w-xs sm:max-w-[240px] md:max-w-md">
                 {kit.verifiedLecture.sourceIdentifier}
               </span>
             </div>
             {kit.verifiedLecture.visualEvidenceDisclosed && (
-              <span className="text-[11px] text-[#79A94A] bg-[#E8F2DC] px-2.5 py-1 rounded-full border border-[#79A94A]/30 break-words max-w-full shrink">
-                {kit.verifiedLecture.visualEvidenceDisclosed.length > 55
-                  ? 'Audio transcript & lecture source verified'
+              <span className="inline-flex items-center text-[11px] font-medium text-[#3b5e1b] bg-[#E8F2DC] px-2.5 py-1 rounded-full border border-[#79A94A]/30 w-fit max-w-full text-left break-words shrink-0">
+                ✓ {kit.verifiedLecture.visualEvidenceDisclosed.includes('Visual') || kit.verifiedLecture.visualEvidenceDisclosed.length > 45
+                  ? 'Audio transcript & source verified'
                   : kit.verifiedLecture.visualEvidenceDisclosed}
               </span>
             )}
@@ -712,14 +712,18 @@ export const NotesView = ({ kit, onBack, onStyleChange, initialTab, userId }: No
           <div className="space-y-6">
             <div className="bg-[#FCFAF6] border-2 border-[#141414] rounded-2xl p-6 sm:p-8 shadow-[4px_4px_0px_#141414]">
               <span className="text-xs font-mono font-bold text-[#79A94A] bg-[#E8F2DC] px-2.5 py-0.5 rounded-full border border-[#79A94A]/30">
-                BOARD & EXAM QUESTIONS
+                SYLLABUS & EXAM PRACTICE
               </span>
               <h3 className="font-mono-editorial text-2xl font-bold text-[#141414] mt-2">
-                Frequently Asked Exam Questions & Marking Schemes
+                Curriculum Practice Questions & Step Marking Schemes
               </h3>
               <p className="font-body text-sm text-[#5E5D57] mt-1">
-                Study exact answers graded by official board guidelines with deduction traps highlighted.
+                Syllabus-aligned practice questions structured by standard weightage (1, 3, 5 marks) with transparent step-by-step evaluation rubrics.
               </p>
+              <div className="mt-3.5 inline-flex items-center gap-2 text-xs font-mono text-[#5E5D57] bg-[#F4F0E8] px-3 py-1.5 rounded-lg border border-[#141414]/15">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#79A94A]" />
+                <span>Source Grounded: Practice material algorithmically synthesized from verified lecture concepts (clearly distinguished from past official board papers).</span>
+              </div>
             </div>
 
             {(kit.content?.exam?.questions || []).map((q) => (

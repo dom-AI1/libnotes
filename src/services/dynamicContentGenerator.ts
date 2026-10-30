@@ -22,6 +22,183 @@ export function buildDynamicKitContent(
   const sLower = (subject || '').toLowerCase();
   const cLower = (chapter || '').toLowerCase();
 
+  // -1. COMMERCE / ACCOUNTANCY — CASH FLOW STATEMENTS (AS-3)
+  const isCashFlow = cLower.includes('cash flow') || cLower.includes('cash_flow');
+  if (isCashFlow) {
+    return {
+      content: {
+        quick: {
+          headline: `${chapter} — Cash Flow Statement (AS-3 Revised / Ind AS 7) Key Revision`,
+          cheatSheet: [
+            'AS-3 Tripartite Framework: 1) Operating Activities (principal revenue-earning), 2) Investing Activities (fixed assets and investments), 3) Financing Activities (capital, debentures, loans, dividends paid).',
+            'Indirect Method for Operating Activities (CFO): Net Profit Before Tax + Non-Cash/Non-Operating Expenses (Depreciation, Amortization) - Non-Operating Incomes (Dividend/Interest received) ± Working Capital adjustments - Direct Taxes Paid.',
+            'Working Capital Rules: Increase in Current Asset = Cash Outflow (-); Decrease in Current Asset = Cash Inflow (+). Increase in Current Liability = Cash Inflow (+); Decrease in Current Liability = Cash Outflow (-).',
+            'Financing Rules: Dividend paid is ALWAYS a Financing Cash Outflow. Bank Overdraft / Cash Credit are Financing short-term borrowings, NOT cash equivalents.',
+            'Cash & Cash Equivalents: Cash in hand, bank balance, and short-term liquid investments with maturity ≤ 3 months (treasury bills, commercial papers).',
+          ],
+          formulas: [
+            { name: 'Net Cash Flow Identity', formula: 'Net Change in Cash = CFO + CFI + CFF', note: 'Closing Cash = Opening Cash + Net Change' },
+            { name: 'Operating Cash Flow (Indirect)', formula: 'CFO = Operating Profit before Working Capital Changes ± ΔWC - Tax Paid', note: 'Operating Profit = Net Profit Before Tax + Depreciation - Non-Operating Income' },
+            { name: 'Working Capital Adjustment', formula: 'ΔWC = ΔCurrent Liabilities - ΔCurrent Assets', note: 'CA increase (-), CA decrease (+), CL increase (+), CL decrease (-)' },
+          ],
+          bulletSummary: [
+            'Non-Cash Exclusion: Non-cash transactions (bonus share issue, conversion of debentures) are excluded and disclosed in footnotes.',
+            'Taxation: Income tax paid is deducted in Operating Activities unless specifically identifiable with investing or financing.',
+          ],
+        },
+        minimal: {
+          headline: `${chapter} Summary`,
+          cheatSheet: [
+            'Three activities: Operating (CFO), Investing (CFI), Financing (CFF).',
+            'Net change = CFO + CFI + CFF.',
+            'Closing cash = Opening cash + Net change.',
+          ],
+          formulas: [
+            { name: 'Net Cash Flow Identity', formula: 'Net Change = CFO + CFI + CFF', note: 'Reconciles with opening and closing cash' },
+          ],
+          bulletSummary: ['AS-3 tripartite classification and indirect method.'],
+        },
+        topper: {
+          introduction: `Comprehensive professional accounting lecture synthesis for ${subject}: ${chapter}. Structured strictly in alignment with ICAI Accounting Standard 3 (AS-3 Revised) and Ind AS 7.`,
+          deepDive: [
+            {
+              title: '1. Meaning, Objectives & AS-3 Tripartite Classification',
+              timestamp: '00:00',
+              content: 'A Cash Flow Statement evaluates an enterprise\'s historical ability to generate cash and cash equivalents. AS-3 classifies all cash flows into three activities: Operating (the primary revenue-generating activities), Investing (acquisition and disposal of long-term assets and investments), and Financing (activities changing the size and composition of owner\'s equity and borrowings). Cash equivalents comprise short-term, highly liquid investments convertible into known amounts of cash with insignificant risk of value change (maturity ≤ 3 months).',
+              keyTakeaway: 'Bank overdrafts and cash credits are financing activities (short-term borrowings), not cash equivalents.',
+            },
+            {
+              title: '2. Indirect Method for Cash Flow from Operating Activities (CFO)',
+              timestamp: '07:30',
+              content: 'The indirect method reconciles Net Profit Before Tax and Extraordinary Items into operating cash flows. Non-cash expenses (depreciation, amortization) and loss on sale of fixed assets are added back. Non-operating incomes (dividend received, gain on sale of investments) are deducted. Next, working capital adjustments are applied: an increase in current assets consumes cash (-), while an increase in current liabilities provides cash (+). Finally, actual income taxes paid are deducted to determine Net Cash from Operating Activities.',
+              keyTakeaway: 'Always prepare ledger accounts for Provision for Tax and Fixed Assets to compute actual tax paid and asset purchase/sale.',
+            },
+            {
+              title: '3. Investing & Financing Activities with Non-Cash Exclusion',
+              timestamp: '16:00',
+              content: 'Investing activities include capital expenditures (purchase/sale of plant, land, patents, and purchase/sale of shares in other companies). Financing activities include proceeds from issuing shares or debentures, loan repayments, and dividends paid. Transactions that do not involve cash flows (e.g. issuing shares to vendors against purchase of machinery) are strictly omitted from the statement and disclosed in schedule notes.',
+              keyTakeaway: 'Dividend paid is always a financing cash outflow, whether interim or final dividend.',
+            },
+          ],
+          derivations: [
+            {
+              title: 'Derivation of Net Cash Flow from Operating Activities (CFO)',
+              steps: [
+                'Start with Net Profit as per Statement of Profit and Loss',
+                'Add back Provision for Taxation, Proposed Dividend, and Transfer to General Reserve to calculate Net Profit Before Tax',
+                'Adjust for non-cash and non-operating items: Add Depreciation, Loss on Sale of Assets; Deduct Interest/Dividend Received',
+                'Adjust for Working Capital changes: Add decrease in CA and increase in CL; Deduct increase in CA and decrease in CL',
+                'Deduct Income Tax Paid (net of refunds) to arrive at Net Cash from Operating Activities',
+              ],
+              finalResult: 'Net Cash Flow from Operating Activities (CFO) determined as per AS-3 Indirect Method',
+            },
+          ],
+          proTips: [
+            'Prepare a T-account for Fixed Assets (at cost) alongside Accumulated Depreciation to find hidden purchases or sales.',
+            'Remember: Proposed dividend of the previous year is paid during the current year (Financing Outflow) and added back to compute Net Profit Before Tax.',
+          ],
+        },
+        chatpata: {
+          hinglishIntro: `Bhai dekho, Cash Flow Statement (AS-3) ko bilkul mast Hinglish mein samajhte hain! Profit hona alag baat hai aur jeb mein cash hona bilkul alag baat! Yeh chapter sikhata hai ki company ka paisa kahan se aaya aur kahan gaya.`,
+          desiAnalogies: [
+            {
+              concept: '3 Activities of Cash Flow',
+              analogy: 'Imagine karo apna monthly kharcha: Dukan chala ke jo rozana kamai hoti hai wo hai Operating; Dukan ke liye naya fridge ya scooter khareeda wo hai Investing; aur Papa ya bank se loan liya ya EMI bhari wo hai Financing!',
+              desiPunchline: 'Dukan roz chalti hai Operating se, par balance sheet khadi hoti hai teeno ke jod se!',
+            },
+            {
+              concept: 'Working Capital Rule',
+              analogy: 'Current Assets badha matlab naya stock khareed liya ya udhari badh gayi (paisa block ho gaya -). Current Liabilities badhi matlab suppliers se udhari mil gayi (apna paisa bach gaya +)!',
+              desiPunchline: 'Udhari mili toh cash bacha, stock bhara toh cash kharcha!',
+            },
+          ],
+          bhaiKaSummary: [
+            'Point 1: Teen boxes yaad rakho — Operating (CFO), Investing (CFI), Financing (CFF).',
+            'Point 2: Net change mein Opening Cash jod do, exact Closing Cash balance sheet se match hona chahiye!',
+          ],
+          jugaadPoints: [
+            'Exam jugaad: Tax paid ko Operating ke aakhri step mein minus karna mat bhoolna, warna seedhe 1 mark cut!',
+          ],
+        },
+        chatpate: {
+          hinglishIntro: `Bhai dekho, Cash Flow Statement (AS-3) ko bilkul simple bhasha mein samjho!`,
+          desiAnalogies: [],
+          bhaiKaSummary: [],
+          jugaadPoints: [],
+        },
+        exam: {
+          trendAnalysis: 'Cash Flow Statement carries a mandatory 6 to 8 marks weightage in CBSE Class 12 Accountancy Board examinations. High-frequency questions test operating cash flow calculation with tax and depreciation adjustments.',
+          highWeightageTopics: [
+            'Cash Flow from Operating Activities via Indirect Method (4-6 Marks)',
+            'Classification of Activities under AS-3 (1-3 Marks)',
+            'Treatment of Tax Provision, Proposed Dividend & Non-Cash Items (3-5 Marks)',
+          ],
+          questions: [
+            {
+              id: 1,
+              marks: 1,
+              question: 'Define Cash Equivalents as per AS-3 (Revised).',
+              answer: 'Cash equivalents are short-term, highly liquid investments that are readily convertible into known amounts of cash and which are subject to an insignificant risk of changes in value, typically having a maturity period of 3 months or less from acquisition.',
+              markingScheme: ['Short-term highly liquid definition (½ mark)', 'Maturity <= 3 months condition (½ mark)'],
+              frequentlyAskedIn: 'Curriculum Practice Question (NCERT / Board Syllabus Aligned — 1 Mark)',
+            },
+            {
+              id: 2,
+              marks: 3,
+              question: 'Classify the following transactions into Operating, Investing, and Financing activities for a non-financial enterprise:\n(a) Proceeds from issue of 9% Debentures.\n(b) Purchase of Patents.\n(c) Dividend paid on Equity Shares.',
+              answer: '(a) Proceeds from issue of 9% Debentures: Financing Activity (Inflow of capital).\n(b) Purchase of Patents: Investing Activity (Outflow for long-term intangible asset).\n(c) Dividend paid on Equity Shares: Financing Activity (Outflow of cost of capital).',
+              markingScheme: ['1 mark each for correct classification and activity heading (3 marks)'],
+              frequentlyAskedIn: 'Curriculum Practice Question (NCERT / Board Syllabus Aligned — 3 Marks)',
+            },
+            {
+              id: 3,
+              marks: 5,
+              question: 'From the following information, calculate Cash Flow from Operating Activities:\nNet Profit after tax: ₹1,50,000\nProvision for tax made during the year: ₹40,000\nDepreciation on machinery: ₹25,000\nGain on sale of investments: ₹10,000\nIncrease in Trade Receivables: ₹15,000\nDecrease in Inventories: ₹20,000\nIncrease in Trade Payables: ₹12,000\nIncome tax actually paid during the year: ₹35,000.',
+              answer: '1. Net Profit before Tax = ₹1,50,000 + ₹40,000 (tax provision) = ₹1,90,000.\n2. Non-Cash & Non-Operating Adjustments:\n   Add: Depreciation on machinery = +₹25,000\n   Less: Gain on sale of investments = -₹10,000\n   Operating Profit before Working Capital Changes = ₹2,05,000.\n3. Working Capital Adjustments:\n   Add: Decrease in Inventories = +₹20,000\n   Add: Increase in Trade Payables = +₹12,000\n   Less: Increase in Trade Receivables = -₹15,000\n   Cash generated from Operations = ₹2,05,000 + ₹17,000 = ₹2,22,000.\n4. Less: Income Tax Paid = -₹35,000.\nNet Cash Flow from Operating Activities (CFO) = ₹1,87,000.',
+              markingScheme: ['Net profit before tax calculation (1 mark)', 'Operating profit before working capital (1.5 marks)', 'Working capital adjustments (1.5 marks)', 'Final CFO after tax paid with ₹ unit (1 mark)'],
+              frequentlyAskedIn: 'Curriculum Practice Question (NCERT / Board Syllabus Aligned — 5 Marks)',
+            },
+          ],
+        },
+      },
+      timestamps: [
+        { time: '00:00', seconds: 0, title: 'Meaning & Tripartite Classification', summary: 'AS-3 structure: Operating, Investing, and Financing activities defined.' },
+        { time: '07:30', seconds: 450, title: 'Operating Activities (Indirect Method)', summary: 'From Net Profit before tax to CFO, non-cash charges, and working capital.' },
+        { time: '16:00', seconds: 960, title: 'Investing, Financing & Non-Cash Exclusions', summary: 'Capital expenditure, debentures, dividends, and footnote disclosures.' },
+      ],
+      flashcards: [
+        { id: 1, front: 'What is the classification of dividend paid under AS-3?', back: 'Dividend paid is always classified as a Financing Activity cash outflow.', concept: 'AS-3 Classification' },
+        { id: 2, front: 'How are non-cash transactions treated in a Cash Flow Statement?', back: 'They are strictly excluded from the statement and disclosed in schedule notes (e.g. bonus shares).', concept: 'Non-Cash Items' },
+        { id: 3, front: 'What is the effect of an increase in Debtors on Operating Cash Flow?', back: 'An increase in Debtors represents a cash outflow (deducted from operating profit).', concept: 'Working Capital' },
+      ],
+      quiz: [
+        {
+          id: 1,
+          topic: 'Cash Flow Statements',
+          question: 'Which of the following is classified as a Cash Equivalent under AS-3?',
+          options: ['Treasury bill with 60 days maturity', 'Shares in a listed company', 'Bank overdraft', 'Machinery purchased for sale'],
+          correctIndex: 0,
+          explanation: 'Treasury bills with maturity ≤ 3 months are highly liquid with negligible risk of value change, qualifying as Cash Equivalents.',
+        },
+        {
+          id: 2,
+          topic: 'Cash Flow Statements',
+          question: 'In the indirect method, depreciation on fixed assets is:',
+          options: ['Added back to Net Profit Before Tax', 'Deducted from Net Profit Before Tax', 'Shown under Investing Activities', 'Ignored completely'],
+          correctIndex: 0,
+          explanation: 'Depreciation is a non-cash expense that was previously deducted in the P&L; it must be added back to compute operating cash flow.',
+        },
+      ],
+      quickRevisionPoints: [
+        'AS-3 tripartite structure: Operating, Investing, and Financing activities.',
+        'Net Cash Flow Identity: Net Change in Cash = CFO + CFI + CFF.',
+        'Current Assets increase = Cash Outflow (-); Current Assets decrease = Cash Inflow (+).',
+        'Current Liabilities increase = Cash Inflow (+); Current Liabilities decrease = Cash Outflow (-).',
+        'Dividend paid is always Financing; Dividend received is Investing for non-financial companies.',
+      ],
+    };
+  }
+
   // 0. COMMERCE / ACCOUNTANCY & JOURNAL ENTRIES
   const isAccountancy = 
     sLower.includes('account') || 
@@ -165,7 +342,7 @@ export function buildDynamicKitContent(
                 'State that it is a pricing reduction on list price (½ mark)',
                 'Explain that transactions are recorded at net invoice price without opening discount account (½ mark)',
               ],
-              frequentlyAskedIn: 'CBSE Class 11 Annual Exam & Commerce Boards',
+              frequentlyAskedIn: 'Curriculum Practice Question (NCERT / Board Syllabus Aligned — 1 Mark)',
             },
             {
               id: 2,
@@ -177,7 +354,7 @@ export function buildDynamicKitContent(
                 'Correct Charity entry crediting Purchases with narration (1 mark)',
                 'Correct Drawings entry crediting Purchases with narration (1 mark)',
               ],
-              frequentlyAskedIn: 'CBSE Class 11 Final Examination',
+              frequentlyAskedIn: 'Curriculum Practice Question (NCERT / Board Syllabus Aligned — 3 Marks)',
             },
             {
               id: 3,
@@ -189,7 +366,7 @@ export function buildDynamicKitContent(
                 'Correct compound sales journal entry with correct debit/credit values (2.5 marks)',
                 'Correct settlement journal entry with discount received (1.5 marks)',
               ],
-              frequentlyAskedIn: 'CBSE Class 11 Annual Examination & Board Sample Papers',
+              frequentlyAskedIn: 'Curriculum Practice Question (NCERT / Board Syllabus Aligned — 5 Marks)',
             },
           ],
         },
@@ -360,7 +537,7 @@ export function buildDynamicKitContent(
               question: 'Define Marginal Propensity to Consume (MPC) and state its mathematical range of values.',
               answer: 'Marginal Propensity to Consume (MPC) is the ratio of change in consumption expenditure (ΔC) to change in total income (ΔY), given by MPC = ΔC / ΔY. Its value strictly lies between 0 and 1.',
               markingScheme: ['Correct definition (½ mark)', 'Stating bounds 0 ≤ MPC ≤ 1 (½ mark)'],
-              frequentlyAskedIn: 'CBSE Commerce 2023, State Board 2024',
+              frequentlyAskedIn: 'Curriculum Practice Question (NCERT / Board Syllabus Aligned — 1 Mark)',
             },
             {
               id: 2,
@@ -368,7 +545,7 @@ export function buildDynamicKitContent(
               question: 'In an economy, MPC is 0.75. If investment expenditure increases by ₹600 Crores, calculate the total increase in National Income.',
               answer: 'Investment multiplier k = 1 / (1 - MPC) = 1 / (1 - 0.75) = 1 / 0.25 = 4. Total increase in National Income ΔY = k × ΔI = 4 × ₹600 Crores = ₹2,400 Crores.',
               markingScheme: ['Multiplier formula and calculation k = 4 (1.5 marks)', 'Final income computation with ₹ Crores unit (1.5 marks)'],
-              frequentlyAskedIn: 'CBSE 2024, CISCE 2023',
+              frequentlyAskedIn: 'Curriculum Practice Question (NCERT / Board Syllabus Aligned — 3 Marks)',
             },
           ],
         },
@@ -537,7 +714,7 @@ export function buildDynamicKitContent(
               question: `Identify the primary historical significance or founding charter associated with ${chapter}.`,
               answer: `It established foundational civil liberties and collective constitutional principles that limited arbitrary executive power and unified public participation.`,
               markingScheme: ['Accurate historical identification (1 mark)'],
-              frequentlyAskedIn: 'CBSE Social Science 2023, State Board 2024',
+              frequentlyAskedIn: 'Curriculum Practice Question (NCERT / Board Syllabus Aligned — 1 Mark)',
             },
             {
               id: 2,
@@ -545,7 +722,7 @@ export function buildDynamicKitContent(
               question: `Analyze three key factors that contributed to the mass spread of the movement in ${chapter}.`,
               answer: `1. Economic distress among farmers and workers; 2. Unified leadership and vernacular communication; 3. Use of collective cultural symbols and civil boycotts that resonated across demographic lines.`,
               markingScheme: ['Three distinct points with sub-headings (1 mark each = 3 marks)'],
-              frequentlyAskedIn: 'CBSE Board 2024, ICSE 2023',
+              frequentlyAskedIn: 'Curriculum Practice Question (NCERT / Board Syllabus Aligned — 3 Marks)',
             },
           ],
         },
@@ -741,7 +918,7 @@ export function buildDynamicKitContent(
               question: 'If set A = {1, 2, 3, 4, 5, 6}, insert the appropriate symbol ∈ or ∉ in the blank space: 4 ___ A and 7 ___ A.',
               answer: '4 ∈ A (4 belongs to set A) and 7 ∉ A (7 does not belong to set A).',
               markingScheme: ['Correct symbol for 4 (½ mark)', 'Correct symbol for 7 (½ mark)'],
-              frequentlyAskedIn: 'CBSE Class 11 Mathematics Term 1',
+              frequentlyAskedIn: 'Curriculum Practice Question (NCERT / Board Syllabus Aligned — 1 Mark)',
             },
             {
               id: 2,
@@ -749,7 +926,7 @@ export function buildDynamicKitContent(
               question: "Let U = {1, 2, 3, 4, 5, 6, 7, 8, 9}, A = {2, 4, 6, 8} and B = {2, 3, 5, 7}. Verify De Morgan's Law: (A ∪ B)' = A' ∩ B'.",
               answer: "1. A ∪ B = {2, 3, 4, 5, 6, 7, 8}.\n2. LHS: (A ∪ B)' = U - (A ∪ B) = {1, 9}.\n3. A' = U - A = {1, 3, 5, 7, 9} and B' = U - B = {1, 4, 6, 8, 9}.\n4. RHS: A' ∩ B' = {1, 9}.\nSince LHS = RHS = {1, 9}, De Morgan's Law is verified.",
               markingScheme: ['Finding A ∪ B and LHS complement (1 mark)', "Finding individual complements A' and B' (1 mark)", 'Taking intersection and proving equality (1 mark)'],
-              frequentlyAskedIn: 'NCERT Exemplar, CBSE 2023 Class 11',
+              frequentlyAskedIn: 'Curriculum Practice Question (NCERT Exemplar Aligned — 3 Marks)',
             },
             {
               id: 3,
@@ -757,7 +934,7 @@ export function buildDynamicKitContent(
               question: 'In a survey of 400 students in a school, 100 were listed as taking apple juice, 150 as taking orange juice, and 75 were listed as taking both apple and orange juice. Find how many students were taking neither apple juice nor orange juice.',
               answer: 'Let U be the set of surveyed students: n(U) = 400.\nLet A = students taking apple juice: n(A) = 100.\nLet B = students taking orange juice: n(B) = 150.\nStudents taking both: n(A ∩ B) = 75.\nApplying cardinality formula:\nn(A ∪ B) = n(A) + n(B) - n(A ∩ B) = 100 + 150 - 75 = 175.\nNumber of students taking neither apple nor orange juice = n((A ∪ B)\') = n(U) - n(A ∪ B) = 400 - 175 = 225.',
               markingScheme: ['Definition of sets and statement of n(U), n(A), n(B), n(A ∩ B) (1 mark)', 'Application of union formula n(A ∪ B) = 175 (2 marks)', 'Complement calculation n(neither) = 400 - 175 = 225 (2 marks)'],
-              frequentlyAskedIn: 'CBSE Class 11 Annual Examination Standard Paper',
+              frequentlyAskedIn: 'Curriculum Practice Question (NCERT / Board Syllabus Aligned — 5 Marks)',
             },
           ],
         },
@@ -959,7 +1136,7 @@ export function buildDynamicKitContent(
               question: 'Find the discriminant of the quadratic equation 2x² - 4x + 3 = 0 and hence state the nature of its roots.',
               answer: 'For 2x² - 4x + 3 = 0, a = 2, b = -4, c = 3. Discriminant D = b² - 4ac = (-4)² - 4(2)(3) = 16 - 24 = -8. Since D < 0, the given equation has no real roots (roots are complex conjugate numbers).',
               markingScheme: ['Correct evaluation of D = -8 (½ mark)', 'Stating no real roots (½ mark)'],
-              frequentlyAskedIn: 'CBSE Class 10 Board Exam Section A',
+              frequentlyAskedIn: 'Curriculum Practice Question (NCERT / Board Syllabus Aligned — 1 Mark)',
             },
             {
               id: 2,
@@ -967,7 +1144,7 @@ export function buildDynamicKitContent(
               question: 'Find the values of k for which the quadratic equation (k - 12)x² + 2(k - 12)x + 2 = 0 has equal roots.',
               answer: 'Here a = (k - 12), b = 2(k - 12), c = 2. For equal roots, D = b² - 4ac = 0. Therefore: [2(k - 12)]² - 4(k - 12)(2) = 0 => 4(k - 12)² - 8(k - 12) = 0 => 4(k - 12)(k - 14) = 0. This gives k = 12 or k = 14. But if k = 12, then a = k - 12 = 0, which violates the quadratic condition a ≠ 0. Hence, k = 12 is rejected. The only valid value is k = 14.',
               markingScheme: ['Condition D = 0 statement (1 mark)', 'Factoring to k = 12, 14 (1 mark)', 'Rejecting k = 12 with a ≠ 0 reasoning (1 mark)'],
-              frequentlyAskedIn: 'CBSE Class 10 Standard Mathematics Board Paper',
+              frequentlyAskedIn: 'Curriculum Practice Question (NCERT / Board Syllabus Aligned — 3 Marks)',
             },
             {
               id: 3,
@@ -975,7 +1152,7 @@ export function buildDynamicKitContent(
               question: 'An express train takes 1 hour less than a passenger train to travel 132 km between Mysore and Bangalore. If the average speed of the express train is 11 km/h more than that of the passenger train, find the average speed of the two trains.',
               answer: 'Let average speed of passenger train be x km/h. Then speed of express train = (x + 11) km/h. Time by passenger train = 132 / x; time by express train = 132 / (x + 11). Given: 132/x - 132/(x + 11) = 1 => 132[11 / (x² + 11x)] = 1 => x² + 11x - 1452 = 0. Factoring: (x + 44)(x - 33) = 0 => x = 33 (since speed > 0). Speed of passenger train = 33 km/h; speed of express train = 44 km/h.',
               markingScheme: ['Variable definition and equation setup (1.5 marks)', 'Forming quadratic equation x² + 11x - 1452 = 0 (1.5 marks)', 'Factoring and finding x = 33 km/h (1 mark)', 'Final statement of both train speeds (1 mark)'],
-              frequentlyAskedIn: 'NCERT Exemplar & CBSE Board Long Answer',
+              frequentlyAskedIn: 'Curriculum Practice Question (NCERT Exemplar Aligned — 5 Marks)',
             },
           ],
         },
@@ -1026,6 +1203,185 @@ export function buildDynamicKitContent(
         'Sum of roots α + β = -b/a; Product of roots αβ = c/a.',
         'Equation with given roots: x² - (α + β)x + αβ = 0.',
         'For equal roots problems, set D = b² - 4ac = 0.',
+      ],
+    };
+  }
+
+  // 2.5. MATHEMATICS — PROBABILITY & BAYES' THEOREM
+  const isProbability = cLower.includes('probab') || cLower.includes('bayes') || cLower.includes('random variable');
+  if (isProbability) {
+    return {
+      content: {
+        quick: {
+          headline: `${chapter} — Probability, Conditional Probability & Bayes' Theorem Essentials`,
+          cheatSheet: [
+            'Axiomatic Foundations: 0 ≤ P(E) ≤ 1 for any event E, P(S) = 1, and P(∅) = 0. For mutually exclusive events, P(A ∪ B) = P(A) + P(B).',
+            'Addition Theorem: P(A ∪ B) = P(A) + P(B) - P(A ∩ B). Subtract intersection to eliminate double-counting.',
+            'Conditional Probability: P(A|B) = P(A ∩ B) / P(B) for P(B) > 0. Probability of A occurring given B has already occurred.',
+            'Independent Events: P(A ∩ B) = P(A) · P(B). Events A and B do not influence each other. Mutually exclusive events with non-zero probability can NEVER be independent!',
+            'Bayes\' Theorem: Calculates posterior probability P(Ek|A) = [P(Ek) · P(A|Ek)] / [Σ P(Ei) · P(A|Ei)] after observing symptom or evidence A.',
+            'Random Variables & Probability Distributions: Σ P(X = xi) = 1. Mathematical Expectation (Mean) E[X] = Σ xi · P(X = xi).',
+          ],
+          formulas: [
+            { name: 'Addition Theorem of Probability', formula: 'P(A ∪ B) = P(A) + P(B) - P(A ∩ B)', note: 'Reduces to P(A) + P(B) when events are mutually exclusive (A ∩ B = ∅)' },
+            { name: 'Conditional Probability', formula: 'P(A|B) = P(A ∩ B) / P(B)', note: 'Valid strictly when P(B) > 0' },
+            { name: 'Bayes\' Theorem Formulation', formula: 'P(Ek|A) = [P(Ek) · P(A|Ek)] / [Σ P(Ei) · P(A|Ei)]', note: 'Posterior probability of cause Ek given evidence A' },
+            { name: 'Mathematical Expectation (Mean)', formula: 'E[X] = Σ xi · P(X = xi)', note: 'Expected value of discrete random variable X' },
+          ],
+          bulletSummary: [
+            'Total Probability Rule: P(A) = Σ P(Ei) · P(A|Ei) across a mutually exclusive, exhaustive partition of sample space S.',
+            'Variance Formula: Var(X) = E[X²] - (E[X])².',
+          ],
+        },
+        minimal: {
+          headline: `${chapter} Summary`,
+          cheatSheet: [
+            'P(A|B) = P(A ∩ B) / P(B).',
+            'Bayes Theorem computes posterior probability given observed evidence.',
+            'E[X] = Σ xi P(X = xi).',
+          ],
+          formulas: [
+            { name: 'Conditional Probability', formula: 'P(A|B) = P(A ∩ B) / P(B)', note: 'Fundamental conditioning rule' },
+          ],
+          bulletSummary: ['Axioms, conditional probability, Bayes theorem, and expectation.'],
+        },
+        topper: {
+          introduction: `Rigorous mathematical lecture analysis for ${subject}: ${chapter}. Examines Kolmogorov axiomatic probability, conditional probability spaces, Bayes' theorem, and discrete random variable distributions.`,
+          deepDive: [
+            {
+              title: '1. Axiomatic Probability, Sample Space Partitions & Addition Theorem',
+              timestamp: '00:00',
+              content: 'Probability is defined on a sample space S of all mutually exclusive elementary outcomes. Kolmogorov axioms establish that P(E) ∈ [0, 1], P(S) = 1, and for countable disjoint events, the probability of their union equals the sum of their probabilities. The general addition theorem P(A ∪ B) = P(A) + P(B) - P(A ∩ B) follows from the principle of inclusion-exclusion.',
+              keyTakeaway: 'Complementary event rule: P(A\') = 1 - P(A).',
+            },
+            {
+              title: '2. Conditional Probability, Multiplication Theorem & Statistical Independence',
+              timestamp: '07:30',
+              content: 'Conditioning on event B restricts the effective sample space to B: P(A|B) = P(A ∩ B) / P(B). The multiplication theorem gives P(A ∩ B) = P(B) · P(A|B) = P(A) · P(B|A). Two events are statistically independent if P(A ∩ B) = P(A) · P(B). Crucial conceptual distinction: Mutually exclusive events cannot occur simultaneously (A ∩ B = ∅), whereas independent events can occur simultaneously but provide zero information about each other.',
+              keyTakeaway: 'If P(A) > 0 and P(B) > 0, mutually exclusive events can NEVER be independent.',
+            },
+            {
+              title: '3. Theorem of Total Probability & Bayes\' Inverse Probability Theorem',
+              timestamp: '16:00',
+              content: 'Let E1, E2, ..., En be a partition of sample space S (mutually exclusive and exhaustive, Σ P(Ei) = 1). The Theorem of Total Probability states: P(A) = Σ P(Ei) · P(A|Ei). When an event A is observed, Bayes\' Theorem calculates the posterior probability that it originated from cause Ek: P(Ek|A) = [P(Ek) · P(A|Ek)] / [Σ P(Ei) · P(A|Ei)]. P(Ek) is the prior probability, P(A|Ek) is the likelihood, and P(Ek|A) is the updated posterior probability.',
+              keyTakeaway: 'Always verify that partition probabilities sum to exactly 1: Σ P(Ei) = 1.',
+            },
+          ],
+          derivations: [
+            {
+              title: 'Derivation of Bayes\' Theorem from Conditional Probability Axioms',
+              steps: [
+                'State definition of conditional probability: P(Ek|A) = P(Ek ∩ A) / P(A)',
+                'Apply multiplication theorem to numerator: P(Ek ∩ A) = P(Ek) · P(A|Ek)',
+                'Apply Theorem of Total Probability to denominator: P(A) = Σ_{i=1}^n P(Ei) · P(A|Ei)',
+                'Substitute numerator and denominator expressions: P(Ek|A) = [P(Ek) · P(A|Ek)] / [Σ_{i=1}^n P(Ei) · P(A|Ei)]',
+                'Verify validity: holds for any non-null event A (P(A) > 0) and partition {Ei}',
+              ],
+              finalResult: 'Bayes\' Theorem formulation established from axiomatic foundations',
+            },
+          ],
+          proTips: [
+            'In tree diagrams, branch probabilities originating from a single node must sum to 1.',
+            'For independent events A and B, their complements A\' and B\' are also strictly independent.',
+          ],
+        },
+        chatpata: {
+          hinglishIntro: `Bhai dekho, Probability aur Bayes\' Theorem ko bilkul mast Hinglish mein samajhte hain! Probability matlab kismat ka mathematical hisaab-kitaab — coin toss se lekar factory defects aur doctor ke diagnosis tak sab probability pe chalta hai!`,
+          desiAnalogies: [
+            {
+              concept: 'Bayes\' Theorem',
+              analogy: 'Socho gaadi mein se aawaz aayi (Event A). Ab mechanic socta hai: Aawaz tyre puncture hone se aayi ya engine kharab hone se? Pehle se pata chances (Priors) aur naye evidence ko mila kar asli vajah dhoondna hi Bayes\' Theorem hai!',
+              desiPunchline: 'Symptom dekh ke bimari ka pata lagana hi Bayes\' Theorem hai!',
+            },
+            {
+              concept: 'Mutually Exclusive vs Independent',
+              analogy: 'Mutually exclusive matlab ek time pe do alag shaadiyon mein hona (ek jagah gaye toh dusri jagah zero chance). Independent matlab do doston ka alag-alag paper likhna (dono pass ho sakte hain, ek ka result dusre ko effect nahi karta)!',
+              desiPunchline: 'Saath nahi ho sakte toh mutually exclusive, ek dusre se matlab nahi toh independent!',
+            },
+          ],
+          bhaiKaSummary: [
+            'Point 1: P(A|B) = P(A ∩ B) / P(B).',
+            'Point 2: Bayes Theorem = [Prior × Likelihood] / Total Probability.',
+          ],
+          jugaadPoints: [
+            'Exam trick: Bayes question mein hamesha pehle partition E1, E2 define karo aur check karo P(E1) + P(E2) = 1 aata hai ya nahi!',
+          ],
+        },
+        chatpate: {
+          hinglishIntro: `Bhai dekho, Probability bilkul simple topic hai!`,
+          desiAnalogies: [],
+          bhaiKaSummary: [],
+          jugaadPoints: [],
+        },
+        exam: {
+          trendAnalysis: 'Probability carries 8 marks in CBSE Class 12 Mathematics (typically one 4-mark case study on Bayes\' Theorem and one 2-mark or 1-mark question on conditional probability). High-frequency questions involve diagnostic accuracy and factory production defect identification.',
+          highWeightageTopics: [
+            'Bayes\' Theorem Case Studies & Reverse Probability (4-5 Marks)',
+            'Conditional Probability & Independent Events Verification (2-3 Marks)',
+            'Discrete Probability Distribution, Mean & Variance (3-4 Marks)',
+          ],
+          questions: [
+            {
+              id: 1,
+              marks: 1,
+              question: 'If P(A) = 0.6, P(B) = 0.3, and P(A ∩ B) = 0.2, calculate P(A|B).',
+              answer: 'By conditional probability formula: P(A|B) = P(A ∩ B) / P(B) = 0.2 / 0.3 = 2/3 ≈ 0.667.',
+              markingScheme: ['Formula statement (½ mark)', 'Evaluation to 2/3 (½ mark)'],
+              frequentlyAskedIn: 'Curriculum Practice Question (NCERT / Board Syllabus Aligned — 1 Mark)',
+            },
+            {
+              id: 2,
+              marks: 3,
+              question: 'Two events A and B are such that P(A) = 1/4, P(B) = 1/2, and P(A ∪ B) = 5/8. Determine whether events A and B are independent.',
+              answer: '1. By addition theorem: P(A ∪ B) = P(A) + P(B) - P(A ∩ B) => 5/8 = 1/4 + 1/2 - P(A ∩ B) => 5/8 = 6/8 - P(A ∩ B) => P(A ∩ B) = 6/8 - 5/8 = 1/8.\n2. Check product: P(A) · P(B) = (1/4) · (1/2) = 1/8.\n3. Since P(A ∩ B) = P(A) · P(B) = 1/8, events A and B are statistically independent.',
+              markingScheme: ['Finding P(A ∩ B) = 1/8 (1.5 marks)', 'Checking P(A) · P(B) and independence conclusion (1.5 marks)'],
+              frequentlyAskedIn: 'Curriculum Practice Question (NCERT / Board Syllabus Aligned — 3 Marks)',
+            },
+            {
+              id: 3,
+              marks: 5,
+              question: 'A doctor is to visit a patient. From past experience, probabilities that he comes by cab, bus, train or other means of transport are 0.3, 0.2, 0.1, and 0.4 respectively. Probabilities that he will be late are 0.25, 0.3, 0.35, and 0.1 respectively. When he arrives, he is late. What is the probability that he came by cab?',
+              answer: 'Let E1 = by cab, E2 = by bus, E3 = by train, E4 = by other transport.\nPrior probabilities: P(E1) = 0.3, P(E2) = 0.2, P(E3) = 0.1, P(E4) = 0.4. (Sum = 1.0).\nLet L = event that doctor is late.\nLikelihoods: P(L|E1) = 0.25, P(L|E2) = 0.3, P(L|E3) = 0.35, P(L|E4) = 0.1.\nBy Total Probability Theorem:\nP(L) = (0.3 × 0.25) + (0.2 × 0.3) + (0.1 × 0.35) + (0.4 × 0.1) = 0.075 + 0.060 + 0.035 + 0.040 = 0.210.\nBy Bayes\' Theorem:\nP(E1|L) = [P(E1) · P(L|E1)] / P(L) = 0.075 / 0.210 = 75 / 210 = 5 / 14 ≈ 0.357 (35.7%).',
+              markingScheme: ['Defining partition and events (1 mark)', 'Total probability calculation P(L) = 0.21 (2 marks)', 'Bayes formula substitution and final result 5/14 (2 marks)'],
+              frequentlyAskedIn: 'Curriculum Practice Question (NCERT / Board Syllabus Aligned — 5 Marks)',
+            },
+          ],
+        },
+      },
+      timestamps: [
+        { time: '00:00', seconds: 0, title: 'Axioms & Addition Theorem', summary: 'Sample space, Kolmogorov axioms, and addition rule for non-disjoint events.' },
+        { time: '07:30', seconds: 450, title: 'Conditional Probability & Independence', summary: 'Conditioning formula P(A|B) and multiplication theorem for independent events.' },
+        { time: '16:00', seconds: 960, title: 'Bayes\' Theorem & Posterior Evaluation', summary: 'Sample space partition, total probability law, and reverse probability derivation.' },
+      ],
+      flashcards: [
+        { id: 1, front: 'What is the condition for events A and B to be independent?', back: 'P(A ∩ B) = P(A) · P(B), or equivalently P(A|B) = P(A).', concept: 'Independence' },
+        { id: 2, front: 'Can mutually exclusive events with non-zero probability be independent?', back: 'No, because if they are mutually exclusive P(A ∩ B) = 0, but P(A) · P(B) > 0.', concept: 'Probability Axioms' },
+        { id: 3, front: 'What does Bayes\' Theorem calculate?', back: 'It calculates the posterior probability of a cause given that an effect or evidence has occurred.', concept: 'Bayes Theorem' },
+      ],
+      quiz: [
+        {
+          id: 1,
+          topic: 'Probability & Distributions',
+          question: 'If A and B are independent events with P(A) = 0.4 and P(B) = 0.5, then P(A ∪ B) is:',
+          options: ['0.70', '0.90', '0.20', '0.80'],
+          correctIndex: 0,
+          explanation: 'P(A ∩ B) = 0.4 × 0.5 = 0.2. P(A ∪ B) = 0.4 + 0.5 - 0.2 = 0.70.',
+        },
+        {
+          id: 2,
+          topic: 'Probability & Distributions',
+          question: 'In Bayes\' Theorem, P(Ek) is known as:',
+          options: ['Prior probability', 'Posterior probability', 'Likelihood', 'Marginal likelihood'],
+          correctIndex: 0,
+          explanation: 'P(Ek) is the prior probability of hypothesis Ek assessed before taking into account conditioning evidence.',
+        },
+      ],
+      quickRevisionPoints: [
+        'Axioms: 0 ≤ P(E) ≤ 1, P(S) = 1; P(A ∪ B) = P(A) + P(B) - P(A ∩ B).',
+        'Conditional probability: P(A|B) = P(A ∩ B) / P(B) for P(B) > 0.',
+        'Independent events: P(A ∩ B) = P(A) · P(B); independent events can happen together.',
+        'Bayes\' Theorem: P(Ek|A) = [P(Ek)P(A|Ek)] / [Σ P(Ei)P(A|Ei)].',
+        'Discrete Random Variable: Σ P(X = xi) = 1; Expected value E[X] = Σ xi P(X = xi).',
       ],
     };
   }
@@ -1147,7 +1503,7 @@ export function buildDynamicKitContent(
               question: 'Find the derivative of f(x) = e^(3x) · sin(x) with respect to x.',
               answer: 'Applying product rule: f\'(x) = e^(3x) · d/dx[sin x] + sin(x) · d/dx[e^(3x)] = e^(3x) cos(x) + 3 e^(3x) sin(x) = e^(3x) [cos x + 3 sin x].',
               markingScheme: ['Product rule setup (½ mark)', 'Correct final derivative (½ mark)'],
-              frequentlyAskedIn: 'CBSE Class 12 Math 2023, JEE Main 2024',
+              frequentlyAskedIn: 'Curriculum Practice Question (Higher Secondary Syllabus Aligned — 1 Mark)',
             },
             {
               id: 2,
@@ -1155,7 +1511,7 @@ export function buildDynamicKitContent(
               question: 'Evaluate ∫ x · e^x dx using integration by parts.',
               answer: 'Using ILATE rule, let u = x and dv = e^x dx => du = dx, v = e^x. Applying formula: ∫ x e^x dx = x e^x - ∫ e^x dx = x e^x - e^x + C = e^x (x - 1) + C.',
               markingScheme: ['Correct choice of u and v (1 mark)', 'Formula substitution (1 mark)', 'Final result with + C (1 mark)'],
-              frequentlyAskedIn: 'CBSE 2024, ISC 2023',
+              frequentlyAskedIn: 'Curriculum Practice Question (Higher Secondary Syllabus Aligned — 3 Marks)',
             },
           ],
         },
@@ -1340,7 +1696,7 @@ export function buildDynamicKitContent(
               question: 'Name the enzyme responsible for initial carbon fixation in C3 plants and state its location in the chloroplast.',
               answer: 'The enzyme is RuBisCO (Ribulose 1,5-bisphosphate carboxylase-oxygenase). It is located in the stroma of the chloroplast.',
               markingScheme: ['RuBisCO identification (½ mark)', 'Stroma location (½ mark)'],
-              frequentlyAskedIn: 'CBSE Class 11 Annual Examination & NEET',
+              frequentlyAskedIn: 'Curriculum Practice Question (NCERT / Board Syllabus Aligned — 1 Mark)',
             },
             {
               id: 2,
@@ -1348,7 +1704,7 @@ export function buildDynamicKitContent(
               question: 'Differentiate between cyclic and non-cyclic photophosphorylation on the basis of: (a) photosystems involved, (b) photolysis of water and oxygen evolution, and (c) end products formed.',
               answer: '(a) Photosystems: Non-cyclic involves both PS II and PS I; cyclic involves only PS I.\n(b) Photolysis & O₂: Non-cyclic involves photolysis of water and evolution of O₂; cyclic has no water splitting and zero O₂ release.\n(c) End Products: Non-cyclic produces both ATP and NADPH; cyclic produces ATP only.',
               markingScheme: ['1 mark for photosystem comparison', '1 mark for photolysis/O₂ comparison', '1 mark for end products comparison'],
-              frequentlyAskedIn: 'CBSE Class 11 Biology Theory Paper',
+              frequentlyAskedIn: 'Curriculum Practice Question (NCERT / Board Syllabus Aligned — 3 Marks)',
             },
             {
               id: 3,
@@ -1356,7 +1712,7 @@ export function buildDynamicKitContent(
               question: 'Explain the three stages of the Calvin cycle (C3 pathway) with a schematic representation. Calculate the total number of ATP and NADPH molecules required to produce one mole of hexose sugar.',
               answer: '1. Carboxylation: CO₂ is fixed with RuBP catalyzed by RuBisCO to form two molecules of 3-PGA.\n2. Reduction: Series of reactions utilizing 2 ATP and 2 NADPH per CO₂ fixed to convert 3-PGA into triose phosphate.\n3. Regeneration: RuBP is regenerated from triose phosphate consuming 1 ATP per turn.\nStoichiometry: For 1 hexose (6-carbon glucose), 6 CO₂ are fixed. ATP required = (6 × 2 in reduction) + (6 × 1 in regeneration) = 18 ATP. NADPH required = 6 × 2 = 12 NADPH. Net requirement = 18 ATP and 12 NADPH.',
               markingScheme: ['Carboxylation, reduction, regeneration descriptions (3 marks)', 'Calculations for 18 ATP and 12 NADPH (2 marks)'],
-              frequentlyAskedIn: 'NCERT Exemplar & CBSE Board Long Answer',
+              frequentlyAskedIn: 'Curriculum Practice Question (NCERT Exemplar Aligned — 5 Marks)',
             },
           ],
         },
@@ -1407,6 +1763,184 @@ export function buildDynamicKitContent(
         'Synthesis of 1 Glucose requires 6 CO₂, 18 ATP, and 12 NADPH.',
         'RuBisCO is the most abundant protein on Earth with dual carboxylase and oxygenase activity.',
         'Blackman Law: Rate is governed by the factor present in least amount.',
+      ],
+    };
+  }
+
+  // 3.5. BIOLOGY — HUMAN RESPIRATION & EXCHANGE OF GASES
+  const isRespiration = cLower.includes('respirat') || cLower.includes('breathing') || cLower.includes('vital capacity') || cLower.includes('alveol');
+  if (isRespiration) {
+    return {
+      content: {
+        quick: {
+          headline: `${chapter} — Human Respiration & Gas Exchange Revision Essentials`,
+          cheatSheet: [
+            'Respiratory Volumes: Tidal Volume (TV ~500 mL), Inspiratory Reserve Volume (IRV ~2500-3000 mL), Expiratory Reserve Volume (ERV ~1000-1100 mL), Residual Volume (RV ~1100-1200 mL).',
+            'Pulmonary Capacities: Vital Capacity VC = ERV + TV + IRV (~4000-4600 mL); Total Lung Capacity TLC = VC + RV (~5800 mL). RV cannot be measured by simple spirometer.',
+            'Alveolar Diffusion Membrane: Composed of 3 layers: 1) simple squamous epithelium of alveoli, 2) capillary endothelium, 3) thin intervening basement substance (total thickness < 1 mm).',
+            'Gas Partial Pressures: Alveolar pO2 = 104 mmHg, pCO2 = 40 mmHg; Deoxygenated blood pO2 = 40 mmHg, pCO2 = 45 mmHg. O2 diffuses down 64 mmHg gradient; CO2 diffuses rapidly down 5 mmHg gradient due to 20-25x higher solubility.',
+            'Oxyhemoglobin Dissociation Curve: Sigmoid curve. High pCO2, low pH (high H+), and high temperature shift curve to the right (the Bohr Effect), accelerating O2 unloading in active tissues.',
+          ],
+          formulas: [
+            { name: 'Vital Capacity Formula', formula: 'VC = ERV + TV + IRV', note: 'Maximal volume of air inspired after forced expiration (~4000 to 4600 mL)' },
+            { name: 'Total Lung Capacity', formula: 'TLC = VC + RV', note: 'Total air volume in lungs after forced inspiration (~5800 mL)' },
+            { name: 'Functional Residual Capacity', formula: 'FRC = ERV + RV', note: 'Air volume in lungs after normal expiration (~2200 mL)' },
+          ],
+          bulletSummary: [
+            'Inspiration is active (diaphragm and external intercostal contraction); expiration is passive at rest.',
+            'CO2 Transport: 70% as bicarbonate (HCO3⁻) via carbonic anhydrase, 20-25% as carbaminohemoglobin, 7% dissolved in plasma.',
+          ],
+        },
+        minimal: {
+          headline: `${chapter} Summary`,
+          cheatSheet: [
+            'VC = ERV + TV + IRV (~4200 mL).',
+            'TLC = VC + RV (~5800 mL).',
+            'Alveolar pO2 = 104 mmHg, pCO2 = 40 mmHg.',
+          ],
+          formulas: [
+            { name: 'Vital Capacity', formula: 'VC = ERV + TV + IRV', note: 'Standard clinical pulmonary capacity' },
+          ],
+          bulletSummary: ['Pulmonary volumes, alveolar diffusion, and Bohr effect.'],
+        },
+        topper: {
+          introduction: `Detailed physiological lecture synthesis for ${subject}: ${chapter}. Structured in alignment with NCERT Class 11 Biology, NEET, and pre-medical entrance standards.`,
+          deepDive: [
+            {
+              title: '1. Mechanics of Pulmonary Ventilation & Muscular Dynamics',
+              timestamp: '00:00',
+              content: 'Breathing involves inspiration (active) and expiration (passive at rest). Contraction of the dome-shaped diaphragm increases thoracic volume in the antero-posterior axis, while contraction of external intercostal muscles lifts the ribs and sternum, increasing volume in the dorso-ventral axis. This creates negative intra-pulmonary pressure relative to the atmosphere, drawing air into the lungs. Forced expiration recruits internal intercostals and abdominal muscles.',
+              keyTakeaway: 'The normal respiratory rate in a healthy human adult is 12 to 16 breaths per minute.',
+            },
+            {
+              title: '2. Spirometric Volumes, Capacities & Clinical Limits',
+              timestamp: '07:30',
+              content: 'Tidal volume (TV) is 500 mL. Inspiratory reserve volume (IRV) is 2500-3000 mL. Expiratory reserve volume (ERV) is 1000-1100 mL. Residual volume (RV ~1100-1200 mL) remains in alveoli even after maximal forced expiration. Vital Capacity (VC) is the maximum air volume breathed in after a forced expiration: VC = ERV + TV + IRV. Capacities containing RV (namely FRC and TLC) cannot be measured using simple spirometry and require helium dilution or body plethysmography.',
+              keyTakeaway: 'Residual volume prevents lungs from collapsing and maintains continuous alveolar gas exchange between breaths.',
+            },
+            {
+              title: '3. Alveolar Gas Exchange, Partial Pressures & The Bohr Effect',
+              timestamp: '16:00',
+              content: 'Gas exchange at alveoli is driven by partial pressure gradients across the thin three-layered diffusion membrane. In alveoli, pO2 is 104 mmHg and pCO2 is 40 mmHg; incoming venous blood has pO2 of 40 mmHg and pCO2 of 45 mmHg. Oxygen binds reversibly with hemoglobin in a cooperative sigmoidal relationship: Hb4 + 4 O2 ⇌ Hb4O8. Under elevated pCO2, lower pH, and elevated temperature in exercising tissues, hemoglobin\'s oxygen affinity decreases, shifting the dissociation curve to the right (the Bohr Effect) to enhance oxygen delivery.',
+              keyTakeaway: 'CO2 solubility is 20-25 times higher than O2, allowing rapid diffusion despite a modest 5 mmHg gradient.',
+            },
+          ],
+          derivations: [
+            {
+              title: 'Derivation and Partitioning of Pulmonary Capacities',
+              steps: [
+                'Identify fundamental spirometric volumes: TV, IRV, ERV, RV',
+                'Define Inspiratory Capacity: IC = TV + IRV (~3500 mL)',
+                'Define Expiratory Capacity: EC = TV + ERV (~1600 mL)',
+                'Define Functional Residual Capacity: FRC = ERV + RV (~2200 mL)',
+                'Derive Vital Capacity: VC = ERV + TV + IRV (~4100-4600 mL)',
+                'Derive Total Lung Capacity: TLC = VC + RV = TV + IRV + ERV + RV (~5800 mL)',
+              ],
+              finalResult: 'Complete spirometric lung volume identity TLC = VC + RV validated',
+            },
+          ],
+          proTips: [
+            'In competitive exams, remember that Residual Volume (RV) cannot be exhaled; hence FRC and TLC cannot be measured by simple spirometer.',
+            'Notice that 100 mL of oxygenated blood delivers approximately 5 mL of O2 to tissues under normal physiological conditions.',
+          ],
+        },
+        chatpata: {
+          hinglishIntro: `Bhai dekho, Human Respiration ko bilkul simple bhasha mein samjho! Saans lena sirf hawa andar-bahar karna nahi hai — yeh pure body cells ko oxygen deliver karne ka express network hai!`,
+          desiAnalogies: [
+            {
+              concept: 'Bohr Effect',
+              analogy: 'Hemoglobin ek auto-driver hai jo oxygen passengers ko baitha ke le jaata hai. Jahan tissues mein mehnat zyada hoti hai (high CO2, high garmi), wahan auto-driver turant passenger ko utaar deta hai! Is right shift ko Bohr effect bolte hain.',
+              desiPunchline: 'Jahan mehnat zyada, wahan oxygen delivery double!',
+            },
+            {
+              concept: 'CO2 Solubility vs O2',
+              analogy: 'CO2 paani mein cheeni ki tarah turant ghul jaati hai (20-25 times zyada soluble), isliye chhota sa 5 mmHg ka dhakka bhi bohot hai usse baha le jaane ke liye!',
+              desiPunchline: 'CO2 super-fast swimmer hai, thoda gradient bhi kaafi hai!',
+            },
+          ],
+          bhaiKaSummary: [
+            'Point 1: VC = ERV + TV + IRV (lagbhag 4200 mL).',
+            'Point 2: Alveoli mein pO2 = 104, pCO2 = 40 mmHg.',
+          ],
+          jugaadPoints: [
+            'Exam trick: Carbonic anhydrase enzyme RBCs mein super-fast kaam karta hai CO2 ko bicarbonate mein badalne ke liye!',
+          ],
+        },
+        chatpate: {
+          hinglishIntro: `Bhai dekho, Human Respiration bilkul simple topic hai!`,
+          desiAnalogies: [],
+          bhaiKaSummary: [],
+          jugaadPoints: [],
+        },
+        exam: {
+          trendAnalysis: 'Breathing and Exchange of Gases carries 2 to 3 questions regularly in NEET and 4 to 5 marks in CBSE Class 11 Biology exams. High-frequency questions test respiratory capacities calculation, oxygen dissociation curve shifts, and CO2 transport modes.',
+          highWeightageTopics: [
+            'Respiratory Volumes & Capacities Numerical Problems (3 Marks)',
+            'Oxygen Dissociation Curve & Factors Causing Shift (Bohr Effect) (3 Marks)',
+            'Transport of CO2 as Bicarbonate Ions (2-3 Marks)',
+          ],
+          questions: [
+            {
+              id: 1,
+              marks: 1,
+              question: 'Why cannot Functional Residual Capacity (FRC) be measured using a simple spirometer?',
+              answer: 'FRC includes Residual Volume (RV), which is the volume of air that cannot be expelled from the lungs even after maximal forced expiration. Since a spirometer only measures the volume of air moved in or out of the lungs, RV and any capacity containing RV (like FRC and TLC) cannot be directly measured by simple spirometry.',
+              markingScheme: ['Identification that FRC contains Residual Volume (½ mark)', 'Statement that RV cannot be voluntarily expired (½ mark)'],
+              frequentlyAskedIn: 'Curriculum Practice Question (NCERT / Board Syllabus Aligned — 1 Mark)',
+            },
+            {
+              id: 2,
+              marks: 3,
+              question: 'State three physiological conditions that shift the oxygen-hemoglobin dissociation curve to the right.',
+              answer: '1. High partial pressure of carbon dioxide (high pCO2).\n2. Higher hydrogen ion concentration (lower pH / acidosis).\n3. Elevated body temperature.\n(These conditions in metabolically active tissues decrease hemoglobin affinity for O2, promoting oxygen release via the Bohr effect).',
+              markingScheme: ['High pCO2 (1 mark)', 'Low pH / high H+ (1 mark)', 'High temperature (1 mark)'],
+              frequentlyAskedIn: 'Curriculum Practice Question (NCERT / Board Syllabus Aligned — 3 Marks)',
+            },
+            {
+              id: 3,
+              marks: 5,
+              question: 'Explain the mechanism of transport of carbon dioxide (CO2) in human blood under three distinct modes. Mention the role of carbonic anhydrase.',
+              answer: 'Carbon dioxide is transported by blood in three modes:\n1. In Dissolved State (7%): About 7% of CO2 is carried physically dissolved in blood plasma.\n2. As Carbamino-hemoglobin (20-25%): CO2 binds directly with the amino group of hemoglobin to form carbaminohemoglobin (HbCO2). This binding is favored by high pCO2 in tissues and reversed at alveoli.\n3. As Bicarbonate Ions (70%): The major mode. RBCs contain a high concentration of the enzyme Carbonic Anhydrase. In tissue capillaries, CO2 diffuses into RBCs and reacts with water: CO2 + H2O ⇌ H2CO3 ⇌ HCO3⁻ + H⁺. Bicarbonate diffuses out into plasma in exchange for chloride ions (Chloride Shift). At alveoli, the reaction reverses to release free CO2 into alveolar air.',
+              markingScheme: ['Dissolved state 7% (1 mark)', 'Carbaminohemoglobin 20-25% (1.5 marks)', 'Bicarbonate 70% with carbonic anhydrase reaction (2.5 marks)'],
+              frequentlyAskedIn: 'Curriculum Practice Question (NCERT / Board Syllabus Aligned — 5 Marks)',
+            },
+          ],
+        },
+      },
+      timestamps: [
+        { time: '00:00', seconds: 0, title: 'Ventilation Mechanics & Muscles', summary: 'Diaphragm and intercostal contractions establishing negative intra-thoracic pressure.' },
+        { time: '07:30', seconds: 450, title: 'Spirometric Volumes & Capacities', summary: 'TV, IRV, ERV, RV, Vital Capacity, and Total Lung Capacity definitions.' },
+        { time: '16:00', seconds: 960, title: 'Alveolar Gas Exchange & Bohr Effect', summary: 'Partial pressure gradients, diffusion membrane, and sigmoid dissociation curve.' },
+      ],
+      flashcards: [
+        { id: 1, front: 'What is the value of Vital Capacity (VC) in a normal adult?', back: 'Approximately 4000 to 4600 mL (VC = ERV + TV + IRV).', concept: 'Pulmonary Capacities' },
+        { id: 2, front: 'What causes the Bohr Effect?', back: 'High pCO2, low pH (high H+), and high temperature decreasing hemoglobin affinity for O2, shifting curve to the right.', concept: 'Gas Transport' },
+        { id: 3, front: 'What enzyme facilitates CO2 transport as bicarbonate in RBCs?', back: 'Carbonic Anhydrase, which catalyzes CO2 + H2O ⇌ H2CO3 ⇌ HCO3⁻ + H⁺.', concept: 'Biochemical Enzymes' },
+      ],
+      quiz: [
+        {
+          id: 1,
+          topic: 'Human Respiration',
+          question: 'What is the partial pressure of oxygen (pO2) in human alveolar air?',
+          options: ['104 mmHg', '40 mmHg', '45 mmHg', '159 mmHg'],
+          correctIndex: 0,
+          explanation: 'In alveoli, pO2 is 104 mmHg, creating a 64 mmHg gradient against deoxygenated blood (40 mmHg) to drive oxygen diffusion.',
+        },
+        {
+          id: 2,
+          topic: 'Human Respiration',
+          question: 'The major fraction of CO2 (approx 70%) is transported in blood as:',
+          options: ['Bicarbonate ions (HCO3⁻)', 'Carbaminohemoglobin', 'Dissolved CO2 gas in plasma', 'Carbon monoxide'],
+          correctIndex: 0,
+          explanation: 'Approximately 70% of CO2 is transported as bicarbonate ions in plasma formed through carbonic anhydrase in RBCs.',
+        },
+      ],
+      quickRevisionPoints: [
+        'Vital Capacity VC = ERV + TV + IRV (~4100-4600 mL); TLC = VC + RV (~5800 mL).',
+        'Residual Volume (RV ~1100-1200 mL) cannot be measured with a simple spirometer.',
+        'Alveolar pO2 = 104 mmHg, pCO2 = 40 mmHg; Blood pO2 = 40 mmHg, pCO2 = 45 mmHg.',
+        'Bohr effect: curve shifts right under high pCO2, low pH, high temperature.',
+        '70% CO2 transported as bicarbonate via carbonic anhydrase; 20-25% as carbamino-Hb; 7% dissolved.',
       ],
     };
   }
@@ -1527,7 +2061,7 @@ export function buildDynamicKitContent(
               question: 'State the role of tRNA in cellular protein synthesis.',
               answer: 'tRNA acts as an adapter molecule that reads the mRNA codon sequence via its anticodon loop and brings the corresponding specific amino acid to the ribosomal site.',
               markingScheme: ['Adapter role and amino acid transport (1 mark)'],
-              frequentlyAskedIn: 'CBSE Class 12 Biology 2023, NEET 2024',
+              frequentlyAskedIn: 'Curriculum Practice Question (Senior Secondary Syllabus Aligned — 1 Mark)',
             },
             {
               id: 2,
@@ -1535,7 +2069,7 @@ export function buildDynamicKitContent(
               question: 'Differentiate between leading and lagging strands during DNA replication.',
               answer: '1. Leading strand is synthesized continuously in 5\'→3\' direction towards fork; Lagging strand is synthesized discontinuously away from fork. 2. Leading strand requires only one RNA primer; Lagging strand requires multiple primers for Okazaki fragments. 3. DNA ligase is heavily required on lagging strand to join fragments.',
               markingScheme: ['Three valid contrasting points (1 mark each = 3 marks)'],
-              frequentlyAskedIn: 'CBSE Board 2024, AIIMS 2022',
+              frequentlyAskedIn: 'Curriculum Practice Question (Senior Secondary Syllabus Aligned — 3 Marks)',
             },
           ],
         },
@@ -1581,6 +2115,360 @@ export function buildDynamicKitContent(
         'Enzyme accuracy: State exact enzyme names and subcellular locations.',
         'Diagram standard: Clean pencil drawings with straight parallel leader lines.',
         'Nomenclature: Always underline genus and species separately in scientific names.',
+      ],
+    };
+  }
+
+  // 4.6. CHEMISTRY — CHEMICAL BONDING & MOLECULAR STRUCTURE
+  const isChemicalBonding = cLower.includes('bonding') || cLower.includes('vsepr') || cLower.includes('hybridization') || cLower.includes('molecular orbital');
+  if (isChemicalBonding) {
+    return {
+      content: {
+        quick: {
+          headline: `${chapter} — Chemical Bonding, VSEPR & Molecular Structure Revision`,
+          cheatSheet: [
+            'VSEPR Repulsion Order: Lone Pair - Lone Pair > Lone Pair - Bond Pair > Bond Pair - Bond Pair. Repulsion compresses bond angles: NH3 has 1 lone pair (107°), H2O has 2 lone pairs (104.5°) compared to ideal tetrahedral 109.5°.',
+            'Valence Bond Theory: Sigma (σ) bonds are formed by head-on axial overlap of atomic orbitals (stronger); Pi (π) bonds are formed by sideways lateral overlap (weaker).',
+            'Hybridization Rules: Intermixing of atomic orbitals of comparable energy. sp = linear (180°, e.g. BeCl2, C2H2), sp2 = trigonal planar (120°, e.g. BF3, C2H4), sp3 = tetrahedral (109.5°, e.g. CH4), sp3d = trigonal bipyramidal (e.g. PCl5).',
+            'Molecular Orbital Theory (MOT): Linear Combination of Atomic Orbitals (LCAO). Bond Order = ½ (Nb - Na). Stable molecule if Nb > Na.',
+            'Oxygen Paramagnetism: MOT electronic configuration for O2 (16 electrons) places 2 unpaired electrons in degenerate antibonding π* 2px and π* 2py orbitals, proving paramagnetism.',
+            'Dipole Moment (μ = q × d): Vector quantity directed from positive to negative pole. Symmetric molecules (CO2, BF3, CCl4) have μ = 0 despite polar bonds.',
+          ],
+          formulas: [
+            { name: 'Bond Order Formula', formula: 'Bond Order = ½ (Nb - Na)', note: 'Nb = bonding electrons, Na = antibonding electrons' },
+            { name: 'Electric Dipole Moment', formula: 'μ = q × d', note: '1 Debye (D) = 3.336 × 10^-30 C·m; vector quantity' },
+            { name: 'Formal Charge on Atom', formula: 'FC = V - L - ½ S', note: 'V = valence electrons, L = lone pair electrons, S = shared bonding electrons' },
+          ],
+          bulletSummary: [
+            'Octet rule exceptions: Incomplete octet (BF3, BeCl2), odd electron molecules (NO, NO2), expanded octet (PCl5, SF6).',
+            'Hydrogen Bonding: Dipole-dipole attraction when H is bonded to high electronegativity atoms (F, O, N). Explains anomalously high boiling point of water.',
+          ],
+        },
+        minimal: {
+          headline: `${chapter} Summary`,
+          cheatSheet: [
+            'VSEPR: Lone pair repulsion compresses bond angles.',
+            'Bond Order = ½ (Nb - Na).',
+            'O2 is paramagnetic with 2 unpaired electrons in π* orbitals.',
+          ],
+          formulas: [
+            { name: 'Bond Order', formula: 'B.O. = ½ (Nb - Na)', note: 'Molecular stability criterion' },
+          ],
+          bulletSummary: ['VSEPR geometries, hybridization, and Molecular Orbital Theory.'],
+        },
+        topper: {
+          introduction: `Advanced physical chemical lecture analysis for ${subject}: ${chapter}. Synthesizes Kossel-Lewis octet theory, Gillespie-Nyholm VSEPR geometries, Pauling valence bond hybridization, and Hund-Mulliken Molecular Orbital Theory.`,
+          deepDive: [
+            {
+              title: '1. VSEPR Theory, Electron Pair Repulsions & Molecular Geometries',
+              timestamp: '00:00',
+              content: 'VSEPR theory posits that electron pairs in the valence shell of a central atom adopt spatial orientations that minimize mutual electrostatic repulsion. Lone pairs occupy greater angular volume than bonding pairs because they are attracted to only one atomic nucleus. Repulsion strengths follow: LP-LP > LP-BP > BP-BP. In AB3E molecules like ammonia (NH3), the single lone pair compresses the tetrahedral angle from 109.5° to 107° (trigonal pyramidal). In AB2E2 molecules like water (H2O), two lone pairs compress the angle to 104.5° (bent V-shape).',
+              keyTakeaway: 'Geometry considers only nuclear positions (atomic layout), while electron pair arrangement includes lone pairs.',
+            },
+            {
+              title: '2. Valence Bond Theory, Orbital Overlap & Hybridization',
+              timestamp: '07:30',
+              content: 'Covalent bonds arise from overlapping half-filled atomic orbitals with opposite electron spins. Axial overlap along the internuclear axis produces cylindrical symmetric sigma (σ) bonds with maximum electron density between nuclei. Lateral sideways overlap of parallel unhybridized p-orbitals produces pi (π) bonds with electron density above and below the axis. Hybridization involves the mixing of atomic orbitals of comparable energy (s, p, d) to produce equivalent directional hybrid orbitals that form stronger directional sigma bonds.',
+              keyTakeaway: 'Single bonds are always sigma; double bonds comprise 1 sigma + 1 pi; triple bonds comprise 1 sigma + 2 pi.',
+            },
+            {
+              title: '3. Molecular Orbital Theory (MOT), Bond Order & O2 Paramagnetism',
+              timestamp: '16:00',
+              content: 'Molecular Orbital Theory treats electrons as delocalized across the entire molecule. When atomic orbitals combine in-phase (constructive interference), bonding molecular orbitals (σ, π) are formed with lower energy. Out-of-phase combination (destructive interference) produces antibonding orbitals (σ*, π*) with a nodal plane between nuclei. Bond Order is given by ½(Nb - Na). For oxygen (O2, 16 electrons): σ1s² σ*1s² σ2s² σ*2s² σ2pz² (π2px² = π2py²) (π*2px¹ = π*2py¹). The two unpaired electrons in antibonding π* orbitals rigorously explain oxygen\'s paramagnetic behavior.',
+              keyTakeaway: 'Bond Order is proportional to bond strength and inversely proportional to bond length.',
+            },
+          ],
+          derivations: [
+            {
+              title: 'Linear Combination of Atomic Orbitals (LCAO) Derivation of Molecular Orbitals',
+              steps: [
+                'Consider two atomic wavefunctions ΨA and ΨB for interacting hydrogen atoms',
+                'Construct linear combination wavefunctions: Ψ_bonding = ΨA + ΨB and Ψ_antibonding = ΨA - ΨB',
+                'Evaluate electron probability density: |Ψ_bonding|² = |ΨA|² + |ΨB|² + 2 ΨA ΨB (enhanced electron density in internuclear region)',
+                'Evaluate antibonding density: |Ψ_antibonding|² = |ΨA|² + |ΨB|² - 2 ΨA ΨB (depleted density with nodal plane)',
+                'Derive Bond Order: B.O. = ½(Nb - Na) establishing bond stability when Nb > Na',
+              ],
+              finalResult: 'Bonding stabilization and antibonding destabilization verified via LCAO wave mechanics',
+            },
+          ],
+          proTips: [
+            'For homonuclear diatomics up to N2 (Z ≤ 7), the energy level of π2px = π2py is lower than σ2pz due to 2s-2p mixing. For O2 and F2 (Z > 7), σ2pz is lower than π2px = π2py.',
+            'Molecules with zero net dipole moment can still have polar individual bonds if dipole vectors symmetrically cancel (e.g. linear CO2, tetrahedral CH4).',
+          ],
+        },
+        chatpata: {
+          hinglishIntro: `Bhai dekho, Chemical Bonding ko bilkul simple Hinglish mein samajhte hain! Atoms akelapan door karne aur stable hone ke liye bond banate hain — octet rule, VSEPR aur MOT iske 3 bade villains aur heroes hain!`,
+          desiAnalogies: [
+            {
+              concept: 'VSEPR Lone Pair Bullying',
+              analogy: 'Socho auto rickshaw mein 3 seedhe-sadhe dost baithe hain (bond pairs). Achanak ek mota pahalwan (lone pair) aa ke baith gaya — wo sabse zyada jagah le leta hai aur baaki doston ko kone mein dabakar unka angle chhota kar deta hai!',
+              desiPunchline: 'Lone pair ka dabdaba zyada, bond angle chhota!',
+            },
+            {
+              concept: 'Sigma vs Pi Bond',
+              analogy: 'Sigma bond matlab aamne-saamne aakar pakka gale milna (head-on overlap, super strong). Pi bond matlab dur khade hoke haath milana (sideways overlap, weak, pehle tootega)!',
+              desiPunchline: 'Pehle Sigma banega dosti ka, phir Pi banega bas show ke liye!',
+            },
+          ],
+          bhaiKaSummary: [
+            'Point 1: Bond Order = (Bonding - Antibonding) / 2.',
+            'Point 2: O2 paramagnetism sirf MOT explain kar sakti hai, Lewis fail ho gaya tha!',
+          ],
+          jugaadPoints: [
+            'Exam trick: Hybridization nikalne ke liye: Central atom ke sigma bonds count karo + lone pairs jodo. Total 2 = sp, 3 = sp2, 4 = sp3, 5 = sp3d.',
+          ],
+        },
+        chatpate: {
+          hinglishIntro: `Bhai dekho, Chemical Bonding bilkul simple topic hai!`,
+          desiAnalogies: [],
+          bhaiKaSummary: [],
+          jugaadPoints: [],
+        },
+        exam: {
+          trendAnalysis: 'Chemical Bonding is a cornerstone chapter carrying 6 to 8 marks in CBSE Class 11 and 2 to 3 direct questions in JEE/NEET. High-yield exam questions focus on VSEPR geometry anomalies, MOT electronic configurations and bond orders, and hybridization proofs.',
+          highWeightageTopics: [
+            'Molecular Orbital Theory: Configuration, Bond Order & Magnetic Nature (3-5 Marks)',
+            'VSEPR Theory: Molecular Geometry and Bond Angle Deviations (3 Marks)',
+            'Hybridization of Central Atoms and Sigma/Pi Bond Calculations (2-3 Marks)',
+          ],
+          questions: [
+            {
+              id: 1,
+              marks: 1,
+              question: 'Calculate the formal charge on the central oxygen atom in the ozone (O3) molecule.',
+              answer: 'For the central oxygen in O3: Valence electrons V = 6; Non-bonding lone pair electrons L = 2; Shared bonding electrons S = 6 (one single bond, one double bond). Formal Charge = V - L - ½ S = 6 - 2 - ½(6) = 6 - 2 - 3 = +1.',
+              markingScheme: ['Formal charge formula statement (½ mark)', 'Correct numerical calculation FC = +1 (½ mark)'],
+              frequentlyAskedIn: 'Curriculum Practice Question (NCERT / Board Syllabus Aligned — 1 Mark)',
+            },
+            {
+              id: 2,
+              marks: 3,
+              question: 'Using Molecular Orbital Theory, explain why the oxygen molecule (O2) is paramagnetic while the nitrogen molecule (N2) is diamagnetic.',
+              answer: '1. O2 (16 electrons): Filling order places two electrons into the degenerate antibonding orbitals π* 2px and π* 2py as single unpaired electrons (Hund\'s rule). Since it possesses unpaired electrons, O2 is paramagnetic.\n2. N2 (14 electrons): Filling order completely pairs all 14 electrons up to σ 2pz². Since there are zero unpaired electrons, N2 is diamagnetic.',
+              markingScheme: ['O2 configuration showing unpaired π* electrons (1.5 marks)', 'N2 configuration showing all paired electrons (1.5 marks)'],
+              frequentlyAskedIn: 'Curriculum Practice Question (NCERT / Board Syllabus Aligned — 3 Marks)',
+            },
+            {
+              id: 3,
+              marks: 5,
+              question: 'Compare the molecular geometry, hybridization, and bond angles of CH4, NH3, and H2O. Explain why their bond angles decrease from 109.5° to 107° to 104.5° despite having identical sp3 hybridization at the central atom.',
+              answer: '1. In all three molecules, the central atom has steric number = 4 (sp3 hybridized with tetrahedral electron pair geometry).\n2. CH4: Carbon has 4 bond pairs and 0 lone pairs. Repulsions are strictly BP-BP, maintaining ideal tetrahedral angle of 109.5°.\n3. NH3: Nitrogen has 3 bond pairs and 1 lone pair. According to VSEPR theory, LP-BP repulsion is stronger than BP-BP repulsion. The lone pair repels the three N-H bond pairs inward, reducing the bond angle from 109.5° to 107° (trigonal pyramidal geometry).\n4. H2O: Oxygen has 2 bond pairs and 2 lone pairs. LP-LP repulsion is the strongest of all electron repulsions. The two lone pairs repel each other strongly and push the two O-H bond pairs even closer together, compressing the bond angle to 104.5° (bent/V-shaped geometry).',
+              markingScheme: ['Identification of sp3 hybridization in all three (1 mark)', 'CH4 geometry and 109.5° explanation (1 mark)', 'NH3 LP-BP repulsion and 107° explanation (1.5 marks)', 'H2O LP-LP repulsion and 104.5° explanation (1.5 marks)'],
+              frequentlyAskedIn: 'Curriculum Practice Question (NCERT / Board Syllabus Aligned — 5 Marks)',
+            },
+          ],
+        },
+      },
+      timestamps: [
+        { time: '00:00', seconds: 0, title: 'Octet Limitations & VSEPR Geometry', summary: 'Electron pair repulsion hierarchy and bond angle compression in NH3 and H2O.' },
+        { time: '07:30', seconds: 450, title: 'Orbital Overlap & Hybridization', summary: 'Sigma vs pi overlap, sp/sp2/sp3 mixing, and directional covalent bonds.' },
+        { time: '16:00', seconds: 960, title: 'Molecular Orbital Theory & O2 Paramagnetism', summary: 'LCAO, bonding vs antibonding orbitals, and bond order calculations.' },
+      ],
+      flashcards: [
+        { id: 1, front: 'What is the bond order of N2 and O2?', back: 'N2 bond order = 3 (triple bond, diamagnetic); O2 bond order = 2 (double bond, paramagnetic).', concept: 'Molecular Orbital Theory' },
+        { id: 2, front: 'Why is the bond angle in H2O smaller than in NH3?', back: 'H2O has two lone pairs exerting strong LP-LP repulsion, compressing the angle to 104.5° compared to 107° in NH3 (one lone pair).', concept: 'VSEPR Theory' },
+        { id: 3, front: 'Why does CO2 have zero dipole moment despite polar C=O bonds?', back: 'CO2 is linear (180°), so the two equal bond dipole moments point in opposite directions and cancel out vectorially.', concept: 'Dipole Moment' },
+      ],
+      quiz: [
+        {
+          id: 1,
+          topic: 'Chemical Bonding',
+          question: 'According to VSEPR theory, which electron pair repulsion is the strongest?',
+          options: ['Lone Pair - Lone Pair', 'Lone Pair - Bond Pair', 'Bond Pair - Bond Pair', 'All repulsions are equal'],
+          correctIndex: 0,
+          explanation: 'Lone pairs are attracted to only one nucleus and occupy greater angular volume, exerting the strongest mutual repulsion.',
+        },
+        {
+          id: 2,
+          topic: 'Chemical Bonding',
+          question: 'The bond order of the oxygen molecule (O2) calculated using Molecular Orbital Theory is:',
+          options: ['2.0', '1.0', '2.5', '3.0'],
+          correctIndex: 0,
+          explanation: 'Bond order = ½ (Nb - Na) = ½ (10 - 6) = 2.0, corresponding to a stable diatomic double bond.',
+        },
+      ],
+      quickRevisionPoints: [
+        'VSEPR Repulsion Order: LP-LP > LP-BP > BP-BP; compresses bond angles from ideal geometry.',
+        'Hybridization: sp (180° linear), sp2 (120° trigonal planar), sp3 (109.5° tetrahedral).',
+        'Sigma (σ) bonds are head-on and stronger; Pi (π) bonds are sideways and weaker.',
+        'Bond Order = ½ (Nb - Na); positive bond order indicates a stable molecule.',
+        'O2 is paramagnetic with 2 unpaired electrons in degenerate π* antibonding orbitals.',
+      ],
+    };
+  }
+
+  // 4.8. CHEMISTRY — ORGANIC CHEMISTRY: ISOMERISM & STEREOCHEMISTRY
+  const isIsomerism = cLower.includes('isomer') || cLower.includes('stereochem') || cLower.includes('enantiomer') || cLower.includes('chiral');
+  if (isIsomerism) {
+    return {
+      content: {
+        quick: {
+          headline: `${chapter} — Structural & Stereoisomerism Key Revision`,
+          cheatSheet: [
+            'Classification of Isomerism: 1) Structural Isomerism (Chain, Position, Functional, Metamerism, Tautomerism); 2) Stereoisomerism (Geometrical and Optical).',
+            'Geometrical Isomerism: Requires restricted rotation (C=C double bond or ring) with two distinct groups on each carbon. Cis-isomer (same side) has higher dipole moment and boiling point; Trans-isomer (opposite sides) has higher melting point due to superior crystal packing symmetry.',
+            'Optical Activity & Chirality: Molecule must lack an internal plane of symmetry (non-superimposable mirror image). Chiral carbon is bonded to 4 distinct groups.',
+            'Enantiomers vs Diastereomers: Enantiomers are non-superimposable mirror images with identical physical properties except opposite direction of optical rotation (+/-). Diastereomers are not mirror images and possess different physical and chemical properties.',
+            'Meso Compounds & Racemic Mixtures: Meso compound contains multiple chiral carbons and an internal plane of symmetry; optically inactive due to internal compensation. Racemic mixture [dl or (±)] is an equimolar mixture optically inactive due to external compensation.',
+          ],
+          formulas: [
+            { name: 'Maximum Number of Stereoisomers', formula: 'Maximum Isomers = 2^n', note: 'n = number of distinct asymmetric chiral carbons without internal symmetry' },
+            { name: 'Specific Optical Rotation', formula: '[α]_λ^T = α / (l × c)', note: 'α = observed rotation (°), l = path length (dm), c = concentration (g/mL)' },
+          ],
+          bulletSummary: [
+            'E-Z Nomenclature: Uses Cahn-Ingold-Prelog (CIP) priority rules based on atomic number. Z = together (high priority on same side); E = opposite.',
+            'Tautomerism: Dynamic equilibrium between functional isomers involving migration of an acidic proton (e.g. keto-enol equilibrium).',
+          ],
+        },
+        minimal: {
+          headline: `${chapter} Summary`,
+          cheatSheet: [
+            'Structural vs Stereoisomerism (Geometrical & Optical).',
+            'Enantiomers rotate light in opposite directions; Meso compounds are internally compensated.',
+            'Max stereoisomers = 2^n.',
+          ],
+          formulas: [
+            { name: 'Stereoisomers Formula', formula: 'N = 2^n', note: 'n distinct chiral centers' },
+          ],
+          bulletSummary: ['Chiral centers, enantiomers, diastereomers, and meso forms.'],
+        },
+        topper: {
+          introduction: `Comprehensive organic chemical lecture analysis for ${subject}: ${chapter}. Examines constitutional connectivity isomers, restricted rotation geometrical isomers, and stereochemical optical activity.`,
+          deepDive: [
+            {
+              title: '1. Structural Isomerism: Constitutional Variants & Mechanisms',
+              timestamp: '00:00',
+              content: 'Structural isomers possess identical molecular formulas but distinct atom-to-atom connectivity. Chain isomers differ in the branching of the carbon backbone (e.g., n-butane and isobutane). Position isomers maintain the skeleton but vary the placement of a functional group or substituent (e.g., propan-1-ol and propan-2-ol). Functional isomers belong to distinct homologous series with different functional groups (e.g., ethanol and dimethyl ether). Metamers differ in the distribution of alkyl groups on either side of a polyvalent heteroatom (e.g., diethyl ether and methyl propyl ether). Tautomerism involves rapid equilibrium migration of a hydrogen atom between a carbon and a heteroatom.',
+              keyTakeaway: 'Functional isomers have radically different chemical properties, boiling points, and reaction profiles.',
+            },
+            {
+              title: '2. Geometrical Isomerism: Restricted Rotation & Physical Anomalies',
+              timestamp: '07:30',
+              content: 'Geometrical isomerism arises when rotation around a chemical bond is prevented by a pi bond or ring system. Each unsaturated carbon must be attached to two different groups: abC=Cab or abC=Ccd. The cis-isomer features like groups on the same side of the reference plane; trans has them on opposite sides. Cis-but-2-ene has a net dipole moment (μ = 0.33 D) and boiling point 3.7°C. Trans-but-2-ene has opposing bond dipoles that cancel vectorially (μ = 0 D) and boiling point 0.9°C, but its symmetric shape allows more compact crystal packing, yielding a higher melting point (-105.6°C vs -138.9°C for cis).',
+              keyTakeaway: 'Trans-isomers generally exhibit higher melting points and lower dipole moments than corresponding cis-isomers.',
+            },
+            {
+              title: '3. Optical Isomerism, Molecular Chirality & Stereocenters',
+              timestamp: '16:00',
+              content: 'A molecule is chiral if it cannot be superimposed on its mirror image, which occurs in the absence of a plane of symmetry (σ) and center of inversion (i). An sp3 carbon bonded to four distinct substituents is an asymmetric stereocenter. Enantiomers rotate plane-polarized light in equal and opposite directions: dextrorotatory (d or +) rotates clockwise; levorotatory (l or -) rotates counter-clockwise. Diastereomers are non-mirror image stereoisomers having different melting points, solubilities, and specific rotations. Meso compounds contain two or more chiral carbons but possess an internal plane of symmetry (e.g., meso-tartaric acid), making them optically inactive via internal compensation.',
+              keyTakeaway: 'A racemic mixture can be chemically resolved into enantiomers, whereas a meso compound cannot be resolved.',
+            },
+          ],
+          derivations: [
+            {
+              title: 'Determination of Stereoisomeric Variants for Tartaric Acid',
+              steps: [
+                'State structural formula: HOOC-CH(OH)-CH(OH)-COOH with 2 chiral carbons',
+                'Identify substituent equivalence: Both chiral carbons carry identical sets (-H, -OH, -COOH)',
+                'Apply symmetry test: (2R, 3S) configuration exhibits horizontal plane of symmetry between C2 and C3',
+                'Evaluate optical rotations: Upper half rotation (+θ) is cancelled by lower half (-θ) within same molecule',
+                'Deduce stereoisomeric total: d-tartaric acid, l-tartaric acid, and 1 achiral meso compound (Total = 3 isomers)',
+              ],
+              finalResult: 'Internal compensation in meso-tartaric acid demonstrated; total stereoisomers = 3',
+            },
+          ],
+          proTips: [
+            'In CIP E-Z nomenclature, assign priorities to the two groups on EACH unsaturated carbon by atomic number: highest atomic number gets priority 1. If both priority 1 groups are on the same side, it is (Z); if opposite, it is (E).',
+            'Remember: Optical activity is an experimental property measured with a polarimeter; R/S configuration is a theoretical paper-based convention. R does NOT automatically mean dextrorotatory (+).',
+          ],
+        },
+        chatpata: {
+          hinglishIntro: `Bhai dekho, Organic Chemistry Isomerism ko bilkul simple bhasha mein samjho! Formula ek hi hai, par chehre alag-alag — jaise Shaktimaan aur Gangadhar ek hi insaan hain par roop alag hai!`,
+          desiAnalogies: [
+            {
+              concept: 'Enantiomers vs Diastereomers',
+              analogy: 'Enantiomers aapke dono haath hain — mirror image hain par ek ke upar dusra rakhoge toh ungliyan match nahi karengi! Diastereomers do alag bhai hain jo mirror image bhi nahi hain aur shakal bhi thodi alag hai!',
+              desiPunchline: 'Dono haath enantiomer, dost-yaar diastereomer!',
+            },
+            {
+              concept: 'Meso Inactivity',
+              analogy: 'Meso compound ek aisi gaadi hai jisme aage ka driver right modta hai aur peeche ka driver utne hi zor se left modta hai — gaadi bilkul seedhi chalti hai (net rotation zero)! Isse internal compensation bolte hain.',
+              desiPunchline: 'Andar hi andar ladke zero ho gaya!',
+            },
+          ],
+          bhaiKaSummary: [
+            'Point 1: Chiral carbon matlab 4 alag-alag groups.',
+            'Point 2: Meso compound optically inactive hota hai internal symmetry ki wajah se.',
+          ],
+          jugaadPoints: [
+            'Exam trick: Unsymmetrical molecule mein agar n chiral carbons hain toh seedhe 2^n isomers formula lagao!',
+          ],
+        },
+        chatpate: {
+          hinglishIntro: `Bhai dekho, Organic Isomerism bilkul simple topic hai!`,
+          desiAnalogies: [],
+          bhaiKaSummary: [],
+          jugaadPoints: [],
+        },
+        exam: {
+          trendAnalysis: 'Isomerism carries 4 to 6 marks in Class 11 and Class 12 Chemistry board examinations and is a frequent trap in competitive entrance tests. Questions test identifying chiral centers, distinguishing enantiomers from diastereomers, and explaining meso optical inactivity.',
+          highWeightageTopics: [
+            'Optical Activity, Chiral Centers & Meso Compounds (3-5 Marks)',
+            'Geometrical Isomerism: Cis-Trans vs E-Z Nomenclature (2-3 Marks)',
+            'Structural Isomer Drawing for Given Molecular Formula (2-3 Marks)',
+          ],
+          questions: [
+            {
+              id: 1,
+              marks: 1,
+              question: 'Why is meso-tartaric acid optically inactive even though it contains two chiral carbon atoms?',
+              answer: 'Meso-tartaric acid possesses an internal plane of symmetry. The optical rotation caused by one half of the molecule is exactly balanced and cancelled by the equal and opposite optical rotation caused by the other half (internal compensation), rendering the molecule achiral and optically inactive.',
+              markingScheme: ['Internal plane of symmetry mention (½ mark)', 'Internal compensation explanation (½ mark)'],
+              frequentlyAskedIn: 'Curriculum Practice Question (NCERT / Board Syllabus Aligned — 1 Mark)',
+            },
+            {
+              id: 2,
+              marks: 3,
+              question: 'Draw the structures of cis-but-2-ene and trans-but-2-ene. Compare their dipole moments, boiling points, and melting points with scientific reasoning.',
+              answer: '1. Cis-but-2-ene: Both methyl groups are on the same side. Their bond dipole moments reinforce each other, giving a net dipole moment (μ = 0.33 D). Stronger dipole-dipole attractions lead to a higher boiling point (3.7°C).\n2. Trans-but-2-ene: Methyl groups are on opposite sides. The opposing bond dipoles cancel out vectorially, giving zero net dipole moment (μ = 0 D) and a lower boiling point (0.9°C).\n3. Melting Point: Trans-but-2-ene has a higher melting point (-105.6°C vs -138.9°C for cis) because its symmetric shape allows more compact and stable packing within the crystal lattice.',
+              markingScheme: ['Structures of cis and trans (1 mark)', 'Dipole moment and boiling point comparison (1 mark)', 'Melting point crystal packing explanation (1 mark)'],
+              frequentlyAskedIn: 'Curriculum Practice Question (NCERT / Board Syllabus Aligned — 3 Marks)',
+            },
+            {
+              id: 3,
+              marks: 5,
+              question: 'Differentiate between the following pairs with suitable chemical examples:\n(a) Enantiomers and Diastereomers\n(b) Racemic Mixture and Meso Compound.',
+              answer: '(a) Enantiomers vs Diastereomers:\n- Enantiomers are stereoisomers that are non-superimposable mirror images of each other (e.g. d-lactic acid and l-lactic acid). They have identical physical properties (m.p., b.p., density) and rotate plane-polarized light by equal angles in opposite directions.\n- Diastereomers are stereoisomers that are not mirror images of each other (e.g. cis-but-2-ene and trans-but-2-ene). They have different physical properties and different chemical reactivities.\n\n(b) Racemic Mixture vs Meso Compound:\n- Racemic mixture is an equimolar (50:50) mixture of two enantiomers. It is optically inactive due to external compensation (rotation of one enantiomer cancels the other). It can be resolved into optically active components.\n- Meso compound is a single chemical substance containing multiple chiral centers and an internal plane of symmetry. It is optically inactive due to internal compensation and cannot be separated into active enantiomers.',
+              markingScheme: ['Enantiomers vs Diastereomers contrasting points with example (2.5 marks)', 'Racemic vs Meso contrasting points with compensation explanation (2.5 marks)'],
+              frequentlyAskedIn: 'Curriculum Practice Question (NCERT / Board Syllabus Aligned — 5 Marks)',
+            },
+          ],
+        },
+      },
+      timestamps: [
+        { time: '00:00', seconds: 0, title: 'Structural Isomerism & Connectivity', summary: 'Chain, position, functional, metamerism, and tautomeric equilibria.' },
+        { time: '07:30', seconds: 450, title: 'Geometrical Isomerism & Dipoles', summary: 'Cis-trans restricted rotation, CIP E-Z rules, and melting/boiling anomalies.' },
+        { time: '16:00', seconds: 960, title: 'Optical Isomerism & Meso Compounds', summary: 'Chiral centers, enantiomers, diastereomers, and internal compensation in meso forms.' },
+      ],
+      flashcards: [
+        { id: 1, front: 'What is the condition for a molecule to show optical activity?', back: 'The molecule must be chiral, lacking a plane of symmetry (non-superimposable on mirror image).', concept: 'Stereochemistry' },
+        { id: 2, front: 'Why does trans-but-2-ene have a higher melting point than cis-but-2-ene?', back: 'The symmetrical linear shape of the trans isomer allows tighter, more stable packing in the crystal lattice.', concept: 'Physical Properties' },
+        { id: 3, front: 'What is the difference between internal and external compensation?', back: 'Internal compensation occurs within a single meso molecule; external compensation occurs between equimolar mixtures of two enantiomers.', concept: 'Optical Inactivity' },
+      ],
+      quiz: [
+        {
+          id: 1,
+          topic: 'Organic Isomerism',
+          question: 'How many optical stereoisomers exist for an unsymmetrical molecule containing 3 distinct chiral carbons?',
+          options: ['8', '6', '4', '16'],
+          correctIndex: 0,
+          explanation: 'For n distinct chiral centers without symmetry, number of stereoisomers = 2^n = 2^3 = 8.',
+        },
+        {
+          id: 2,
+          topic: 'Organic Isomerism',
+          question: 'Which of the following isomer pairs can be separated by fractional distillation due to different boiling points?',
+          options: ['Diastereomers', 'Enantiomers', 'Racemic mixture components', 'Identical conformers'],
+          correctIndex: 0,
+          explanation: 'Diastereomers have different physical properties including boiling points and can be separated by fractional distillation.',
+        },
+      ],
+      quickRevisionPoints: [
+        'Structural isomers have different connectivity; stereoisomers have different 3D spatial arrangement.',
+        'Geometrical isomerism requires restricted rotation (C=C or ring) with 2 different groups on each carbon.',
+        'Trans isomers have higher melting points due to symmetric crystal packing; cis isomers have higher boiling points due to dipole moment.',
+        'Enantiomers are non-superimposable mirror images with opposite optical rotation (+/-).',
+        'Meso compounds have internal planes of symmetry and are optically inactive due to internal compensation.',
       ],
     };
   }
@@ -1702,7 +2590,7 @@ export function buildDynamicKitContent(
               question: 'Define Standard Electrode Potential and state the reference electrode used to measure it.',
               answer: 'Standard Electrode Potential is the potential difference developed between a metal electrode and its ions in 1M solution at 298 K and 1 bar pressure. It is measured relative to the Standard Hydrogen Electrode (SHE), assigned 0.00 V.',
               markingScheme: ['Definition (½ mark)', 'Reference to SHE 0.00 V (½ mark)'],
-              frequentlyAskedIn: 'CBSE Chemistry 2023, JEE Main 2024',
+              frequentlyAskedIn: 'Curriculum Practice Question (Senior Secondary Syllabus Aligned — 1 Mark)',
             },
             {
               id: 2,
@@ -1710,7 +2598,7 @@ export function buildDynamicKitContent(
               question: 'A first-order reaction has a rate constant of 1.15 × 10⁻³ s⁻¹. How long will 5.0 g of this reactant take to reduce to 3.0 g?',
               answer: 'Using first-order equation: t = (2.303 / k) · log10([A]0 / [A]) = (2.303 / 1.15 × 10⁻³) · log10(5.0 / 3.0) = 2002.6 · log10(1.667) = 2002.6 · 0.2219 = 444.4 seconds.',
               markingScheme: ['Formula setup (1 mark)', 'Logarithm evaluation (1 mark)', 'Final answer with seconds unit (1 mark)'],
-              frequentlyAskedIn: 'CBSE Board 2024, ISC 2023',
+              frequentlyAskedIn: 'Curriculum Practice Question (Senior Secondary Syllabus Aligned — 3 Marks)',
             },
           ],
         },
@@ -1877,7 +2765,7 @@ export function buildDynamicKitContent(
               question: 'State the average and worst-case time complexity of searching an element in a Hash Table.',
               answer: 'Average case time complexity is O(1) assuming uniform hashing. Worst case time complexity is O(n) when all keys collide into the same bucket chain.',
               markingScheme: ['Average O(1) (½ mark)', 'Worst O(n) (½ mark)'],
-              frequentlyAskedIn: 'GATE CSE 2023, University CS 2024',
+              frequentlyAskedIn: 'Curriculum Practice Question (Computer Science Syllabus Aligned — 1 Mark)',
             },
             {
               id: 2,
@@ -1885,7 +2773,7 @@ export function buildDynamicKitContent(
               question: 'Explain the difference between Dynamic Programming and Divide & Conquer approaches.',
               answer: '1. Divide & Conquer divides a problem into independent subproblems (e.g. MergeSort); Dynamic Programming solves problems with overlapping subproblems. 2. DP stores results in a memoization table/array to avoid redundant recomputations; D&C recomputes subproblems independently. 3. DP applies when optimal substructure and overlapping subproblems both exist.',
               markingScheme: ['Three clear contrasting points (1 mark each = 3 marks)'],
-              frequentlyAskedIn: 'University B.Tech Exam 2024',
+              frequentlyAskedIn: 'Curriculum Practice Question (Computer Science Syllabus Aligned — 3 Marks)',
             },
           ],
         },
@@ -2077,7 +2965,7 @@ export function buildDynamicKitContent(
               question: 'Why does a cricket player draw his hands backwards while catching a fast-moving cricket ball?',
               answer: 'According to the Impulse-Momentum Theorem, Impulse J = F_avg · Δt = Δp. By drawing hands backwards, the player increases the time of contact Δt required to bring the ball to rest. Since the momentum change Δp is constant, increasing Δt significantly reduces the average impulsive force F exerted on the hands, preventing pain or injury.',
               markingScheme: ['Impulse formula / statement (½ mark)', 'Explanation of increasing time reduces force (½ mark)'],
-              frequentlyAskedIn: 'CBSE Class 11 Physics Board Question Paper',
+              frequentlyAskedIn: 'Curriculum Practice Question (NCERT / Board Syllabus Aligned — 1 Mark)',
             },
             {
               id: 2,
@@ -2085,7 +2973,7 @@ export function buildDynamicKitContent(
               question: 'A body of mass 10 kg is placed on a rough horizontal surface having coefficient of static friction μs = 0.4 and coefficient of kinetic friction μk = 0.3. A horizontal force of 30 N is applied on the body. Determine: (a) limiting static friction, (b) actual friction force acting on the body, and (c) acceleration of the body (take g = 10 m/s²).',
               answer: '(a) Limiting static friction fs_max = μs N = μs (mg) = 0.4 × (10 × 10) = 40 N.\n(b) Since the applied horizontal force F = 30 N is less than fs_max (40 N), the body does not move. Static friction is self-adjusting; hence the actual friction force equals the applied force: fs = 30 N.\n(c) Since the body remains at rest in static equilibrium, its acceleration is strictly zero (a = 0 m/s²).',
               markingScheme: ['Limiting friction calculation fs = 40 N (1 mark)', 'Self-adjusting friction fs = 30 N (1 mark)', 'Zero acceleration deduction (1 mark)'],
-              frequentlyAskedIn: 'NCERT Exemplar & CBSE Term Exam',
+              frequentlyAskedIn: 'Curriculum Practice Question (NCERT Exemplar Aligned — 3 Marks)',
             },
             {
               id: 3,
@@ -2093,7 +2981,7 @@ export function buildDynamicKitContent(
               question: 'Derive an expression for the optimum banking speed and maximum safe speed of a car on a curved road of radius r banked at angle θ having coefficient of friction μs. What happens when the banking speed is exceeded on a frictionless road?',
               answer: 'Resolving forces: N cos θ = mg + f sin θ and N sin θ + f cos θ = mv²/r.\nAt optimum speed v_opt, friction f = 0. Dividing gives: tan θ = v_opt² / (rg) => v_opt = √(rg tan θ).\nFor maximum safe speed, f = μs N. Dividing equations yields v_max = √[rg(μs + tan θ) / (1 - μs tan θ)].\nOn a frictionless road (μs = 0), if speed exceeds v_opt, N sin θ becomes insufficient to provide the necessary centripetal force mv²/r, causing the car to skid upward and outward over the banked road.',
               markingScheme: ['Diagram and force resolution (2 marks)', 'Derivation of optimum speed (1.5 marks)', 'Derivation of maximum safe speed (1.5 marks)'],
-              frequentlyAskedIn: 'CBSE Class 11 Annual Examination 5-Mark Question',
+              frequentlyAskedIn: 'Curriculum Practice Question (NCERT / Board Syllabus Aligned — 5 Marks)',
             },
           ],
         },
@@ -2482,6 +3370,30 @@ export function buildDynamicKitContent(
   }
 
   // 8. DYNAMIC GENERAL SYLLABUS SYNTHESIZER
+  const disciplineFormulas = sLower.includes('phys') ? [
+    { name: `${chapter} Conservation & Force Balance`, formula: 'Σ F_ext = dP/dt | W_net = ΔK', note: 'SI Units: Force [N], Energy [J]; verify inertial frame reference' },
+    { name: 'Conservation of Total Mechanical Energy', formula: 'E_total = K + U = constant', note: 'Holds in isolated systems under conservative forces' },
+    { name: 'Wave & Frequency Relation', formula: 'v = f · λ', note: 'Wave velocity = frequency × wavelength' },
+  ] : sLower.includes('chem') ? [
+    { name: `${chapter} Equilibrium Quotient`, formula: 'Q = [Products]^c / [Reactants]^d', note: 'Concentrations in mol/L; compare Q with K_eq for reaction direction' },
+    { name: 'Gibbs Free Energy & Spontaneity', formula: 'ΔG = ΔH - T ΔS', note: 'Reaction is spontaneous when ΔG < 0 at temperature T in Kelvin' },
+    { name: 'Ideal Gas State Relation', formula: 'P V = n R T', note: 'Universal gas constant R = 8.314 J/(mol·K)' },
+  ] : sLower.includes('math') ? [
+    { name: `${chapter} Governing Functional Relation`, formula: 'y = f(x) subject to domain constraints and boundary conditions', note: 'Verify existence, continuity, and boundary constraints' },
+    { name: 'Fundamental Limit Definition of Derivative', formula: "lim_{h→0} [f(x+h) - f(x)] / h = f'(x)", note: 'Defines instantaneous rate of change and tangent slope' },
+    { name: 'Mathematical Domain Validity Identity', formula: 'Domain: {x ∈ ℝ | f(x) is defined and real}', note: 'Preserves mathematical real-valued constraints' },
+  ] : (sLower.includes('account') || sLower.includes('econo') || sLower.includes('commerc')) ? [
+    { name: 'Fundamental Accounting Balance Equation', formula: "Assets = Liabilities + Owner's Equity (Capital)", note: 'Dual-aspect accounting convention holds across every transaction' },
+    { name: 'National Income Aggregate Expenditure Identity', formula: 'Y = C + I + G + (X - M)', note: 'Expenditure approach to macroeconomic national output' },
+    { name: 'Operating Margin Formulation', formula: 'Operating Profit = Net Revenue - Operating Expenses', note: 'Measures core earnings efficiency' },
+  ] : sLower.includes('bio') ? [
+    { name: 'Physiological Balance Relation', formula: 'Total Functional Capacity = Σ (Component Functional Volumes)', note: 'Homeostatic balance under standard physiological conditions' },
+    { name: 'Michaelis-Menten Enzymatic Rate', formula: 'v = (Vmax · [S]) / (Km + [S])', note: 'Relates substrate concentration [S] to reaction velocity v' },
+  ] : [
+    { name: 'Fundamental Conservation Balance', formula: 'Inflow + Generation = Outflow + Accumulation', note: 'Universal balance equation across system boundaries' },
+    { name: 'Steady-State Equilibrium Condition', formula: 'd(State Variable) / dt = 0', note: 'Defines steady state with time-invariant properties' },
+  ];
+
   return {
     content: {
       quick: {
@@ -2492,11 +3404,7 @@ export function buildDynamicKitContent(
           `High-Yield Marking Criteria: State full definitions, cite standard theorems, and preserve step-by-step logic.`,
           `High-Frequency Trap: Never omit proper dimensional units or skip defining variable notations used in derivations.`,
         ],
-        formulas: [
-          { name: `${chapter} Characteristic Formulation`, formula: 'Governing relation under equilibrium', note: 'Standard curriculum notation applies' },
-          { name: 'Boundary Transformation Law', formula: 'Invariant state relation across conditions', note: 'Applies under lecture boundary constraints' },
-          { name: 'Conservation & Equilibrium Equation', formula: 'Input + Generation = Output + Accumulation', note: 'Universal balance equation for systems' },
-        ],
+        formulas: disciplineFormulas,
         bulletSummary: [
           `Core concepts in ${chapter} form the prerequisite foundation for advanced exam questions.`,
           'Always illustrate your written answers with clean, labeled diagrams and explicit formula statements.',
@@ -2508,9 +3416,7 @@ export function buildDynamicKitContent(
           `Key concept: Core governing rules in ${chapter}.`,
           'Standard definitions and analytical limits.',
         ],
-        formulas: [
-          { name: 'Core Relation', formula: 'Primary governing equation', note: 'Standard SI metric units' },
-        ],
+        formulas: disciplineFormulas.slice(0, 2),
         bulletSummary: [`Essential conceptual takeaways for ${chapter}.`],
       },
       topper: {
@@ -2538,7 +3444,7 @@ export function buildDynamicKitContent(
               'Perform step-by-step algebraic/calculus transformation to eliminate intermediate variables',
               'Verify dimensional consistency and state final governing result',
             ],
-            finalResult: `Core analytical theorem for ${chapter} established`,
+            finalResult: `Core analytical theorem for ${chapter} established with dimensional consistency`,
           },
         ],
         proTips: [
@@ -2588,7 +3494,7 @@ export function buildDynamicKitContent(
             question: `State the primary governing principle of ${chapter} and mention its fundamental significance.`,
             answer: `The primary principle establishes the fundamental relationship governing systems in ${chapter}, serving as the baseline for quantitative evaluation.`,
             markingScheme: ['Accurate definition (½ mark)', 'Statement of significance/units (½ mark)'],
-            frequentlyAskedIn: 'Board & Competitive Examination Question (1 Mark)',
+            frequentlyAskedIn: 'Curriculum Practice Question (NCERT / Board Syllabus Aligned — 1 Mark)',
           },
           {
             id: 2,
@@ -2596,7 +3502,15 @@ export function buildDynamicKitContent(
             question: `Explain the core mechanism or derivation of ${chapter} with suitable mathematical expressions and boundary conditions.`,
             answer: `State the governing relation, apply boundary constraints, integrate or transform the expressions across the designated range, and state the final result with proper units.`,
             markingScheme: ['Setup & initial conditions (1 mark)', 'Intermediate transformation steps (1 mark)', 'Final expression & units (1 mark)'],
-            frequentlyAskedIn: 'High-Weightage Examination Question (3 Marks)',
+            frequentlyAskedIn: 'Curriculum Practice Question (NCERT / Board Syllabus Aligned — 3 Marks)',
+          },
+          {
+            id: 3,
+            marks: 5,
+            question: `Provide a detailed analytical evaluation of ${chapter}, deriving the governing relationship and discussing its boundary conditions and practical applications.`,
+            answer: `Develop the complete step-by-step formulation starting from foundational definitions, apply system constraints, prove the governing result, and state practical applications with dimensional verification.`,
+            markingScheme: ['Foundational setup & definitions (1.5 marks)', 'Step-by-step mathematical/analytical development (2 marks)', 'Boundary conditions & application analysis (1.5 marks)'],
+            frequentlyAskedIn: 'Curriculum Practice Question (NCERT / Board Syllabus Aligned — 5 Marks)',
           },
         ],
       },

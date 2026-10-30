@@ -29,6 +29,8 @@ import { ForgotPasswordView } from './components/ForgotPasswordView';
 import { ResetPasswordView } from './components/ResetPasswordView';
 import { NotFoundView } from './components/NotFoundView';
 import { ChatpataWelcomeModal } from './components/ChatpataWelcomeModal';
+import { AIVideoModal } from './components/AIVideoModal';
+import type { VideoType } from './components/AIVideoSection';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { Footer } from './components/Footer';
 
@@ -56,6 +58,15 @@ export function App() {
   const [user, setUser] = useState<UserProfile | null>(null);
   const [authInitialized, setAuthInitialized] = useState(false);
   const [isWelcomeModalOpen, setIsWelcomeModalOpen] = useState(false);
+
+  // AI Video Explainer state
+  const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
+  const [videoModalType, setVideoModalType] = useState<VideoType>('tutorial');
+
+  const handleWatchVideo = useCallback((type: VideoType = 'tutorial') => {
+    setVideoModalType(type);
+    setIsVideoModalOpen(true);
+  }, []);
 
   const showToast = useCallback((msg: string) => {
     setToastMessage(msg);
@@ -493,6 +504,7 @@ export function App() {
         onNavigateLogin={() => navigateTo('login')}
         onNavigateSignUp={() => navigateTo('signup')}
         onSignOut={handleSignOut}
+        onWatchVideo={handleWatchVideo}
         currentView={currentView}
         user={user}
         isAuthenticated={Boolean(user)}
@@ -523,6 +535,7 @@ export function App() {
                   onSelectSample={handleSelectSample}
                   isAuthenticated={Boolean(user)}
                   onRequireAuth={handleRequireAuth}
+                  onWatchVideo={handleWatchVideo}
                 />
                 <FeatureCards onCardClick={handleFeatureCardClick} />
                 <ProductPreview
@@ -534,7 +547,16 @@ export function App() {
                     }
                   }}
                 />
-                <HowItWorks />
+                <HowItWorks
+                  onOpenUpload={() => {
+                    if (!user) {
+                      handleRequireAuth();
+                    } else {
+                      setIsUploadOpen(true);
+                    }
+                  }}
+                  onNavigateLogin={() => navigateTo('login')}
+                />
                 <FinalCTA
                   onOpenUpload={(source) => {
                     if (!user) {
@@ -570,6 +592,7 @@ export function App() {
                   onSelectKit={(kitId) => navigateTo('notes', kitId, 'full')}
                   onOpenUpload={() => setIsUploadOpen(true)}
                   onTakeQuiz={(kitId) => navigateTo('notes', kitId, 'quiz')}
+                  onWatchVideo={handleWatchVideo}
                 />
               </ErrorBoundary>
             )}
@@ -699,6 +722,21 @@ export function App() {
         isOpen={isWelcomeModalOpen}
         user={user}
         onProceed={handleDismissWelcome}
+      />
+
+      {/* Interactive AI Video Explainer Modal */}
+      <AIVideoModal
+        isOpen={isVideoModalOpen}
+        onClose={() => setIsVideoModalOpen(false)}
+        initialVideo={videoModalType}
+        onOpenUpload={() => {
+          if (!user) {
+            handleRequireAuth();
+          } else {
+            setIsUploadOpen(true);
+          }
+        }}
+        onNavigateLogin={() => navigateTo('login')}
       />
 
       {/* Global Footer */}
