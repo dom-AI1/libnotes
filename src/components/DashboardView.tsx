@@ -78,26 +78,26 @@ export const DashboardView = ({
   ];
 
   return (
-    <div className="min-h-screen bg-[#F7F5EF] py-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+    <div className="min-h-screen bg-[#F8FAFC] py-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
       
       {/* Top Welcome Banner */}
-      <div className="bg-[#FAF9F5] border-2 border-[#141414] rounded-2xl p-6 sm:p-8 shadow-[4px_4px_0px_#141414] mb-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
+      <div className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-2xl p-6 sm:p-8 shadow-xs mb-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div>
-          <span className="text-xs font-mono font-semibold uppercase tracking-widest text-[#79A94A] bg-[#E8F2DC] px-3 py-1 rounded-full border border-[#79A94A]/30">
+          <span className="text-xs font-mono font-semibold uppercase tracking-widest text-[#059669] bg-[#ECFDF5] px-3 py-1 rounded-full border border-[#A7F3D0]">
             STUDENT DASHBOARD
           </span>
-          <h1 className="font-mono-editorial text-3xl sm:text-4xl font-bold text-[#141414] mt-2">
+          <h1 className="font-mono-editorial text-3xl sm:text-4xl font-bold text-[#0F172A] mt-2">
             Welcome back, {userGreeting}.
           </h1>
-          <p className="font-body text-sm sm:text-base text-[#5E5D57] mt-1">
+          <p className="font-body text-sm sm:text-base text-[#64748B] mt-1">
             {userKits.length === 0
               ? 'You have 0 study kits. Convert your first lecture to get started!'
               : `You have ${userKits.length} study ${userKits.length === 1 ? 'kit' : 'kits'} ready for pre-exam revision.`}
           </p>
           {isSupabaseConfigured() && (
             <div className="flex items-center gap-2 mt-3">
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FCFAF6] border border-[#141414]/20 text-[11px] font-mono text-[#5E5D57] shadow-sm">
-                <span className="w-2 h-2 rounded-full bg-[#79A94A] animate-pulse" />
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#F8FAFC] border border-[#E2E8F0] text-[11px] font-mono text-[#64748B] shadow-2xs">
+                <span className="w-2 h-2 rounded-full bg-[#10B981] animate-pulse" />
                 <span>Supabase Cloud Synced (<strong>vidbiyemknmkfswiucsr</strong>)</span>
               </span>
             </div>
@@ -106,7 +106,7 @@ export const DashboardView = ({
 
         <button
           onClick={onOpenUpload}
-          className="btn-primary-green px-5 py-3 text-sm flex items-center justify-center gap-2 self-start md:self-auto"
+          className="btn-primary-green px-5 py-3 text-sm flex items-center justify-center gap-2 self-start md:self-auto shadow-xs"
         >
           <Plus className="w-4 h-4" />
           <span>New Lecture Video</span>
@@ -115,21 +115,21 @@ export const DashboardView = ({
 
       {/* Interactive AI Video Guide Banner (Eliminates excessive text scrolling) */}
       {onWatchVideo && (
-        <div className="bg-[#FCFAF6] border-2 border-[#141414] rounded-2xl p-4 sm:p-5 shadow-[3px_3px_0px_#141414] mb-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-2xl p-4 sm:p-5 shadow-xs mb-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-[#E8F2DC] border border-[#141414] flex items-center justify-center text-[#141414] shrink-0 shadow-[1px_1px_0px_#141414]">
-              <Film className="w-5 h-5 text-[#79A94A]" />
+            <div className="w-10 h-10 rounded-xl bg-[#ECFDF5] border border-[#A7F3D0] flex items-center justify-center text-[#059669] shrink-0">
+              <Film className="w-5 h-5 text-[#059669]" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="font-mono-editorial text-base font-bold text-[#141414]">
+                <span className="font-mono-editorial text-base font-bold text-[#0F172A]">
                   Need a quick tour of Libnotes AI?
                 </span>
-                <span className="px-2 py-0.5 rounded-full bg-[#E8F2DC] text-[#446A1D] text-[10px] font-mono font-bold border border-[#79A94A]/30">
+                <span className="px-2 py-0.5 rounded-full bg-[#ECFDF5] text-[#059669] text-[10px] font-mono font-bold border border-[#A7F3D0]">
                   60s VIDEO
                 </span>
               </div>
-              <p className="text-xs text-[#5E5D57] font-body mt-0.5">
+              <p className="text-xs text-[#64748B] font-body mt-0.5">
                 Watch how to paste YouTube links, auto-detect subjects, and generate conversational Chatbot/Chatpata notes.
               </p>
             </div>
@@ -138,60 +138,54 @@ export const DashboardView = ({
           <div className="flex items-center gap-2 shrink-0 w-full sm:w-auto">
             <button
               onClick={() => onWatchVideo('tutorial')}
-              className="flex-1 sm:flex-initial px-4 py-2 rounded-xl bg-[#141414] text-[#FFFFFF] hover:bg-[#2A2A2A] text-xs font-mono font-bold transition-all shadow-[1.5px_1.5px_0px_#141414] flex items-center justify-center gap-1.5 cursor-pointer"
+              className="px-4 py-2 rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] hover:bg-[#E2E8F0] text-xs font-mono font-bold text-[#0F172A] transition-colors flex items-center gap-1.5"
             >
-              <Film className="w-3.5 h-3.5 text-[#79A94A]" />
-              <span>Watch Tutorial Video</span>
-            </button>
-            <button
-              onClick={() => onWatchVideo('about')}
-              className="flex-1 sm:flex-initial px-3.5 py-2 rounded-xl bg-[#FFFFFF] border border-[#141414] text-[#141414] hover:bg-[#EFECE1] text-xs font-mono font-medium transition-all shadow-[1.5px_1.5px_0px_#141414] flex items-center justify-center gap-1.5 cursor-pointer"
-            >
-              <span>About Us Video</span>
+              <Film className="w-3.5 h-3.5 text-[#059669]" />
+              <span>Watch Video Tour</span>
             </button>
           </div>
         </div>
       )}
 
-      {/* Lightweight Summary Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-10">
-        <div className="bg-[#FCFAF6] border-2 border-[#141414] rounded-xl p-5 shadow-[2px_2px_0px_#141414]">
+      {/* 3 Metric Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+        <div className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-xl p-5 shadow-xs">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-mono text-[#5E5D57] uppercase font-bold">Lectures Converted</span>
-            <BookOpen className="w-4 h-4 text-[#79A94A]" />
+            <span className="text-xs font-mono text-[#64748B] uppercase font-bold">Lectures Converted</span>
+            <BookOpen className="w-4 h-4 text-[#059669]" />
           </div>
-          <div className="font-mono-editorial text-3xl font-bold text-[#141414] mt-2">
+          <div className="font-mono-editorial text-3xl font-bold text-[#0F172A] mt-2">
             {userKits.length}
           </div>
-          <p className="text-xs font-body text-[#8A8880] mt-1">
+          <p className="text-xs font-body text-[#94A3B8] mt-1">
             {userKits.length === 0
               ? 'No lectures converted yet'
               : `Across ${subjectCount} academic ${subjectCount === 1 ? 'subject' : 'subjects'}`}
           </p>
         </div>
 
-        <div className="bg-[#FCFAF6] border-2 border-[#141414] rounded-xl p-5 shadow-[2px_2px_0px_#141414]">
+        <div className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-xl p-5 shadow-xs">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-mono text-[#5E5D57] uppercase font-bold">Diagnostic Quizzes</span>
-            <Award className="w-4 h-4 text-[#79A94A]" />
+            <span className="text-xs font-mono text-[#64748B] uppercase font-bold">Diagnostic Quizzes</span>
+            <Award className="w-4 h-4 text-[#059669]" />
           </div>
-          <div className="font-mono-editorial text-3xl font-bold text-[#141414] mt-2">
+          <div className="font-mono-editorial text-3xl font-bold text-[#0F172A] mt-2">
             {totalQuizSets} {totalQuizSets === 1 ? 'Attempt' : 'Attempts'}
           </div>
-          <p className="text-xs font-body text-[#8A8880] mt-1">
+          <p className="text-xs font-body text-[#94A3B8] mt-1">
             {totalQuizSets > 0 ? `${avgAccuracy}% average accuracy` : 'No quizzes attempted yet'}
           </p>
         </div>
 
-        <div className="bg-[#FCFAF6] border-2 border-[#141414] rounded-xl p-5 shadow-[2px_2px_0px_#141414]">
+        <div className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-xl p-5 shadow-xs">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-mono text-[#5E5D57] uppercase font-bold">Identified Weak Spots</span>
-            <Sparkles className="w-4 h-4 text-[#79A94A]" />
+            <span className="text-xs font-mono text-[#64748B] uppercase font-bold">Identified Weak Spots</span>
+            <Sparkles className="w-4 h-4 text-[#059669]" />
           </div>
-          <div className="font-mono-editorial text-3xl font-bold text-[#79A94A] mt-2">
+          <div className="font-mono-editorial text-3xl font-bold text-[#059669] mt-2">
             {uniqueWeakTopics.length} {uniqueWeakTopics.length === 1 ? 'Topic' : 'Topics'}
           </div>
-          <p className="text-xs font-body text-[#8A8880] mt-1 truncate">
+          <p className="text-xs font-body text-[#94A3B8] mt-1 truncate">
             {uniqueWeakTopics.length > 0 ? uniqueWeakTopics.slice(0, 2).join(', ') : 'None identified yet'}
           </p>
         </div>
@@ -277,23 +271,23 @@ export const DashboardView = ({
               {filteredKits.map((kit) => (
                 <div
                   key={kit.id}
-                  className="bg-[#FCFAF6] border-2 border-[#141414] rounded-2xl p-6 shadow-[3px_3px_0px_#141414] hover:shadow-[5px_5px_0px_#141414] transition-all flex flex-col justify-between"
+                  className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-2xl p-6 shadow-xs hover:shadow-md hover:border-[#CBD5E1] transition-all flex flex-col justify-between"
                 >
                   <div>
                     <div className="flex items-center justify-between mb-3">
-                      <span className="text-[11px] font-mono font-bold text-[#79A94A] bg-[#E8F2DC] px-2.5 py-0.5 rounded-full border border-[#79A94A]/30">
+                      <span className="text-[11px] font-mono font-bold text-[#059669] bg-[#ECFDF5] px-2.5 py-0.5 rounded-full border border-[#A7F3D0]">
                         {kit.subject}
                       </span>
-                      <span className="text-[11px] font-mono text-[#8A8880]">
+                      <span className="text-[11px] font-mono text-[#94A3B8]">
                         {kit.dateCreated}
                       </span>
                     </div>
 
-                    <h3 className="font-mono-editorial text-lg font-bold text-[#141414] mb-2 leading-snug">
+                    <h3 className="font-mono-editorial text-lg font-bold text-[#0F172A] mb-2 leading-snug">
                       {kit.title}
                     </h3>
 
-                    <div className="flex items-center gap-3 text-xs font-mono text-[#5E5D57] mb-4">
+                    <div className="flex items-center gap-3 text-xs font-mono text-[#64748B] mb-4">
                       <span className="flex items-center gap-1">
                         <Clock className="w-3.5 h-3.5" />
                         {kit.duration}
@@ -302,15 +296,15 @@ export const DashboardView = ({
                       <span>{kit.academicClass}</span>
                     </div>
 
-                    <p className="text-xs font-body text-[#4A4944] line-clamp-2 mb-4">
+                    <p className="text-xs font-body text-[#475569] line-clamp-2 mb-4 leading-relaxed">
                       {kit?.content?.quick?.headline || kit?.content?.minimal?.headline || kit?.content?.topper?.introduction || kit?.title || 'Lecture study kit'}
                     </p>
                   </div>
 
-                  <div className="pt-4 border-t border-[#DFDBCF] flex items-center justify-between gap-2">
+                  <div className="pt-4 border-t border-[#E2E8F0] flex items-center justify-between gap-2">
                     <button
                       onClick={() => onSelectKit(kit.id)}
-                      className="btn-secondary-outline px-4 py-2 text-xs font-mono font-semibold flex items-center gap-1.5"
+                      className="px-4 py-2 rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] hover:bg-[#E2E8F0] text-xs font-mono font-bold text-[#0F172A] transition-colors flex items-center gap-1.5"
                     >
                       <span>Read Notes</span>
                       <ArrowRight className="w-3.5 h-3.5" />
@@ -318,7 +312,7 @@ export const DashboardView = ({
 
                     <button
                       onClick={() => onTakeQuiz(kit.id)}
-                      className="px-3 py-2 rounded-xl text-xs font-mono font-bold text-[#79A94A] hover:bg-[#E8F2DC] transition-colors flex items-center gap-1"
+                      className="px-3 py-2 rounded-xl text-xs font-mono font-bold text-[#059669] hover:bg-[#ECFDF5] transition-colors flex items-center gap-1"
                     >
                       <Award className="w-3.5 h-3.5" />
                       <span>Quiz</span>

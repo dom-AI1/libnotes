@@ -57,75 +57,75 @@ export const Navbar = ({
   };
 
   return (
-    <header className="sticky top-0 z-40 w-full bg-[#F7F5EF]/90 backdrop-blur-md border-b border-[#141414]/15">
-      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+    <header className="sticky top-0 z-40 w-full bg-[#FFFFFF]/95 backdrop-blur-md border-b border-[#E2E8F0] shadow-xs">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-18 sm:h-20 flex items-center justify-between">
         
         {/* Wordmark */}
         <button
           onClick={onNavigateHome}
-          className="flex items-center gap-2 text-left group transition-transform active:scale-95 cursor-pointer"
+          className="flex items-center gap-2.5 text-left group transition-transform active:scale-95 cursor-pointer"
           aria-label="Libnotes Home"
         >
-          <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-[#FCFAF6] border-2 border-[#141414] shadow-[2px_2px_0px_#141414] flex items-center justify-center font-mono-editorial font-bold text-base sm:text-lg text-[#141414] group-hover:bg-[#E8F2DC] transition-colors shrink-0">
-            L<span className="text-[#79A94A]">·</span>
+          <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-[#0F172A] border border-[#0F172A] shadow-xs flex items-center justify-center font-mono-editorial font-bold text-base sm:text-lg text-[#FFFFFF] group-hover:bg-[#1E293B] transition-colors shrink-0">
+            L<span className="text-[#10B981]">·</span>
           </div>
           <div className="flex flex-col">
-            <span className="font-mono-editorial text-xl sm:text-2xl font-bold tracking-tight text-[#141414] flex items-center gap-1.5">
+            <span className="font-mono-editorial text-xl sm:text-2xl font-bold tracking-tight text-[#0F172A] flex items-center gap-1.5">
               Libnotes
-              <span className="w-2 h-2 rounded-full bg-[#79A94A] inline-block animate-pulse" />
+              <span className="w-2 h-2 rounded-full bg-[#10B981] inline-block animate-pulse" />
             </span>
-            <span className="text-[9px] sm:text-[10px] uppercase tracking-wider font-mono text-[#5E5D57] -mt-1 hidden xs:inline-block">
+            <span className="text-[10px] uppercase tracking-wider font-mono text-[#64748B] -mt-0.5 hidden xs:inline-block font-semibold">
               Lecture to Exam
             </span>
           </div>
         </button>
 
         {/* Center Nav Links (Desktop) */}
-        <nav className="hidden md:flex items-center gap-1 lg:gap-2 px-3 py-1.5 rounded-full bg-[#FCFAF6]/80 border border-[#141414]/15 shadow-sm">
+        <nav className="hidden md:flex items-center gap-1 lg:gap-1.5 px-3 py-1.5 rounded-full bg-[#F8FAFC] border border-[#E2E8F0] shadow-xs">
           <button
             onClick={() => scrollToSection('features')}
-            className="px-3.5 py-1.5 text-sm font-medium text-[#2A2A2A] hover:text-[#141414] hover:bg-[#E8F2DC]/60 rounded-full transition-all cursor-pointer"
+            className="px-3.5 py-1.5 text-xs sm:text-sm font-semibold text-[#475569] hover:text-[#0F172A] hover:bg-[#FFFFFF] rounded-full transition-all cursor-pointer"
           >
             Features
           </button>
           <button
             onClick={() => scrollToSection('how-it-works')}
-            className="px-3.5 py-1.5 text-sm font-medium text-[#2A2A2A] hover:text-[#141414] hover:bg-[#E8F2DC]/60 rounded-full transition-all cursor-pointer"
+            className="px-3.5 py-1.5 text-xs sm:text-sm font-semibold text-[#475569] hover:text-[#0F172A] hover:bg-[#FFFFFF] rounded-full transition-all cursor-pointer"
           >
             How It Works
           </button>
           <button
             onClick={() => onWatchVideo ? onWatchVideo('about') : scrollToSection('about')}
-            className="px-3.5 py-1.5 text-sm font-medium text-[#2A2A2A] hover:text-[#141414] hover:bg-[#E8F2DC]/60 rounded-full transition-all cursor-pointer flex items-center gap-1.5"
+            className="px-3.5 py-1.5 text-xs sm:text-sm font-semibold text-[#475569] hover:text-[#0F172A] hover:bg-[#FFFFFF] rounded-full transition-all cursor-pointer flex items-center gap-1.5"
           >
             <span>About Us</span>
           </button>
           <button
             onClick={() => scrollToSection('resources')}
-            className="px-3.5 py-1.5 text-sm font-medium text-[#2A2A2A] hover:text-[#141414] hover:bg-[#E8F2DC]/60 rounded-full transition-all cursor-pointer"
+            className="px-3.5 py-1.5 text-xs sm:text-sm font-semibold text-[#475569] hover:text-[#0F172A] hover:bg-[#FFFFFF] rounded-full transition-all cursor-pointer"
           >
             Resources
           </button>
           {onWatchVideo && (
             <button
               onClick={() => onWatchVideo('tutorial')}
-              className="px-3 py-1.5 text-xs font-mono font-bold text-[#141414] bg-[#E8F2DC] hover:bg-[#D5E8C0] border border-[#79A94A]/40 rounded-full transition-all flex items-center gap-1.5 cursor-pointer shadow-sm"
+              className="px-3 py-1 text-xs font-mono font-bold text-[#065F46] bg-[#ECFDF5] hover:bg-[#D1FAE5] border border-[#A7F3D0] rounded-full transition-all flex items-center gap-1.5 cursor-pointer shadow-xs"
               title="Watch AI Explainer Video"
             >
-              <Film className="w-3.5 h-3.5 text-[#79A94A]" />
+              <Film className="w-3.5 h-3.5 text-[#059669]" />
               <span>Watch Video</span>
             </button>
           )}
-          <span className="w-[1px] h-4 bg-[#141414]/20 mx-1" />
+          <span className="w-[1px] h-4 bg-[#CBD5E1] mx-1" />
           <button
             onClick={onNavigateDashboard}
-            className={`px-3.5 py-1.5 text-sm font-medium rounded-full transition-all flex items-center gap-1.5 cursor-pointer ${
+            className={`px-3.5 py-1.5 text-xs sm:text-sm font-semibold rounded-full transition-all flex items-center gap-1.5 cursor-pointer ${
               currentView === 'dashboard'
-                ? 'bg-[#141414] text-[#FFFFFF]'
-                : 'text-[#2A2A2A] hover:text-[#141414] hover:bg-[#E8F2DC]/60'
+                ? 'bg-[#0F172A] text-[#FFFFFF] shadow-xs'
+                : 'text-[#475569] hover:text-[#0F172A] hover:bg-[#FFFFFF]'
             }`}
           >
-            <Layers className="w-3.5 h-3.5 text-[#79A94A]" />
+            <Layers className="w-3.5 h-3.5 text-[#059669]" />
             Dashboard
           </button>
         </nav>
@@ -135,25 +135,25 @@ export const Navbar = ({
           {isAuthenticated && user ? (
             /* Logged in state */
             <div className="flex items-center gap-2">
-              <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#FCFAF6] border border-[#141414]/20">
-                <div className="w-6 h-6 rounded-full bg-[#E8F2DC] text-[#79A94A] font-mono font-bold text-xs flex items-center justify-center border border-[#79A94A]/40">
+              <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#F8FAFC] border border-[#E2E8F0]">
+                <div className="w-6 h-6 rounded-full bg-[#ECFDF5] text-[#059669] font-mono font-bold text-xs flex items-center justify-center border border-[#A7F3D0]">
                   {getInitials(user.display_name)}
                 </div>
-                <span className="text-xs font-mono font-semibold text-[#141414] max-w-[120px] truncate">
+                <span className="text-xs font-mono font-semibold text-[#0F172A] max-w-[120px] truncate">
                   {user.display_name}
                 </span>
               </div>
               <button
                 onClick={onSignOut}
                 title="Log Out"
-                className="p-2 rounded-xl border border-[#141414]/20 hover:border-[#E05B49] hover:bg-[#FDEDE8] text-[#5E5D57] hover:text-[#E05B49] transition-all cursor-pointer"
+                className="p-2 rounded-xl border border-[#E2E8F0] hover:border-[#EF4444] hover:bg-[#FEF2F2] text-[#64748B] hover:text-[#DC2626] transition-all cursor-pointer"
                 aria-label="Log out"
               >
                 <LogOut className="w-4 h-4" />
               </button>
               <button
                 onClick={onOpenUpload}
-                className="btn-primary-green px-4 py-2 text-xs font-mono font-bold flex items-center gap-1.5 shadow-[2px_2px_0px_#141414]"
+                className="btn-primary-green px-4 py-2 text-xs font-mono font-bold flex items-center gap-1.5 shadow-xs"
               >
                 <Sparkles className="w-3.5 h-3.5" />
                 <span>New Notes</span>
@@ -165,7 +165,7 @@ export const Navbar = ({
               {onNavigateLogin && (
                 <button
                   onClick={onNavigateLogin}
-                  className="px-3.5 py-2 text-xs font-mono font-bold text-[#141414] hover:text-[#79A94A] transition-colors flex items-center gap-1.5 cursor-pointer"
+                  className="px-3.5 py-2 text-xs font-mono font-bold text-[#0F172A] hover:text-[#059669] transition-colors flex items-center gap-1.5 cursor-pointer"
                 >
                   <LogIn className="w-3.5 h-3.5" />
                   <span>Log In</span>
@@ -174,7 +174,7 @@ export const Navbar = ({
               {onNavigateSignUp ? (
                 <button
                   onClick={onNavigateSignUp}
-                  className="btn-primary-green px-4 py-2 text-xs font-mono font-bold flex items-center gap-1.5 shadow-[2px_2px_0px_#141414]"
+                  className="btn-primary-green px-4 py-2 text-xs font-mono font-bold flex items-center gap-1.5 shadow-xs"
                 >
                   <UserIcon className="w-3.5 h-3.5" />
                   <span>Sign Up</span>
@@ -182,9 +182,9 @@ export const Navbar = ({
               ) : (
                 <button
                   onClick={onOpenUpload}
-                  className="btn-secondary-outline px-5 py-2 text-sm font-medium hover:bg-[#E8F2DC]/70 flex items-center gap-2"
+                  className="btn-secondary-outline px-5 py-2 text-sm font-medium hover:bg-[#ECFDF5] flex items-center gap-2"
                 >
-                  <Sparkles className="w-4 h-4 text-[#79A94A]" />
+                  <Sparkles className="w-4 h-4 text-[#059669]" />
                   <span>Get Started</span>
                 </button>
               )}
@@ -211,7 +211,7 @@ export const Navbar = ({
           )}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="p-2 rounded-xl border border-[#141414] bg-[#FCFAF6] shadow-[2px_2px_0px_#141414]"
+            className="p-2 rounded-xl border border-[#E2E8F0] bg-[#FFFFFF] shadow-xs text-[#0F172A]"
             aria-label="Toggle menu"
           >
             {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}

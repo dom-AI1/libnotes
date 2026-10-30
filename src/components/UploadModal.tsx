@@ -447,7 +447,7 @@ export const UploadModal = ({
         }}
       >
         <div 
-          className="relative w-full max-w-3xl bg-[#FCFAF6] border-2 border-[#141414] rounded-2xl shadow-[6px_6px_0px_#141414] p-4 sm:p-8 animate-in fade-in zoom-in-95 duration-200"
+          className="relative w-full max-w-3xl bg-[#FFFFFF] border border-[#E2E8F0] rounded-2xl shadow-xl p-4 sm:p-8 animate-in fade-in zoom-in-95 duration-200"
           onClick={(e) => e.stopPropagation()}
         >
           
@@ -458,7 +458,7 @@ export const UploadModal = ({
               e.stopPropagation();
               onClose();
             }}
-            className="absolute top-3.5 right-3.5 sm:top-5 sm:right-5 z-30 p-2 sm:p-2.5 rounded-xl border-2 border-[#141414] bg-[#FFFFFF] hover:bg-[#FDEDE8] hover:border-[#E05B49] hover:scale-105 active:scale-95 shadow-[2px_2px_0px_#141414] transition-all cursor-pointer text-[#141414]"
+            className="absolute top-3.5 right-3.5 sm:top-5 sm:right-5 z-30 p-2 sm:p-2.5 rounded-xl border border-[#E2E8F0] bg-[#FFFFFF] hover:bg-[#F8FAFC] hover:border-[#CBD5E1] hover:scale-105 active:scale-95 shadow-xs transition-all cursor-pointer text-[#0F172A]"
             aria-label="Close modal"
             title="Close (Esc)"
           >
@@ -583,26 +583,26 @@ export const UploadModal = ({
             
             {/* Header */}
             <div>
-              <span className="text-xs font-mono font-semibold uppercase tracking-wider text-[#79A94A] bg-[#E8F2DC] px-2.5 py-0.5 rounded-full border border-[#79A94A]/30">
+              <span className="text-xs font-mono font-semibold uppercase tracking-wider text-[#059669] bg-[#ECFDF5] px-2.5 py-0.5 rounded-full border border-[#A7F3D0]">
                 CREATE NEW STUDY KIT
               </span>
-              <h2 className="font-mono-editorial text-xl sm:text-3xl font-bold text-[#141414] mt-2 pr-10 sm:pr-0">
+              <h2 className="font-mono-editorial text-xl sm:text-3xl font-bold text-[#0F172A] mt-2 pr-10 sm:pr-0">
                 Upload lecture video or paste link
               </h2>
-              <p className="text-[#5E5D57] font-body text-sm mt-1">
+              <p className="text-[#64748B] font-body text-sm mt-1">
                 Customize syllabus parameters and choose your preferred note style.
               </p>
             </div>
 
             {/* Source Toggle */}
-            <div className="flex rounded-xl border border-[#141414] p-1 bg-[#FAF9F5] max-w-sm">
+            <div className="flex rounded-xl border border-[#E2E8F0] p-1 bg-[#F8FAFC] max-w-sm">
               <button
                 type="button"
                 onClick={() => setSourceType('link')}
                 className={`flex-1 py-2 px-3 rounded-lg text-xs font-mono font-semibold transition-all flex items-center justify-center gap-2 ${
                   sourceType === 'link'
-                    ? 'bg-[#141414] text-[#FFFFFF]'
-                    : 'text-[#5E5D57] hover:text-[#141414]'
+                    ? 'bg-[#0F172A] text-[#FFFFFF] shadow-xs'
+                    : 'text-[#64748B] hover:text-[#0F172A]'
                 }`}
               >
                 <LinkIcon className="w-3.5 h-3.5" />
@@ -613,8 +613,8 @@ export const UploadModal = ({
                 onClick={() => setSourceType('upload')}
                 className={`flex-1 py-2 px-3 rounded-lg text-xs font-mono font-semibold transition-all flex items-center justify-center gap-2 ${
                   sourceType === 'upload'
-                    ? 'bg-[#141414] text-[#FFFFFF]'
-                    : 'text-[#5E5D57] hover:text-[#141414]'
+                    ? 'bg-[#0F172A] text-[#FFFFFF] shadow-xs'
+                    : 'text-[#64748B] hover:text-[#0F172A]'
                 }`}
               >
                 <UploadCloud className="w-3.5 h-3.5" />
@@ -725,16 +725,16 @@ export const UploadModal = ({
                 ) : (
                   /* File Selected Display with Size and Remove Option */
                   <div className="space-y-3">
-                    <div className="p-4 rounded-xl border-2 border-[#141414] bg-[#FFFFFF] shadow-[2px_2px_0px_#141414] flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-lg bg-[#E8F2DC] border border-[#141414] flex items-center justify-center">
-                          <FileVideo className="w-5 h-5 text-[#79A94A]" />
+                    <div className="p-4 rounded-xl border border-[#E2E8F0] bg-[#FFFFFF] shadow-xs flex items-center justify-between gap-3">
+                      <div className="flex items-center gap-3 min-w-0 flex-1">
+                        <div className="w-10 h-10 rounded-lg bg-[#ECFDF5] border border-[#A7F3D0] flex items-center justify-center shrink-0">
+                          <FileVideo className="w-5 h-5 text-[#059669]" />
                         </div>
-                        <div>
-                          <div className="text-sm font-bold font-mono text-[#141414] truncate max-w-sm">
+                        <div className="min-w-0 flex-1">
+                          <div className="text-xs sm:text-sm font-bold font-mono text-[#0F172A] truncate">
                             {selectedFile.name}
                           </div>
-                          <div className="text-xs font-mono text-[#5E5D57]">
+                          <div className="text-[11px] font-mono text-[#64748B]">
                             Size: {formatFileSize(selectedFile.size)} • Ready for extraction
                           </div>
                         </div>
@@ -743,7 +743,7 @@ export const UploadModal = ({
                       <button
                         type="button"
                         onClick={() => setSelectedFile(null)}
-                        className="p-2 text-[#E05B49] hover:bg-[#FDEDE8] rounded-lg transition-colors border border-transparent hover:border-[#E05B49]"
+                        className="p-2 text-[#DC2626] hover:bg-[#FEF2F2] rounded-lg transition-colors border border-transparent hover:border-[#EF4444] shrink-0"
                         title="Remove file"
                       >
                         <Trash2 className="w-4 h-4" />
@@ -788,21 +788,21 @@ export const UploadModal = ({
             {/* Auto-Detection Banner vs Manual Syllabus Selectors */}
             {autoDetect && !showManualSyllabus ? (
               <div className="space-y-3">
-                <div className="rounded-xl border-2 border-[#79A94A] bg-[#F1F7EA] p-4 shadow-[2px_2px_0px_#79A94A]/20">
+                <div className="rounded-xl border border-[#A7F3D0] bg-[#ECFDF5] p-4 shadow-xs">
                   <div className="flex items-start gap-3">
-                    <div className="w-9 h-9 rounded-lg bg-[#E8F2DC] border border-[#79A94A] flex items-center justify-center shrink-0 mt-0.5">
-                      <Sparkles className="w-5 h-5 text-[#79A94A]" />
+                    <div className="w-9 h-9 rounded-lg bg-[#D1FAE5] border border-[#6EE7B7] flex items-center justify-center shrink-0 mt-0.5">
+                      <Sparkles className="w-5 h-5 text-[#059669]" />
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between">
-                        <span className="text-xs font-mono font-bold text-[#141414] uppercase tracking-wide">
+                        <span className="text-xs font-mono font-bold text-[#065F46] uppercase tracking-wide">
                           AI Auto-Analysis Active
                         </span>
-                        <span className="text-[10px] font-mono font-bold text-[#79A94A] bg-[#FFFFFF] px-2 py-0.5 rounded-full border border-[#79A94A]/40">
+                        <span className="text-[10px] font-mono font-bold text-[#059669] bg-[#FFFFFF] px-2 py-0.5 rounded-full border border-[#A7F3D0]">
                           AUTO-DETECT
                         </span>
                       </div>
-                      <p className="text-xs font-body text-[#5E5D57] mt-1 leading-relaxed">
+                      <p className="text-xs font-body text-[#047857] mt-1 leading-relaxed">
                         {sourceType === 'upload'
                           ? 'Libnotes AI will transcribe your recording and automatically detect what the lecture is about — identifying the subject, chapter, and academic concepts. No manual syllabus selection needed!'
                           : 'Libnotes AI will analyze the lecture video and automatically identify the subject, chapter, and core concepts.'}
@@ -967,28 +967,28 @@ export const UploadModal = ({
                     <div
                       key={opt.id}
                       onClick={() => setNoteStyle(opt.id)}
-                      className={`p-4 rounded-xl border-2 cursor-pointer transition-all flex flex-col justify-between ${
+                      className={`p-4 rounded-xl border cursor-pointer transition-all flex flex-col justify-between ${
                         isSelected
-                          ? 'border-[#141414] bg-[#E8F2DC] shadow-[3px_3px_0px_#141414]'
-                          : 'border-[#141414]/20 bg-[#FFFFFF] hover:border-[#141414]/60'
+                          ? 'border-[#059669] bg-[#ECFDF5] shadow-xs ring-1 ring-[#059669]'
+                          : 'border-[#E2E8F0] bg-[#FFFFFF] hover:border-[#CBD5E1]'
                       }`}
                     >
                       <div className="flex items-start justify-between">
                         <div className="flex items-center gap-2">
-                          <div className={`p-1.5 rounded-lg border border-[#141414] ${isSelected ? 'bg-[#79A94A] text-white' : 'bg-[#FCFAF6] text-[#141414]'}`}>
+                          <div className={`p-1.5 rounded-lg border ${isSelected ? 'bg-[#059669] border-[#059669] text-white' : 'bg-[#F8FAFC] border-[#E2E8F0] text-[#0F172A]'}`}>
                             <Icon className="w-4 h-4" />
                           </div>
-                          <span className="font-mono-editorial font-bold text-sm text-[#141414]">
+                          <span className="font-mono-editorial font-bold text-sm text-[#0F172A]">
                             {opt.title}
                           </span>
                         </div>
-                        {isSelected && <CheckCircle2 className="w-4 h-4 text-[#79A94A]" />}
+                        {isSelected && <CheckCircle2 className="w-4 h-4 text-[#059669]" />}
                       </div>
-                      <p className="text-xs text-[#5E5D57] mt-2 font-body leading-relaxed">
+                      <p className="text-xs text-[#64748B] mt-2 font-body leading-relaxed">
                         {opt.desc}
                       </p>
                       <div className="mt-3">
-                        <span className="text-[10px] font-mono uppercase tracking-wider text-[#141414] font-semibold bg-[#FCFAF6] px-2 py-0.5 rounded border border-[#141414]/20">
+                        <span className="text-[10px] font-mono uppercase tracking-wider text-[#475569] font-semibold bg-[#F8FAFC] px-2 py-0.5 rounded border border-[#E2E8F0]">
                           {opt.tag}
                         </span>
                       </div>

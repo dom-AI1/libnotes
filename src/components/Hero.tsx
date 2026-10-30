@@ -36,7 +36,7 @@ export const Hero = ({ onStartGeneration, onSelectSample, isAuthenticated = fals
 
   return (
     <section className="relative pt-12 pb-16 sm:pt-20 sm:pb-24 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto text-center">
-      
+
       {/* Editorial Badge */}
       <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#FCFAF6] border border-[#141414] shadow-[2px_2px_0px_#141414] mb-8 text-xs font-mono font-medium tracking-wide">
         <span className="w-2 h-2 rounded-full bg-[#79A94A]" />
@@ -59,17 +59,16 @@ export const Hero = ({ onStartGeneration, onSelectSample, isAuthenticated = fals
 
       {/* Compact Horizontal Action Bar */}
       <div className="max-w-3xl mx-auto bg-[#FCFAF6] border-2 border-[#141414] rounded-2xl shadow-[4px_4px_0px_#141414] p-3 sm:p-4 text-left transition-all">
-        
+
         {/* Toggle Mode: Upload vs Link */}
         <div className="flex flex-wrap items-center gap-2 mb-3 pb-3 border-b border-[#DFDBCF]">
           <button
             type="button"
             onClick={() => setActiveTab('link')}
-            className={`px-3.5 py-1.5 rounded-lg text-xs font-mono font-semibold transition-all flex items-center gap-1.5 ${
-              activeTab === 'link'
-                ? 'bg-[#E8F2DC] text-[#141414] border border-[#79A94A]'
-                : 'text-[#5E5D57] hover:text-[#141414] hover:bg-[#EFECE1]'
-            }`}
+            className={`px-3.5 py-1.5 rounded-lg text-xs font-mono font-semibold transition-all flex items-center gap-1.5 ${activeTab === 'link'
+              ? 'bg-[#E8F2DC] text-[#141414] border border-[#79A94A]'
+              : 'text-[#5E5D57] hover:text-[#141414] hover:bg-[#EFECE1]'
+              }`}
           >
             <LinkIcon className="w-3.5 h-3.5 text-[#79A94A]" />
             Paste Video Link
@@ -77,11 +76,10 @@ export const Hero = ({ onStartGeneration, onSelectSample, isAuthenticated = fals
           <button
             type="button"
             onClick={() => setActiveTab('upload')}
-            className={`px-3.5 py-1.5 rounded-lg text-xs font-mono font-semibold transition-all flex items-center gap-1.5 ${
-              activeTab === 'upload'
-                ? 'bg-[#E8F2DC] text-[#141414] border border-[#79A94A]'
-                : 'text-[#5E5D57] hover:text-[#141414] hover:bg-[#EFECE1]'
-            }`}
+            className={`px-3.5 py-1.5 rounded-lg text-xs font-mono font-semibold transition-all flex items-center gap-1.5 ${activeTab === 'upload'
+              ? 'bg-[#E8F2DC] text-[#141414] border border-[#79A94A]'
+              : 'text-[#5E5D57] hover:text-[#141414] hover:bg-[#EFECE1]'
+              }`}
           >
             <UploadCloud className="w-3.5 h-3.5 text-[#79A94A]" />
             Upload Video File
@@ -104,7 +102,7 @@ export const Hero = ({ onStartGeneration, onSelectSample, isAuthenticated = fals
               />
             </div>
           ) : (
-            <div 
+            <div
               onClick={handleGenerate}
               className="relative flex-1 flex items-center justify-center px-4 py-2.5 border border-dashed border-[#141414]/40 rounded-xl bg-[#FAF9F5] text-xs font-mono text-[#5E5D57] cursor-pointer hover:bg-[#E8F2DC]/40 hover:border-[#79A94A] transition-colors"
             >
@@ -129,9 +127,9 @@ export const Hero = ({ onStartGeneration, onSelectSample, isAuthenticated = fals
 
             {isStyleDropdownOpen && (
               <>
-                <div 
-                  className="fixed inset-0 z-20 cursor-default" 
-                  onClick={() => setIsStyleDropdownOpen(false)} 
+                <div
+                  className="fixed inset-0 z-20 cursor-default"
+                  onClick={() => setIsStyleDropdownOpen(false)}
                 />
                 <div className="absolute left-0 sm:left-auto right-0 mt-1.5 w-full sm:w-60 bg-[#FCFAF6] border-2 border-[#141414] rounded-xl shadow-[3px_3px_0px_#141414] p-1.5 z-30 space-y-1">
                   {(Object.keys(styleLabels) as NoteStyle[]).map((st) => (
@@ -142,9 +140,8 @@ export const Hero = ({ onStartGeneration, onSelectSample, isAuthenticated = fals
                         setSelectedStyle(st);
                         setIsStyleDropdownOpen(false);
                       }}
-                      className={`w-full text-left px-3 py-2 rounded-lg text-xs font-body transition-colors flex items-center justify-between ${
-                        selectedStyle === st ? 'bg-[#E8F2DC] text-[#141414] font-semibold' : 'hover:bg-[#EFECE1]'
-                      }`}
+                      className={`w-full text-left px-3 py-2 rounded-lg text-xs font-body transition-colors flex items-center justify-between ${selectedStyle === st ? 'bg-[#E8F2DC] text-[#141414] font-semibold' : 'hover:bg-[#EFECE1]'
+                        }`}
                     >
                       <div>
                         <div className="font-medium text-[#141414]">{styleLabels[st].label}</div>
