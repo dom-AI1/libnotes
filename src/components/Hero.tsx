@@ -43,7 +43,7 @@ export const Hero = ({ onStartGeneration, onSelectSample, isAuthenticated = fals
       </div>
 
       {/* Hero Headline */}
-      <h1 className="font-mono-editorial text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-[#141414] tracking-tight leading-[1.12] max-w-4xl mx-auto mb-6">
+      <h1 className="font-mono-editorial text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-[#141414] tracking-tight leading-[1.18] sm:leading-[1.12] max-w-4xl mx-auto mb-5 sm:mb-6 break-words">
         Turn educational videos into{' '}
         <span className="selection-box text-[#141414] transition-all hover:scale-105 inline-block">
           exam-ready
@@ -52,7 +52,7 @@ export const Hero = ({ onStartGeneration, onSelectSample, isAuthenticated = fals
       </h1>
 
       {/* Supporting Text */}
-      <p className="font-body text-lg sm:text-xl md:text-2xl text-[#4A4944] max-w-2xl mx-auto font-normal leading-relaxed mb-10">
+      <p className="font-body text-sm sm:text-xl md:text-2xl text-[#4A4944] max-w-2xl mx-auto font-normal leading-relaxed mb-8 sm:mb-10 px-1 sm:px-0">
         Your lectures, transformed into notes, revision sheets and quizzes — in minutes.
       </p>
 
@@ -60,7 +60,7 @@ export const Hero = ({ onStartGeneration, onSelectSample, isAuthenticated = fals
       <div className="max-w-3xl mx-auto bg-[#FCFAF6] border-2 border-[#141414] rounded-2xl shadow-[4px_4px_0px_#141414] p-3 sm:p-4 text-left transition-all">
         
         {/* Toggle Mode: Upload vs Link */}
-        <div className="flex items-center gap-2 mb-3 pb-3 border-b border-[#DFDBCF]">
+        <div className="flex flex-wrap items-center gap-2 mb-3 pb-3 border-b border-[#DFDBCF]">
           <button
             type="button"
             onClick={() => setActiveTab('link')}
@@ -132,7 +132,7 @@ export const Hero = ({ onStartGeneration, onSelectSample, isAuthenticated = fals
                   className="fixed inset-0 z-20 cursor-default" 
                   onClick={() => setIsStyleDropdownOpen(false)} 
                 />
-                <div className="absolute right-0 mt-1.5 w-60 bg-[#FCFAF6] border-2 border-[#141414] rounded-xl shadow-[3px_3px_0px_#141414] p-1.5 z-30 space-y-1">
+                <div className="absolute left-0 sm:left-auto right-0 mt-1.5 w-full sm:w-60 bg-[#FCFAF6] border-2 border-[#141414] rounded-xl shadow-[3px_3px_0px_#141414] p-1.5 z-30 space-y-1">
                   {(Object.keys(styleLabels) as NoteStyle[]).map((st) => (
                     <button
                       key={st}
@@ -169,7 +169,7 @@ export const Hero = ({ onStartGeneration, onSelectSample, isAuthenticated = fals
       </div>
 
       {/* Trust-oriented Caption Beneath Actions */}
-      <div className="mt-4 flex flex-wrap items-center justify-center gap-4 text-xs font-mono text-[#5E5D57]">
+      <div className="mt-4 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-[11px] sm:text-xs font-mono text-[#5E5D57]">
         <span className="flex items-center gap-1.5">
           <CheckCircle2 className="w-3.5 h-3.5 text-[#79A94A]" />
           Accurate English & Hinglish transcription

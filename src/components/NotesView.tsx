@@ -88,10 +88,10 @@ export const NotesView = ({ kit, onBack, onStyleChange, initialTab, userId }: No
       
       {/* Top Sticky Header */}
       <div className="sticky top-0 z-30 bg-[#F7F5EF]/95 backdrop-blur-md border-b border-[#141414]/15 no-print">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-wrap items-center justify-between gap-4">
+        <div className="max-w-6xl mx-auto px-3 sm:px-6 lg:px-8 py-2.5 sm:py-3.5 flex flex-wrap items-center justify-between gap-3 sm:gap-4">
           
           {/* Back & Breadcrumb */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2.5 sm:gap-3">
             <button
               onClick={onBack}
               className="p-2 rounded-xl border border-[#141414] bg-[#FCFAF6] hover:bg-[#EFECE1] shadow-[2px_2px_0px_#141414] transition-all"
@@ -100,7 +100,7 @@ export const NotesView = ({ kit, onBack, onStyleChange, initialTab, userId }: No
               <ArrowLeft className="w-4 h-4 text-[#141414]" />
             </button>
             <div>
-              <div className="flex items-center gap-2 text-xs font-mono text-[#5E5D57]">
+              <div className="flex flex-wrap items-center gap-1.5 text-[11px] sm:text-xs font-mono text-[#5E5D57]">
                 {kit.autoDetected && (
                   <>
                     <span className="inline-flex items-center gap-1 text-[10px] font-mono font-bold text-[#79A94A] bg-[#E8F2DC] px-2 py-0.5 rounded-full border border-[#79A94A]/30">
@@ -131,14 +131,14 @@ export const NotesView = ({ kit, onBack, onStyleChange, initialTab, userId }: No
                   </>
                 )}
               </div>
-              <h1 className="font-mono-editorial text-sm sm:text-base font-bold text-[#141414] truncate max-w-xs sm:max-w-md md:max-w-lg">
+              <h1 className="font-mono-editorial text-sm sm:text-base font-bold text-[#141414] truncate max-w-[180px] xs:max-w-xs sm:max-w-md md:max-w-lg">
                 {kit.title}
               </h1>
             </div>
           </div>
 
           {/* Action Bar: Style Switcher & Export Controls */}
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
             
             {/* Note Style Switcher Pills */}
             <div className="hidden md:flex items-center bg-[#FAF9F5] border border-[#141414] rounded-full p-1 shadow-[1.5px_1.5px_0px_#141414]">

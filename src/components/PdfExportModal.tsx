@@ -283,7 +283,7 @@ export const PdfExportModal = ({
         }}
       >
         <div 
-          className="relative w-full max-w-2xl bg-[#FCFAF6] border-2 border-[#141414] rounded-2xl shadow-[6px_6px_0px_#141414] p-5 sm:p-8 animate-in fade-in zoom-in-95 duration-200"
+          className="relative w-full max-w-2xl bg-[#FCFAF6] border-2 border-[#141414] rounded-2xl shadow-[6px_6px_0px_#141414] p-4 sm:p-8 animate-in fade-in zoom-in-95 duration-200"
           onClick={(e) => e.stopPropagation()}
         >
           {/* Close Button */}
@@ -294,11 +294,11 @@ export const PdfExportModal = ({
               onClose();
             }}
             disabled={isGenerating}
-            className="absolute top-4 right-4 sm:top-5 sm:right-5 z-30 p-2 sm:p-2.5 rounded-xl border-2 border-[#141414] bg-[#FFFFFF] hover:bg-[#FDEDE8] hover:border-[#E05B49] hover:scale-105 active:scale-95 shadow-[2px_2px_0px_#141414] transition-all cursor-pointer text-[#141414]"
+            className="absolute top-3.5 right-3.5 sm:top-5 sm:right-5 z-30 p-2 sm:p-2.5 rounded-xl border-2 border-[#141414] bg-[#FFFFFF] hover:bg-[#FDEDE8] hover:border-[#E05B49] hover:scale-105 active:scale-95 shadow-[2px_2px_0px_#141414] transition-all cursor-pointer text-[#141414]"
             aria-label="Close export options"
             title="Close (Esc)"
           >
-            <X className="w-5 h-5 text-[#141414]" />
+            <X className="w-4 h-4 sm:w-5 sm:h-5 text-[#141414]" />
           </button>
 
           {/* Modal Header */}
@@ -308,7 +308,7 @@ export const PdfExportModal = ({
               <span>PRINT & PDF EXPORT</span>
             </div>
 
-            <h2 className="font-mono-editorial text-2xl font-bold text-[#141414]">
+            <h2 className="font-mono-editorial text-xl sm:text-2xl font-bold text-[#141414] pr-10 sm:pr-0">
               Export Study Notes to PDF
             </h2>
 

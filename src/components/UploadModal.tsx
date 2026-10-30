@@ -342,7 +342,7 @@ export const UploadModal = ({
         }}
       >
         <div 
-          className="relative w-full max-w-3xl bg-[#FCFAF6] border-2 border-[#141414] rounded-2xl shadow-[6px_6px_0px_#141414] p-5 sm:p-8 animate-in fade-in zoom-in-95 duration-200"
+          className="relative w-full max-w-3xl bg-[#FCFAF6] border-2 border-[#141414] rounded-2xl shadow-[6px_6px_0px_#141414] p-4 sm:p-8 animate-in fade-in zoom-in-95 duration-200"
           onClick={(e) => e.stopPropagation()}
         >
           
@@ -353,11 +353,11 @@ export const UploadModal = ({
               e.stopPropagation();
               onClose();
             }}
-            className="absolute top-4 right-4 sm:top-5 sm:right-5 z-30 p-2 sm:p-2.5 rounded-xl border-2 border-[#141414] bg-[#FFFFFF] hover:bg-[#FDEDE8] hover:border-[#E05B49] hover:scale-105 active:scale-95 shadow-[2px_2px_0px_#141414] transition-all cursor-pointer text-[#141414]"
+            className="absolute top-3.5 right-3.5 sm:top-5 sm:right-5 z-30 p-2 sm:p-2.5 rounded-xl border-2 border-[#141414] bg-[#FFFFFF] hover:bg-[#FDEDE8] hover:border-[#E05B49] hover:scale-105 active:scale-95 shadow-[2px_2px_0px_#141414] transition-all cursor-pointer text-[#141414]"
             aria-label="Close modal"
             title="Close (Esc)"
           >
-            <X className="w-5 h-5" />
+            <X className="w-4 h-4 sm:w-5 sm:h-5" />
           </button>
 
           {isProcessing ? (
@@ -408,7 +408,7 @@ export const UploadModal = ({
               <span className="text-xs font-mono font-semibold uppercase tracking-wider text-[#79A94A] bg-[#E8F2DC] px-2.5 py-0.5 rounded-full border border-[#79A94A]/30">
                 CREATE NEW STUDY KIT
               </span>
-              <h2 className="font-mono-editorial text-2xl sm:text-3xl font-bold text-[#141414] mt-2">
+              <h2 className="font-mono-editorial text-xl sm:text-3xl font-bold text-[#141414] mt-2 pr-10 sm:pr-0">
                 Upload lecture video or paste link
               </h2>
               <p className="text-[#5E5D57] font-body text-sm mt-1">

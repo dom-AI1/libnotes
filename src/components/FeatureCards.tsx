@@ -14,7 +14,7 @@ export const FeatureCards = ({ onCardClick }: FeatureCardsProps) => {
         <span className="text-xs font-mono font-semibold uppercase tracking-widest text-[#79A94A] bg-[#E8F2DC] px-3 py-1 rounded-full border border-[#79A94A]/30">
           STUDY WORKFLOW
         </span>
-        <h2 className="font-mono-editorial text-3xl sm:text-4xl font-bold text-[#141414] mt-3 tracking-tight">
+        <h2 className="font-mono-editorial text-2xl sm:text-4xl font-bold text-[#141414] mt-3 tracking-tight break-words">
           Designed for high-retention learning.
         </h2>
         <p className="text-[#5E5D57] font-body text-base mt-2">

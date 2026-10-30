@@ -16,7 +16,7 @@ export const ProductPreview = ({ onOpenWorkspace }: ProductPreviewProps) => {
         <span className="text-xs font-mono font-semibold uppercase tracking-widest text-[#79A94A] bg-[#E8F2DC] px-3 py-1 rounded-full border border-[#79A94A]/30">
           PRODUCT PREVIEW
         </span>
-        <h2 className="font-mono-editorial text-3xl sm:text-4xl font-bold text-[#141414] mt-3 tracking-tight">
+        <h2 className="font-mono-editorial text-2xl sm:text-4xl font-bold text-[#141414] mt-3 tracking-tight break-words">
           See what Libnotes generates from a 40-minute lecture.
         </h2>
         <p className="text-[#5E5D57] font-body text-base mt-2">

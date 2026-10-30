@@ -53,23 +53,23 @@ export const Navbar = ({
 
   return (
     <header className="sticky top-0 z-40 w-full bg-[#F7F5EF]/90 backdrop-blur-md border-b border-[#141414]/15">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
         
         {/* Wordmark */}
         <button
           onClick={onNavigateHome}
-          className="flex items-center gap-2.5 text-left group transition-transform active:scale-95 cursor-pointer"
+          className="flex items-center gap-2 text-left group transition-transform active:scale-95 cursor-pointer"
           aria-label="Libnotes Home"
         >
-          <div className="w-10 h-10 rounded-xl bg-[#FCFAF6] border-2 border-[#141414] shadow-[2px_2px_0px_#141414] flex items-center justify-center font-mono-editorial font-bold text-lg text-[#141414] group-hover:bg-[#E8F2DC] transition-colors">
+          <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-[#FCFAF6] border-2 border-[#141414] shadow-[2px_2px_0px_#141414] flex items-center justify-center font-mono-editorial font-bold text-base sm:text-lg text-[#141414] group-hover:bg-[#E8F2DC] transition-colors shrink-0">
             L<span className="text-[#79A94A]">·</span>
           </div>
           <div className="flex flex-col">
-            <span className="font-mono-editorial text-2xl font-bold tracking-tight text-[#141414] flex items-center gap-1.5">
+            <span className="font-mono-editorial text-xl sm:text-2xl font-bold tracking-tight text-[#141414] flex items-center gap-1.5">
               Libnotes
               <span className="w-2 h-2 rounded-full bg-[#79A94A] inline-block animate-pulse" />
             </span>
-            <span className="text-[10px] uppercase tracking-wider font-mono text-[#5E5D57] -mt-1">
+            <span className="text-[9px] sm:text-[10px] uppercase tracking-wider font-mono text-[#5E5D57] -mt-1 hidden xs:inline-block">
               Lecture to Exam
             </span>
           </div>
@@ -116,7 +116,7 @@ export const Navbar = ({
         </nav>
 
         {/* Right Action (Desktop) */}
-        <div className="hidden sm:flex items-center gap-3">
+        <div className="hidden md:flex items-center gap-3">
           {isAuthenticated && user ? (
             /* Logged in state */
             <div className="flex items-center gap-2">

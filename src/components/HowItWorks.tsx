@@ -34,7 +34,7 @@ export const HowItWorks = () => {
           <span className="text-xs font-mono font-semibold uppercase tracking-widest text-[#79A94A] bg-[#E8F2DC] px-3 py-1 rounded-full border border-[#79A94A]/30">
             HOW IT WORKS
           </span>
-          <h2 className="font-mono-editorial text-3xl sm:text-4xl font-bold text-[#141414] mt-3 tracking-tight">
+          <h2 className="font-mono-editorial text-2xl sm:text-4xl font-bold text-[#141414] mt-3 tracking-tight break-words">
             From lecture video to retention in 3 minutes.
           </h2>
         </div>
@@ -50,7 +50,7 @@ export const HowItWorks = () => {
           return (
             <div
               key={idx}
-              className="bg-[#FCFAF6] border-2 border-[#141414] rounded-2xl p-7 shadow-[3px_3px_0px_#141414] relative flex flex-col justify-between"
+              className="bg-[#FCFAF6] border-2 border-[#141414] rounded-2xl p-5 sm:p-7 shadow-[3px_3px_0px_#141414] relative flex flex-col justify-between"
             >
               <div>
                 <div className="flex items-center justify-between mb-6">
