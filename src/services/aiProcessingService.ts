@@ -248,9 +248,9 @@ export function detectLectureMetadataFromSource(
   // 11. Generic fallback for links without known keywords
   return {
     academicClass: 'Class 12',
-    subject: 'General Science',
-    chapter: 'Core Lecture Concepts & Examination Review',
-    detectedTopic: 'Online Video Lecture',
+    subject: 'Science',
+    chapter: customTopic || 'Key Lecture Principles',
+    detectedTopic: customTopic || 'Online Lecture Analysis',
   };
 }
 

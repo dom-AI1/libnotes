@@ -79,7 +79,7 @@ export async function analyzeEducationalMedia(
   const rawCombined = `${customTopic || ''} ${input.selectedChapter || ''} ${sourceIdentifier}`.toLowerCase();
 
   let academicClass: AcademicClass = input.selectedClass || 'Class 12';
-  let subject: Subject = input.selectedSubject || 'Science';
+  let subject: Subject = input.selectedSubject || 'Physics';
   let stream: string | undefined = input.selectedStream;
   let chapter: string = customTopic || input.selectedChapter || 'Key Lecture Principles';
 
@@ -135,6 +135,9 @@ export async function analyzeEducationalMedia(
       chapter = customTopic || input.selectedChapter || 'Chemical Reactions & Equations';
     } else if (customTopic) {
       chapter = customTopic;
+    } else {
+      subject = input.selectedSubject || 'Physics';
+      chapter = input.selectedChapter || 'Physics: Fundamental Concepts & Analysis';
     }
   }
 

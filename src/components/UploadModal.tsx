@@ -157,7 +157,7 @@ export const UploadModal = ({
       .replace(/^[a-z0-9_-]{8,}_/i, '')
       .replace(/[_-]+/g, ' ')
       .trim();
-    return cleaned;
+    return cleaned || 'Lecture Key Concepts & Analysis';
   };
 
   const handleDrop = (e: React.DragEvent) => {
