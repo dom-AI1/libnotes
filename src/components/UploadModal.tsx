@@ -447,7 +447,7 @@ export const UploadModal = ({
         }}
       >
         <div 
-          className="relative w-full max-w-3xl bg-[#FFFFFF] border border-[#E2E8F0] rounded-2xl shadow-xl p-4 sm:p-8 animate-in fade-in zoom-in-95 duration-200"
+          className="relative w-full max-w-3xl bg-[#FFFFFF] dark:bg-[#242D28] border border-[#E2E7E1] dark:border-[#354139] rounded-2xl shadow-xl p-4 sm:p-8 animate-in fade-in zoom-in-95 duration-200 text-[#24332D] dark:text-[#E8EEE9]"
           onClick={(e) => e.stopPropagation()}
         >
           
@@ -458,7 +458,7 @@ export const UploadModal = ({
               e.stopPropagation();
               onClose();
             }}
-            className="absolute top-3.5 right-3.5 sm:top-5 sm:right-5 z-30 p-2 sm:p-2.5 rounded-xl border border-[#E2E8F0] bg-[#FFFFFF] hover:bg-[#F8FAFC] hover:border-[#CBD5E1] hover:scale-105 active:scale-95 shadow-xs transition-all cursor-pointer text-[#0F172A]"
+            className="absolute top-3.5 right-3.5 sm:top-5 sm:right-5 z-30 p-2 sm:p-2.5 rounded-xl border border-[#E2E7E1] dark:border-[#354139] bg-[#FFFFFF] dark:bg-[#242D28] hover:bg-[#F4F5F2] dark:hover:bg-[#1F2622] hover:scale-105 active:scale-95 shadow-xs transition-all cursor-pointer text-[#24332D] dark:text-[#E8EEE9]"
             aria-label="Close modal"
             title="Close (Esc)"
           >

@@ -93,46 +93,46 @@ export const SignUpView: React.FC<SignUpViewProps> = ({
   };
 
   return (
-    <div className="min-h-[calc(100vh-5rem)] bg-[#F7F5EF] flex items-center justify-center py-10 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-4xl w-full bg-[#FCFAF6] rounded-3xl border-2 border-[#141414] shadow-[6px_6px_0px_#141414] overflow-hidden grid grid-cols-1 lg:grid-cols-12">
+    <div className="min-h-[calc(100vh-5rem)] bg-[#F4F5F2] dark:bg-[#171C1A] flex items-center justify-center py-10 px-4 sm:px-6 lg:px-8 transition-colors">
+      <div className="max-w-4xl w-full bg-[#FFFFFF] dark:bg-[#242D28] rounded-3xl border border-[#E2E7E1] dark:border-[#354139] shadow-xs overflow-hidden grid grid-cols-1 lg:grid-cols-12">
         
-        {/* Left Column: Editorial Branding & Study Illustration (Desktop) */}
-        <div className="lg:col-span-5 bg-[#FAF8F2] p-8 lg:p-10 border-b-2 lg:border-b-0 lg:border-r-2 border-[#141414] flex flex-col justify-between">
+        {/* Left Column: Branding & Illustration */}
+        <div className="lg:col-span-5 bg-[#F4F5F2]/60 dark:bg-[#1F2622]/60 p-8 lg:p-10 border-b lg:border-b-0 lg:border-r border-[#E2E7E1] dark:border-[#354139] flex flex-col justify-between">
           <div>
             {/* Wordmark */}
             <button
               onClick={onNavigateHome}
-              className="flex items-center gap-2 group text-left mb-6"
+              className="flex items-center gap-2 group text-left mb-6 cursor-pointer"
             >
-              <div className="w-8 h-8 rounded-lg bg-[#FCFAF6] border-2 border-[#141414] shadow-[2px_2px_0px_#141414] flex items-center justify-center font-mono-editorial font-bold text-sm text-[#141414] group-hover:bg-[#E8F2DC] transition-colors">
-                L<span className="text-[#79A94A]">·</span>
+              <div className="w-8 h-8 rounded-lg bg-[#24332D] dark:bg-[#E8EEE9] border border-[#24332D] dark:border-[#E8EEE9] flex items-center justify-center font-editorial font-bold text-sm text-[#FFFFFF] dark:text-[#171C1A] group-hover:opacity-90 transition-opacity">
+                L<span className="text-[#486B54] dark:text-[#24332D]">·</span>
               </div>
-              <span className="font-mono-editorial text-xl font-bold tracking-tight text-[#141414]">
+              <span className="font-editorial text-xl font-bold tracking-tight text-[#24332D] dark:text-[#E8EEE9]">
                 Libnotes
               </span>
             </button>
 
-            <span className="inline-block px-3 py-1 rounded-full bg-[#E8F2DC] border border-[#79A94A]/40 text-[#79A94A] font-mono text-[11px] font-bold uppercase tracking-wider mb-3">
+            <span className="inline-block px-3 py-1 rounded-full bg-[#E5EDE5] dark:bg-[#2D3A32] border border-[#E2E7E1] dark:border-[#354139] text-[#486B54] dark:text-[#A8C5AD] font-mono text-[11px] font-bold uppercase tracking-wider mb-3">
               Free Student Account
             </span>
 
-            <h1 className="font-mono-editorial text-2xl lg:text-3xl font-bold text-[#141414] leading-tight">
+            <h1 className="font-editorial text-2xl lg:text-3xl font-bold text-[#24332D] dark:text-[#E8EEE9] leading-tight">
               Your smarter study journey starts here.
             </h1>
 
-            <p className="mt-3 font-body text-xs sm:text-sm text-[#5E5D57] leading-relaxed">
+            <p className="mt-3 font-body text-xs sm:text-sm text-[#647168] dark:text-[#B2BDB5] leading-relaxed">
               Create your free account and turn lectures into notes you'll actually love.
             </p>
           </div>
 
-          {/* Hand-drawn SVG Illustration */}
+          {/* Line Illustration */}
           <div className="my-6 flex justify-center">
-            <AuthIllustration className="w-full max-w-[280px] h-auto drop-shadow-sm" />
+            <AuthIllustration className="w-full max-w-[260px] h-auto drop-shadow-xs" />
           </div>
 
-          {/* Social Proof / Guarantee */}
-          <div className="pt-4 border-t border-[#141414]/10 flex items-center gap-2 text-xs font-mono text-[#5E5D57]">
-            <span className="w-2 h-2 rounded-full bg-[#79A94A]" />
+          {/* Guarantee */}
+          <div className="pt-4 border-t border-[#E2E7E1] dark:border-[#354139] flex items-center gap-2 text-xs font-mono text-[#647168] dark:text-[#B2BDB5]">
+            <span className="w-2 h-2 rounded-full bg-[#486B54] dark:bg-[#A8C5AD]" />
             <span>₹0 forever for student core tools • No card required</span>
           </div>
         </div>
@@ -142,20 +142,20 @@ export const SignUpView: React.FC<SignUpViewProps> = ({
           {isEmailConfirmationSent ? (
             /* Check Your Email Confirmation Screen */
             <div className="text-center py-8 space-y-4 animate-in fade-in zoom-in-95 duration-200">
-              <div className="w-16 h-16 rounded-2xl bg-[#E8F2DC] border-2 border-[#141414] shadow-[3px_3px_0px_#141414] flex items-center justify-center mx-auto text-[#79A94A]">
+              <div className="w-16 h-16 rounded-2xl bg-[#E5EDE5] dark:bg-[#2D3A32] border border-[#E2E7E1] dark:border-[#354139] shadow-xs flex items-center justify-center mx-auto text-[#486B54] dark:text-[#A8C5AD]">
                 <CheckCircle2 className="w-8 h-8" />
               </div>
-              <h2 className="font-mono-editorial text-2xl font-bold text-[#141414]">
+              <h2 className="font-editorial text-2xl font-bold text-[#24332D] dark:text-[#E8EEE9]">
                 Check your inbox
               </h2>
-              <p className="font-body text-sm text-[#5E5D57] max-w-sm mx-auto leading-relaxed">
-                We sent a confirmation link to <strong className="text-[#141414]">{email}</strong>. Please click the link in your email to verify your Libnotes account.
+              <p className="font-body text-sm text-[#647168] dark:text-[#B2BDB5] max-w-sm mx-auto leading-relaxed">
+                We sent a confirmation link to <strong className="text-[#24332D] dark:text-[#E8EEE9]">{email}</strong>. Please click the link in your email to verify your Libnotes account.
               </p>
               <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-3">
                 <button
                   type="button"
                   onClick={onNavigateLogin}
-                  className="btn-primary-green px-6 py-2.5 text-xs font-mono font-bold flex items-center gap-2"
+                  className="btn-primary-green px-6 py-2.5 text-xs font-mono font-bold flex items-center gap-2 cursor-pointer"
                 >
                   <span>Proceed to Log In</span>
                   <ArrowRight className="w-4 h-4" />
@@ -165,10 +165,10 @@ export const SignUpView: React.FC<SignUpViewProps> = ({
           ) : (
             <>
               <div className="mb-6">
-                <h2 className="font-mono-editorial text-2xl font-bold text-[#141414]">
+                <h2 className="font-editorial text-2xl font-bold text-[#24332D] dark:text-[#E8EEE9]">
                   Create an account
                 </h2>
-                <p className="text-xs sm:text-sm font-body text-[#5E5D57] mt-1">
+                <p className="text-xs sm:text-sm font-body text-[#647168] dark:text-[#B2BDB5] mt-1">
                   Start generating structured notes, PYQs, and revision kits in seconds.
                 </p>
               </div>
@@ -177,9 +177,9 @@ export const SignUpView: React.FC<SignUpViewProps> = ({
               {errorMessage && (
                 <div
                   role="alert"
-                  className="mb-5 p-3.5 rounded-xl bg-[#FDEDE8] border-2 border-[#E05B49] text-[#141414] text-xs font-body flex items-start gap-2.5 shadow-[2px_2px_0px_#E05B49] animate-in fade-in duration-150"
+                  className="mb-5 p-3.5 rounded-xl bg-[#FEF2F2] dark:bg-[#3B1E1E] border border-[#FCA5A5] dark:border-[#EF4444] text-[#991B1B] dark:text-[#FCA5A5] text-xs font-body flex items-start gap-2.5 animate-in fade-in duration-150"
                 >
-                  <AlertCircle className="w-4 h-4 text-[#E05B49] shrink-0 mt-0.5" />
+                  <AlertCircle className="w-4 h-4 text-[#EF4444] shrink-0 mt-0.5" />
                   <span className="leading-snug">{errorMessage}</span>
                 </div>
               )}
@@ -189,12 +189,12 @@ export const SignUpView: React.FC<SignUpViewProps> = ({
                 <div>
                   <label
                     htmlFor="signup-name"
-                    className="block text-xs font-mono font-bold uppercase tracking-wider text-[#141414] mb-1.5"
+                    className="block text-xs font-mono font-bold uppercase tracking-wider text-[#24332D] dark:text-[#E8EEE9] mb-1.5"
                   >
                     Full Name
                   </label>
                   <div className="relative">
-                    <UserIcon className="w-4 h-4 text-[#5E5D57] absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                    <UserIcon className="w-4 h-4 text-[#647168] dark:text-[#B2BDB5] absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
                     <input
                       id="signup-name"
                       type="text"
@@ -202,7 +202,7 @@ export const SignUpView: React.FC<SignUpViewProps> = ({
                       value={fullName}
                       onChange={(e) => setFullName(e.target.value)}
                       placeholder="e.g. Ananya Sharma"
-                      className="w-full pl-10 pr-3.5 py-2.5 text-sm rounded-xl bg-[#FFFFFF] border-2 border-[#141414] text-[#141414] placeholder:text-[#5E5D57]/50 focus:outline-none focus:ring-2 focus:ring-[#79A94A] transition-all font-body"
+                      className="w-full pl-10 pr-3.5 py-2.5 text-sm rounded-xl bg-[#FFFFFF] dark:bg-[#171C1A] border border-[#E2E7E1] dark:border-[#354139] text-[#24332D] dark:text-[#E8EEE9] placeholder:text-[#647168]/60 dark:placeholder:text-[#B2BDB5]/60 focus:outline-none focus:ring-2 focus:ring-[#486B54] dark:focus:ring-[#A8C5AD] transition-all font-body"
                     />
                   </div>
                 </div>
@@ -211,12 +211,12 @@ export const SignUpView: React.FC<SignUpViewProps> = ({
                 <div>
                   <label
                     htmlFor="signup-email"
-                    className="block text-xs font-mono font-bold uppercase tracking-wider text-[#141414] mb-1.5"
+                    className="block text-xs font-mono font-bold uppercase tracking-wider text-[#24332D] dark:text-[#E8EEE9] mb-1.5"
                   >
                     Email Address
                   </label>
                   <div className="relative">
-                    <Mail className="w-4 h-4 text-[#5E5D57] absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                    <Mail className="w-4 h-4 text-[#647168] dark:text-[#B2BDB5] absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
                     <input
                       id="signup-email"
                       type="email"
@@ -224,7 +224,7 @@ export const SignUpView: React.FC<SignUpViewProps> = ({
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="student@example.com"
-                      className="w-full pl-10 pr-3.5 py-2.5 text-sm rounded-xl bg-[#FFFFFF] border-2 border-[#141414] text-[#141414] placeholder:text-[#5E5D57]/50 focus:outline-none focus:ring-2 focus:ring-[#79A94A] transition-all font-body"
+                      className="w-full pl-10 pr-3.5 py-2.5 text-sm rounded-xl bg-[#FFFFFF] dark:bg-[#171C1A] border border-[#E2E7E1] dark:border-[#354139] text-[#24332D] dark:text-[#E8EEE9] placeholder:text-[#647168]/60 dark:placeholder:text-[#B2BDB5]/60 focus:outline-none focus:ring-2 focus:ring-[#486B54] dark:focus:ring-[#A8C5AD] transition-all font-body"
                     />
                   </div>
                 </div>
@@ -233,12 +233,12 @@ export const SignUpView: React.FC<SignUpViewProps> = ({
                 <div>
                   <label
                     htmlFor="signup-password"
-                    className="block text-xs font-mono font-bold uppercase tracking-wider text-[#141414] mb-1.5"
+                    className="block text-xs font-mono font-bold uppercase tracking-wider text-[#24332D] dark:text-[#E8EEE9] mb-1.5"
                   >
                     Password
                   </label>
                   <div className="relative">
-                    <Lock className="w-4 h-4 text-[#5E5D57] absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                    <Lock className="w-4 h-4 text-[#647168] dark:text-[#B2BDB5] absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
                     <input
                       id="signup-password"
                       type={showPassword ? 'text' : 'password'}
@@ -246,12 +246,12 @@ export const SignUpView: React.FC<SignUpViewProps> = ({
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       placeholder="••••••••"
-                      className="w-full pl-10 pr-10 py-2.5 text-sm rounded-xl bg-[#FFFFFF] border-2 border-[#141414] text-[#141414] placeholder:text-[#5E5D57]/50 focus:outline-none focus:ring-2 focus:ring-[#79A94A] transition-all font-body"
+                      className="w-full pl-10 pr-10 py-2.5 text-sm rounded-xl bg-[#FFFFFF] dark:bg-[#171C1A] border border-[#E2E7E1] dark:border-[#354139] text-[#24332D] dark:text-[#E8EEE9] placeholder:text-[#647168]/60 dark:placeholder:text-[#B2BDB5]/60 focus:outline-none focus:ring-2 focus:ring-[#486B54] dark:focus:ring-[#A8C5AD] transition-all font-body"
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-[#5E5D57] hover:text-[#141414] p-1"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-[#647168] dark:text-[#B2BDB5] hover:text-[#24332D] dark:hover:text-[#E8EEE9] p-1 cursor-pointer"
                       aria-label={showPassword ? 'Hide password' : 'Show password'}
                     >
                       {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
@@ -262,12 +262,12 @@ export const SignUpView: React.FC<SignUpViewProps> = ({
                   {password.length > 0 && (
                     <div className="mt-2 space-y-1">
                       <div className="flex items-center gap-2 text-[11px] font-mono">
-                        <span className={`w-1.5 h-1.5 rounded-full ${hasMinLength ? 'bg-[#79A94A]' : 'bg-[#D5D3CA]'}`} />
-                        <span className={hasMinLength ? 'text-[#79A94A]' : 'text-[#5E5D57]'}>At least 6 characters</span>
+                        <span className={`w-1.5 h-1.5 rounded-full ${hasMinLength ? 'bg-[#486B54] dark:bg-[#A8C5AD]' : 'bg-[#E2E7E1] dark:bg-[#354139]'}`} />
+                        <span className={hasMinLength ? 'text-[#486B54] dark:text-[#A8C5AD]' : 'text-[#647168] dark:text-[#B2BDB5]'}>At least 6 characters</span>
                       </div>
                       <div className="flex items-center gap-2 text-[11px] font-mono">
-                        <span className={`w-1.5 h-1.5 rounded-full ${hasLetter && hasNumber ? 'bg-[#79A94A]' : 'bg-[#D5D3CA]'}`} />
-                        <span className={hasLetter && hasNumber ? 'text-[#79A94A]' : 'text-[#5E5D57]'}>Contains letters and numbers</span>
+                        <span className={`w-1.5 h-1.5 rounded-full ${hasLetter && hasNumber ? 'bg-[#486B54] dark:bg-[#A8C5AD]' : 'bg-[#E2E7E1] dark:bg-[#354139]'}`} />
+                        <span className={hasLetter && hasNumber ? 'text-[#486B54] dark:text-[#A8C5AD]' : 'text-[#647168] dark:text-[#B2BDB5]'}>Contains letters and numbers</span>
                       </div>
                     </div>
                   )}
@@ -277,12 +277,12 @@ export const SignUpView: React.FC<SignUpViewProps> = ({
                 <div>
                   <label
                     htmlFor="signup-confirm-password"
-                    className="block text-xs font-mono font-bold uppercase tracking-wider text-[#141414] mb-1.5"
+                    className="block text-xs font-mono font-bold uppercase tracking-wider text-[#24332D] dark:text-[#E8EEE9] mb-1.5"
                   >
                     Confirm Password
                   </label>
                   <div className="relative">
-                    <Lock className="w-4 h-4 text-[#5E5D57] absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                    <Lock className="w-4 h-4 text-[#647168] dark:text-[#B2BDB5] absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
                     <input
                       id="signup-confirm-password"
                       type={showConfirmPassword ? 'text' : 'password'}
@@ -290,19 +290,19 @@ export const SignUpView: React.FC<SignUpViewProps> = ({
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
                       placeholder="••••••••"
-                      className="w-full pl-10 pr-10 py-2.5 text-sm rounded-xl bg-[#FFFFFF] border-2 border-[#141414] text-[#141414] placeholder:text-[#5E5D57]/50 focus:outline-none focus:ring-2 focus:ring-[#79A94A] transition-all font-body"
+                      className="w-full pl-10 pr-10 py-2.5 text-sm rounded-xl bg-[#FFFFFF] dark:bg-[#171C1A] border border-[#E2E7E1] dark:border-[#354139] text-[#24332D] dark:text-[#E8EEE9] placeholder:text-[#647168]/60 dark:placeholder:text-[#B2BDB5]/60 focus:outline-none focus:ring-2 focus:ring-[#486B54] dark:focus:ring-[#A8C5AD] transition-all font-body"
                     />
                     <button
                       type="button"
                       onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-[#5E5D57] hover:text-[#141414] p-1"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-[#647168] dark:text-[#B2BDB5] hover:text-[#24332D] dark:hover:text-[#E8EEE9] p-1 cursor-pointer"
                       aria-label={showConfirmPassword ? 'Hide confirm password' : 'Show confirm password'}
                     >
                       {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                     </button>
                   </div>
                   {confirmPassword.length > 0 && !passwordsMatch && (
-                    <p className="mt-1 text-[11px] font-mono text-[#E05B49]">
+                    <p className="mt-1 text-[11px] font-mono text-[#DC2626]">
                       Passwords do not match
                     </p>
                   )}
@@ -312,7 +312,7 @@ export const SignUpView: React.FC<SignUpViewProps> = ({
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="w-full mt-2 btn-primary-green py-3 text-xs sm:text-sm font-mono font-bold flex items-center justify-center gap-2 cursor-pointer shadow-[3px_3px_0px_#141414] hover:shadow-[1px_1px_0px_#141414] transition-all disabled:opacity-60"
+                  className="w-full mt-2 btn-primary-green py-3 text-xs sm:text-sm font-mono font-bold flex items-center justify-center gap-2 cursor-pointer shadow-xs transition-all disabled:opacity-60"
                 >
                   {isLoading ? (
                     <>
@@ -331,10 +331,10 @@ export const SignUpView: React.FC<SignUpViewProps> = ({
               {/* Or separator */}
               <div className="relative my-5">
                 <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-[#141414]/15" />
+                  <div className="w-full border-t border-[#E2E7E1] dark:border-[#354139]" />
                 </div>
-                <div className="relative flex justify-center text-xs font-mono uppercase text-[#5E5D57]">
-                  <span className="bg-[#FCFAF6] px-3">or continue with</span>
+                <div className="relative flex justify-center text-xs font-mono uppercase text-[#647168] dark:text-[#B2BDB5]">
+                  <span className="bg-[#FFFFFF] dark:bg-[#242D28] px-3">or continue with</span>
                 </div>
               </div>
 
@@ -343,7 +343,7 @@ export const SignUpView: React.FC<SignUpViewProps> = ({
                 type="button"
                 onClick={handleGoogleSignIn}
                 disabled={isLoading}
-                className="w-full py-2.5 px-4 rounded-xl border-2 border-[#141414] bg-[#FFFFFF] hover:bg-[#FAF8F2] text-xs font-mono font-bold text-[#141414] flex items-center justify-center gap-2 shadow-[2px_2px_0px_#141414] active:translate-x-0.5 active:translate-y-0.5 transition-all"
+                className="w-full py-2.5 px-4 rounded-xl border border-[#E2E7E1] dark:border-[#354139] bg-[#FFFFFF] dark:bg-[#242D28] hover:bg-[#F4F5F2] dark:hover:bg-[#1F2622] text-xs font-mono font-bold text-[#24332D] dark:text-[#E8EEE9] flex items-center justify-center gap-2 shadow-2xs transition-all cursor-pointer"
               >
                 <svg className="w-4 h-4" viewBox="0 0 24 24">
                   <path
@@ -367,12 +367,12 @@ export const SignUpView: React.FC<SignUpViewProps> = ({
               </button>
 
               {/* Login Switch Link */}
-              <div className="mt-6 text-center text-xs font-mono text-[#5E5D57]">
+              <div className="mt-6 text-center text-xs font-mono text-[#647168] dark:text-[#B2BDB5]">
                 <span>Already have an account? </span>
                 <button
                   type="button"
                   onClick={onNavigateLogin}
-                  className="font-bold text-[#141414] underline hover:text-[#79A94A] transition-colors"
+                  className="font-bold text-[#24332D] dark:text-[#E8EEE9] underline hover:text-[#486B54] dark:hover:text-[#A8C5AD] transition-colors cursor-pointer"
                 >
                   Log In
                 </button>
@@ -384,4 +384,3 @@ export const SignUpView: React.FC<SignUpViewProps> = ({
     </div>
   );
 };
-

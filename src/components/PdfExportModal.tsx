@@ -283,7 +283,7 @@ export const PdfExportModal = ({
         }}
       >
         <div 
-          className="relative w-full max-w-2xl bg-[#FCFAF6] border-2 border-[#141414] rounded-2xl shadow-[6px_6px_0px_#141414] p-4 sm:p-8 animate-in fade-in zoom-in-95 duration-200"
+          className="relative w-full max-w-2xl bg-[#FFFFFF] dark:bg-[#242D28] border border-[#E2E7E1] dark:border-[#354139] rounded-2xl shadow-xl p-4 sm:p-8 animate-in fade-in zoom-in-95 duration-200 text-[#24332D] dark:text-[#E8EEE9]"
           onClick={(e) => e.stopPropagation()}
         >
           {/* Close Button */}
@@ -294,11 +294,11 @@ export const PdfExportModal = ({
               onClose();
             }}
             disabled={isGenerating}
-            className="absolute top-3.5 right-3.5 sm:top-5 sm:right-5 z-30 p-2 sm:p-2.5 rounded-xl border-2 border-[#141414] bg-[#FFFFFF] hover:bg-[#FDEDE8] hover:border-[#E05B49] hover:scale-105 active:scale-95 shadow-[2px_2px_0px_#141414] transition-all cursor-pointer text-[#141414]"
+            className="absolute top-3.5 right-3.5 sm:top-5 sm:right-5 z-30 p-2 sm:p-2.5 rounded-xl border border-[#E2E7E1] dark:border-[#354139] bg-[#FFFFFF] dark:bg-[#242D28] hover:bg-[#F4F5F2] dark:hover:bg-[#1F2622] hover:scale-105 active:scale-95 shadow-xs transition-all cursor-pointer text-[#24332D] dark:text-[#E8EEE9]"
             aria-label="Close export options"
             title="Close (Esc)"
           >
-            <X className="w-4 h-4 sm:w-5 sm:h-5 text-[#141414]" />
+            <X className="w-4 h-4 sm:w-5 sm:h-5 text-[#24332D] dark:text-[#E8EEE9]" />
           </button>
 
           {/* Modal Header */}

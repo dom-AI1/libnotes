@@ -2,42 +2,83 @@
 
 @layer base {
   :root {
-    /* Primary Modern Student Palette */
-    --bg-ivory: #F8FAFC;
-    --brand-green: #059669;
-    --brand-green-hover: #047857;
-    --brand-green-soft: #ECFDF5;
-    --brand-green-tint: #F0FDF4;
-    --ink-black: #0F172A;
-    --ink-charcoal: #1E293B;
-    --ink-muted: #475569;
-    --ink-subtle: #94A3B8;
-    --card-surface: #FFFFFF;
-    --card-border: #E2E8F0;
-    --border-soft: #E2E8F0;
+    /* Libnotes Editorial Academic Design System - Light Mode */
+    --bg-page: #F4F5F2;
+    --text-primary: #24332D;
+    --text-secondary: #647168;
+    --surface: #FFFFFF;
+    --surface-secondary: #EBECE8;
+    --accent-primary: #486B54;
+    --accent-primary-hover: #3C5946;
+    --accent-soft: #E5EDE5;
+    --border-color: #E2E7E1;
+    --border-subtle: #ECEFEA;
 
-    /* Design system compatibility tokens */
+    /* Theme tokens & aliases */
+    --bg-ivory: #F4F5F2;
+    --brand-green: #486B54;
+    --brand-green-hover: #3C5946;
+    --brand-green-soft: #E5EDE5;
+    --brand-green-tint: #F4F8F4;
+    --ink-black: #24332D;
+    --ink-charcoal: #33443C;
+    --ink-muted: #647168;
+    --ink-subtle: #8A988F;
+    --card-surface: #FFFFFF;
+    --card-border: #E2E7E1;
+    --border-soft: #E2E7E1;
+
+    /* Design system compatibility tokens for existing test assertions */
     --token-compat-ivory: #F7F5EF;
     --token-compat-green: #79A94A;
     --token-compat-soft-green: #E8F2DC;
   }
 
+  .dark, [data-theme="dark"] {
+    /* Libnotes Editorial Academic Design System - Dark Mode */
+    --bg-page: #171C1A;
+    --text-primary: #E8EEE9;
+    --text-secondary: #B2BDB5;
+    --surface: #242D28;
+    --surface-secondary: #1F2622;
+    --accent-primary: #A8C5AD;
+    --accent-primary-hover: #BCD4C0;
+    --accent-soft: #2D3A32;
+    --border-color: #354139;
+    --border-subtle: #29342D;
+
+    /* Dark theme tokens & aliases */
+    --bg-ivory: #171C1A;
+    --brand-green: #A8C5AD;
+    --brand-green-hover: #BCD4C0;
+    --brand-green-soft: #2D3A32;
+    --brand-green-tint: #202924;
+    --ink-black: #E8EEE9;
+    --ink-charcoal: #D0DBD2;
+    --ink-muted: #B2BDB5;
+    --ink-subtle: #85958A;
+    --card-surface: #242D28;
+    --card-border: #354139;
+    --border-soft: #354139;
+  }
+
   body {
-    background-color: #F8FAFC;
-    color: #0F172A;
+    background-color: var(--bg-page);
+    color: var(--text-primary);
     font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     margin: 0;
     padding: 0;
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    transition: background-color 0.2s ease, color 0.2s ease;
   }
 }
 
-/* Modern Typography: Replaces monospace headers with clean, elegant Plus Jakarta Sans */
-.font-mono-editorial {
-  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  letter-spacing: -0.025em;
+/* Editorial Academic Typography: Source Serif 4 for authentic scholarly headings */
+.font-editorial, .font-mono-editorial {
+  font-family: 'Source Serif 4', 'Plus Jakarta Sans', Georgia, serif;
+  letter-spacing: -0.015em;
   font-weight: 700;
 }
 
@@ -50,10 +91,11 @@
 .selection-box {
   position: relative;
   display: inline-block;
-  background-color: #ECFDF5;
+  background-color: var(--accent-soft);
+  color: var(--text-primary);
   padding: 0.12em 0.45em;
   border-radius: 6px;
-  border: 1.5px solid #059669;
+  border: 1.5px solid var(--accent-primary);
 }
 
 .selection-box::before,
@@ -62,8 +104,8 @@
   position: absolute;
   width: 5px;
   height: 5px;
-  background-color: #059669;
-  border: 1px solid #0F172A;
+  background-color: var(--accent-primary);
+  border: 1px solid var(--text-primary);
 }
 
 .selection-box::before {
@@ -76,46 +118,62 @@
   right: -3px;
 }
 
-/* Refined modern cards with subtle elevation */
+/* Refined academic cards with subtle restraint */
 .card-editorial {
-  background-color: #FFFFFF;
-  border: 1px solid #E2E8F0;
-  border-radius: 1rem;
-  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.05), 0 1px 2px -1px rgb(0 0 0 / 0.05);
-  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  background-color: var(--surface);
+  border: 1px solid var(--border-color);
+  border-radius: 0.875rem;
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.04), 0 1px 2px -1px rgb(0 0 0 / 0.03);
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease;
 }
 
 .card-editorial:hover {
   transform: translateY(-2px);
-  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.08), 0 4px 6px -4px rgb(0 0 0 / 0.05);
+  box-shadow: 0 8px 16px -4px rgb(0 0 0 / 0.06), 0 2px 4px -2px rgb(0 0 0 / 0.04);
+}
+
+.dark .card-editorial {
+  box-shadow: 0 2px 6px 0 rgb(0 0 0 / 0.25);
 }
 
 .card-editorial-flat {
-  background-color: #FFFFFF;
-  border: 1px solid #E2E8F0;
-  border-radius: 1rem;
+  background-color: var(--surface);
+  border: 1px solid var(--border-color);
+  border-radius: 0.875rem;
 }
 
-/* Legacy definition tokens for test suite */
+/* Legacy definition tokens for test suite compatibility */
 .editorial-token-reference {
   border: 1.5px solid #141414;
   box-shadow: 3px 3px 0px #141414;
 }
 
 .btn-primary-green {
-  background-color: #059669;
+  background-color: #486B54;
   color: #FFFFFF;
-  border: 1px solid #047857;
+  border: 1px solid #3C5946;
   border-radius: 9999px;
   font-weight: 600;
   box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   transition: all 0.15s ease;
 }
 
+.dark .btn-primary-green {
+  background-color: #A8C5AD;
+  color: #171C1A;
+  border-color: #BCD4C0;
+  font-weight: 700;
+}
+
 .btn-primary-green:hover {
-  background-color: #047857;
+  background-color: #3C5946;
   transform: translateY(-1px);
-  box-shadow: 0 4px 6px -1px rgb(5 150 105 / 0.2);
+  box-shadow: 0 4px 6px -1px rgb(72 107 84 / 0.25);
+}
+
+.dark .btn-primary-green:hover {
+  background-color: #BCD4C0;
+  box-shadow: 0 4px 6px -1px rgb(168 197 173 / 0.25);
 }
 
 .btn-primary-green:active {
@@ -124,33 +182,33 @@
 }
 
 .btn-secondary-outline {
-  background-color: #FFFFFF;
-  color: #1E293B;
-  border: 1px solid #CBD5E1;
+  background-color: var(--surface);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
   border-radius: 9999px;
   font-weight: 500;
-  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.03);
   transition: all 0.15s ease;
 }
 
 .btn-secondary-outline:hover {
-  background-color: #F8FAFC;
-  border-color: #94A3B8;
+  background-color: var(--accent-soft);
+  border-color: var(--accent-primary);
   transform: translateY(-1px);
 }
 
-/* Modern subtle dot pattern */
+/* Subtle editorial grid pattern */
 .bg-notebook-dots {
-  background-image: radial-gradient(#CBD5E1 0.75px, transparent 0.75px);
-  background-size: 20px 20px;
-  opacity: 0.35;
+  background-image: radial-gradient(var(--border-color) 0.85px, transparent 0.85px);
+  background-size: 24px 24px;
+  opacity: 0.45;
 }
 
 /* Print styling for clean physical study kit export */
 @media print {
   body {
     background: #FFFFFF !important;
-    color: #0F172A !important;
+    color: #24332D !important;
     font-size: 11pt !important;
     margin: 0 !important;
     padding: 0 !important;

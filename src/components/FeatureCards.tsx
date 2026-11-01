@@ -11,53 +11,53 @@ export const FeatureCards = ({ onCardClick }: FeatureCardsProps) => {
       
       {/* Section Header */}
       <div className="text-center max-w-2xl mx-auto mb-12">
-        <span className="text-xs font-mono font-semibold uppercase tracking-widest text-[#79A94A] bg-[#E8F2DC] px-3 py-1 rounded-full border border-[#79A94A]/30">
+        <span className="text-xs font-mono font-semibold uppercase tracking-widest text-[#486B54] dark:text-[#A8C5AD] bg-[#E5EDE5] dark:bg-[#2D3A32] px-3.5 py-1 rounded-full border border-[#E2E7E1] dark:border-[#354139]">
           STUDY WORKFLOW
         </span>
-        <h2 className="font-mono-editorial text-2xl sm:text-4xl font-bold text-[#141414] mt-3 tracking-tight break-words">
+        <h2 className="font-editorial text-2xl sm:text-4xl font-bold text-[#24332D] dark:text-[#E8EEE9] mt-3 tracking-tight break-words">
           Designed for high-retention learning.
         </h2>
-        <p className="text-[#5E5D57] font-body text-base mt-2">
-          From a 1-hour noisy recording to concise notes you can actually revise the night before the exam.
+        <p className="text-[#647168] dark:text-[#B2BDB5] font-body text-base mt-2">
+          From a lengthy lecture to concise notes and practice questions you can review whenever you need.
         </p>
       </div>
 
-      {/* Staggered & Lightly Overlapping Cards Layout */}
+      {/* Cards Layout */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 items-stretch pt-2">
         
         {/* Card 1 — Learn Your Way */}
         <div 
           onClick={() => onCardClick('learn')}
-          className="group relative bg-[#FCFAF6] border-2 border-[#141414] rounded-2xl p-6 sm:p-7 shadow-[4px_4px_0px_#141414] hover:shadow-[7px_7px_0px_#141414] transition-all duration-300 md:-rotate-1 hover:rotate-0 hover:-translate-y-1 cursor-pointer flex flex-col justify-between"
+          className="group relative bg-[#FFFFFF] dark:bg-[#242D28] border border-[#E2E7E1] dark:border-[#354139] rounded-2xl p-6 sm:p-7 shadow-xs hover:shadow-md transition-all duration-200 hover:-translate-y-1 cursor-pointer flex flex-col justify-between"
         >
           {/* Top Label */}
           <div className="flex items-center justify-between mb-4">
-            <span className="text-xs font-mono font-bold text-[#5E5D57] tracking-wider uppercase">
-              CARD 01
+            <span className="text-xs font-mono font-bold text-[#647168] dark:text-[#B2BDB5] tracking-wider uppercase">
+              METHOD 01
             </span>
-            <div className="w-8 h-8 rounded-full border border-[#141414] bg-[#FFFFFF] flex items-center justify-center group-hover:bg-[#E8F2DC] group-hover:text-[#141414] transition-colors">
-              <ArrowUpRight className="w-4 h-4 text-[#141414]" />
+            <div className="w-8 h-8 rounded-full border border-[#E2E7E1] dark:border-[#354139] bg-[#F4F5F2] dark:bg-[#171C1A] flex items-center justify-center group-hover:bg-[#E5EDE5] dark:group-hover:bg-[#2D3A32] transition-colors">
+              <ArrowUpRight className="w-4 h-4 text-[#24332D] dark:text-[#E8EEE9]" />
             </div>
           </div>
 
-          {/* Simple Monochrome Line Illustration */}
+          {/* Line Illustration */}
           <div className="py-2 flex items-center justify-center">
-            <NotebookIllustration className="w-full h-40 max-h-44 object-contain" />
+            <NotebookIllustration className="w-full h-36 max-h-40 object-contain" />
           </div>
 
           {/* Text Content */}
           <div className="mt-5">
-            <h3 className="font-mono-editorial text-2xl font-bold text-[#141414] tracking-tight group-hover:text-[#79A94A] transition-colors">
+            <h3 className="font-editorial text-2xl font-bold text-[#24332D] dark:text-[#E8EEE9] tracking-tight group-hover:text-[#486B54] dark:group-hover:text-[#A8C5AD] transition-colors">
               Learn Your Way
             </h3>
-            <p className="font-body text-sm sm:text-base text-[#4A4944] mt-2 leading-relaxed">
+            <p className="font-body text-sm sm:text-base text-[#647168] dark:text-[#B2BDB5] mt-2 leading-relaxed">
               Choose short notes, detailed notes or easy Hinglish explanations.
             </p>
           </div>
 
           {/* Bottom badge */}
-          <div className="mt-5 pt-3 border-t border-[#DFDBCF] flex items-center gap-2 text-xs font-mono text-[#5E5D57]">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#79A94A]" />
+          <div className="mt-5 pt-3 border-t border-[#E2E7E1] dark:border-[#354139] flex items-center gap-2 text-xs font-mono text-[#647168] dark:text-[#B2BDB5]">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#486B54] dark:bg-[#A8C5AD]" />
             <span>4 distinct study modes</span>
           </div>
         </div>
@@ -65,36 +65,36 @@ export const FeatureCards = ({ onCardClick }: FeatureCardsProps) => {
         {/* Card 2 — Ready for Exams */}
         <div 
           onClick={() => onCardClick('exam')}
-          className="group relative bg-[#FCFAF6] border-2 border-[#141414] rounded-2xl p-6 sm:p-7 shadow-[4px_4px_0px_#141414] hover:shadow-[7px_7px_0px_#141414] transition-all duration-300 md:translate-y-2 hover:translate-y-0 hover:-translate-y-1 cursor-pointer flex flex-col justify-between"
+          className="group relative bg-[#FFFFFF] dark:bg-[#242D28] border border-[#E2E7E1] dark:border-[#354139] rounded-2xl p-6 sm:p-7 shadow-xs hover:shadow-md transition-all duration-200 hover:-translate-y-1 cursor-pointer flex flex-col justify-between"
         >
           {/* Top Label */}
           <div className="flex items-center justify-between mb-4">
-            <span className="text-xs font-mono font-bold text-[#5E5D57] tracking-wider uppercase">
-              CARD 02
+            <span className="text-xs font-mono font-bold text-[#647168] dark:text-[#B2BDB5] tracking-wider uppercase">
+              METHOD 02
             </span>
-            <div className="w-8 h-8 rounded-full border border-[#141414] bg-[#FFFFFF] flex items-center justify-center group-hover:bg-[#E8F2DC] group-hover:text-[#141414] transition-colors">
-              <ArrowUpRight className="w-4 h-4 text-[#141414]" />
+            <div className="w-8 h-8 rounded-full border border-[#E2E7E1] dark:border-[#354139] bg-[#F4F5F2] dark:bg-[#171C1A] flex items-center justify-center group-hover:bg-[#E5EDE5] dark:group-hover:bg-[#2D3A32] transition-colors">
+              <ArrowUpRight className="w-4 h-4 text-[#24332D] dark:text-[#E8EEE9]" />
             </div>
           </div>
 
-          {/* Simple Monochrome Line Illustration */}
+          {/* Line Illustration */}
           <div className="py-2 flex items-center justify-center">
-            <ExamIllustration className="w-full h-40 max-h-44 object-contain" />
+            <ExamIllustration className="w-full h-36 max-h-40 object-contain" />
           </div>
 
           {/* Text Content */}
           <div className="mt-5">
-            <h3 className="font-mono-editorial text-2xl font-bold text-[#141414] tracking-tight group-hover:text-[#79A94A] transition-colors">
+            <h3 className="font-editorial text-2xl font-bold text-[#24332D] dark:text-[#E8EEE9] tracking-tight group-hover:text-[#486B54] dark:group-hover:text-[#A8C5AD] transition-colors">
               Ready for Exams
             </h3>
-            <p className="font-body text-sm sm:text-base text-[#4A4944] mt-2 leading-relaxed">
+            <p className="font-body text-sm sm:text-base text-[#647168] dark:text-[#B2BDB5] mt-2 leading-relaxed">
               Turn lectures into important questions, definitions and MCQs.
             </p>
           </div>
 
           {/* Bottom badge */}
-          <div className="mt-5 pt-3 border-t border-[#DFDBCF] flex items-center gap-2 text-xs font-mono text-[#5E5D57]">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#79A94A]" />
+          <div className="mt-5 pt-3 border-t border-[#E2E7E1] dark:border-[#354139] flex items-center gap-2 text-xs font-mono text-[#647168] dark:text-[#B2BDB5]">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#486B54] dark:bg-[#A8C5AD]" />
             <span>Marking schemes & PYQs</span>
           </div>
         </div>
@@ -102,36 +102,36 @@ export const FeatureCards = ({ onCardClick }: FeatureCardsProps) => {
         {/* Card 3 — Understand Your Weak Spots */}
         <div 
           onClick={() => onCardClick('quiz')}
-          className="group relative bg-[#FCFAF6] border-2 border-[#141414] rounded-2xl p-6 sm:p-7 shadow-[4px_4px_0px_#141414] hover:shadow-[7px_7px_0px_#141414] transition-all duration-300 md:rotate-1 hover:rotate-0 hover:-translate-y-1 cursor-pointer flex flex-col justify-between"
+          className="group relative bg-[#FFFFFF] dark:bg-[#242D28] border border-[#E2E7E1] dark:border-[#354139] rounded-2xl p-6 sm:p-7 shadow-xs hover:shadow-md transition-all duration-200 hover:-translate-y-1 cursor-pointer flex flex-col justify-between"
         >
           {/* Top Label */}
           <div className="flex items-center justify-between mb-4">
-            <span className="text-xs font-mono font-bold text-[#5E5D57] tracking-wider uppercase">
-              CARD 03
+            <span className="text-xs font-mono font-bold text-[#647168] dark:text-[#B2BDB5] tracking-wider uppercase">
+              METHOD 03
             </span>
-            <div className="w-8 h-8 rounded-full border border-[#141414] bg-[#FFFFFF] flex items-center justify-center group-hover:bg-[#E8F2DC] group-hover:text-[#141414] transition-colors">
-              <ArrowUpRight className="w-4 h-4 text-[#141414]" />
+            <div className="w-8 h-8 rounded-full border border-[#E2E7E1] dark:border-[#354139] bg-[#F4F5F2] dark:bg-[#171C1A] flex items-center justify-center group-hover:bg-[#E5EDE5] dark:group-hover:bg-[#2D3A32] transition-colors">
+              <ArrowUpRight className="w-4 h-4 text-[#24332D] dark:text-[#E8EEE9]" />
             </div>
           </div>
 
-          {/* Simple Monochrome Line Illustration */}
+          {/* Line Illustration */}
           <div className="py-2 flex items-center justify-center">
-            <WeakSpotsIllustration className="w-full h-40 max-h-44 object-contain" />
+            <WeakSpotsIllustration className="w-full h-36 max-h-40 object-contain" />
           </div>
 
           {/* Text Content */}
           <div className="mt-5">
-            <h3 className="font-mono-editorial text-2xl font-bold text-[#141414] tracking-tight group-hover:text-[#79A94A] transition-colors">
+            <h3 className="font-editorial text-2xl font-bold text-[#24332D] dark:text-[#E8EEE9] tracking-tight group-hover:text-[#486B54] dark:group-hover:text-[#A8C5AD] transition-colors">
               Understand Your Weak Spots
             </h3>
-            <p className="font-body text-sm sm:text-base text-[#4A4944] mt-2 leading-relaxed">
+            <p className="font-body text-sm sm:text-base text-[#647168] dark:text-[#B2BDB5] mt-2 leading-relaxed">
               Take a quiz, see your results and practise topics that need revision.
             </p>
           </div>
 
           {/* Bottom badge */}
-          <div className="mt-5 pt-3 border-t border-[#DFDBCF] flex items-center gap-2 text-xs font-mono text-[#5E5D57]">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#79A94A]" />
+          <div className="mt-5 pt-3 border-t border-[#E2E7E1] dark:border-[#354139] flex items-center gap-2 text-xs font-mono text-[#647168] dark:text-[#B2BDB5]">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#486B54] dark:bg-[#A8C5AD]" />
             <span>Diagnostic topic insights</span>
           </div>
         </div>

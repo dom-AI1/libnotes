@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 import { QuizComponent } from './QuizComponent';
 import { PdfExportModal } from './PdfExportModal';
+import { ThemeToggle } from './ThemeToggle';
 
 export interface SubjectTheme {
   name: string;
@@ -169,7 +170,7 @@ export const NotesView = ({ kit, onBack, onStyleChange, initialTab, userId }: No
       <div className="min-h-screen bg-[#F7F5EF] flex items-center justify-center p-4">
         <div className="max-w-md w-full bg-[#FCFAF6] border-2 border-[#141414] rounded-2xl p-6 sm:p-8 shadow-[4px_4px_0px_#141414] text-center">
           <BookOpen className="w-10 h-10 text-[#79A94A] mx-auto mb-3" />
-          <h2 className="font-mono-editorial text-xl font-bold text-[#141414] mb-2">Study Kit Loading...</h2>
+          <h2 className="font-editorial text-xl font-bold text-[#141414] mb-2">Study Kit Loading...</h2>
           <p className="text-xs font-body text-[#5E5D57] mb-4">Please wait while your study material is being prepared, or return to home.</p>
           <button onClick={onBack} className="btn-primary-green px-4 py-2 text-xs font-mono font-bold">Return to Home</button>
         </div>
@@ -222,23 +223,23 @@ export const NotesView = ({ kit, onBack, onStyleChange, initialTab, userId }: No
     kit.noteStyle === 'minimal' ? 'quick' : kit.noteStyle === 'chatpate' ? 'chatpata' : (kit.noteStyle || 'topper');
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] pb-24 text-[#0F172A]">
+    <div className="min-h-screen bg-[#F4F5F2] dark:bg-[#171C1A] pb-24 text-[#24332D] dark:text-[#E8EEE9] transition-colors">
       
       {/* Top Sticky Header */}
-      <div className="sticky top-0 z-30 bg-[#FFFFFF]/95 backdrop-blur-md border-b border-[#E2E8F0] shadow-xs no-print">
+      <div className="sticky top-0 z-30 bg-[#FFFFFF]/95 dark:bg-[#242D28]/95 backdrop-blur-md border-b border-[#E2E7E1] dark:border-[#354139] shadow-xs no-print">
         <div className="max-w-6xl mx-auto px-3 sm:px-6 lg:px-8 py-2.5 sm:py-3.5 flex flex-wrap items-center justify-between gap-3 sm:gap-4">
           
           {/* Back & Breadcrumb */}
           <div className="flex items-center gap-2.5 sm:gap-3">
             <button
               onClick={onBack}
-              className="p-2 rounded-xl border border-[#CBD5E1] bg-[#FFFFFF] hover:bg-[#F1F5F9] shadow-xs transition-all cursor-pointer"
+              className="p-2 rounded-xl border border-[#E2E7E1] dark:border-[#354139] bg-[#FFFFFF] dark:bg-[#242D28] hover:bg-[#F4F5F2] dark:hover:bg-[#1F2622] text-[#24332D] dark:text-[#E8EEE9] shadow-xs transition-all cursor-pointer"
               aria-label="Back to home"
             >
-              <ArrowLeft className="w-4 h-4 text-[#0F172A]" />
+              <ArrowLeft className="w-4 h-4" />
             </button>
             <div>
-              <div className="flex flex-wrap items-center gap-1.5 text-[11px] sm:text-xs font-mono text-[#64748B]">
+              <div className="flex flex-wrap items-center gap-1.5 text-[11px] sm:text-xs font-mono text-[#647168] dark:text-[#B2BDB5]">
                 {kit.autoDetected && (
                   <>
                     <span 
@@ -255,7 +256,7 @@ export const NotesView = ({ kit, onBack, onStyleChange, initialTab, userId }: No
                 {kit.stream && (
                   <>
                     <span>•</span>
-                    <span className="text-[#0F172A] font-medium">{kit.stream}</span>
+                    <span className="text-[#24332D] dark:text-[#E8EEE9] font-medium">{kit.stream}</span>
                   </>
                 )}
                 <span>•</span>
@@ -272,7 +273,7 @@ export const NotesView = ({ kit, onBack, onStyleChange, initialTab, userId }: No
                   </>
                 )}
               </div>
-              <h1 className="font-mono-editorial text-sm sm:text-base font-bold text-[#0F172A] truncate max-w-[180px] xs:max-w-xs sm:max-w-md md:max-w-lg">
+              <h1 className="font-editorial text-sm sm:text-base font-bold text-[#24332D] dark:text-[#E8EEE9] truncate max-w-[180px] xs:max-w-xs sm:max-w-md md:max-w-lg">
                 {cleanTitle}
               </h1>
             </div>
@@ -282,15 +283,15 @@ export const NotesView = ({ kit, onBack, onStyleChange, initialTab, userId }: No
           <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
             
             {/* Note Style Switcher Pills */}
-            <div className="hidden md:flex items-center bg-[#F1F5F9] border border-[#E2E8F0] rounded-full p-1 shadow-2xs">
+            <div className="hidden md:flex items-center bg-[#F4F5F2] dark:bg-[#171C1A] border border-[#E2E7E1] dark:border-[#354139] rounded-full p-1 shadow-2xs">
               {(['quick', 'topper', 'chatpata', 'exam'] as NoteStyle[]).map((st) => (
                 <button
                   key={st}
                   onClick={() => onStyleChange(st)}
                   className={`px-3.5 py-1 rounded-full text-xs font-mono font-medium transition-all cursor-pointer ${
                     activeStyleKey === st
-                      ? 'bg-[#0F172A] text-[#FFFFFF] shadow-xs font-semibold'
-                      : 'text-[#64748B] hover:text-[#0F172A] hover:bg-[#FFFFFF]'
+                      ? 'bg-[#24332D] dark:bg-[#E8EEE9] text-[#FFFFFF] dark:text-[#171C1A] shadow-xs font-semibold'
+                      : 'text-[#647168] dark:text-[#B2BDB5] hover:text-[#24332D] dark:hover:text-[#E8EEE9]'
                   }`}
                 >
                   {styleNames[st]}
@@ -302,7 +303,7 @@ export const NotesView = ({ kit, onBack, onStyleChange, initialTab, userId }: No
             <select
               value={activeStyleKey}
               onChange={(e) => onStyleChange(e.target.value as NoteStyle)}
-              className="md:hidden text-xs font-mono border border-[#CBD5E1] bg-[#FFFFFF] text-[#0F172A] rounded-lg px-2 py-1.5 focus:outline-none"
+              className="md:hidden text-xs font-mono border border-[#E2E7E1] dark:border-[#354139] bg-[#FFFFFF] dark:bg-[#242D28] text-[#24332D] dark:text-[#E8EEE9] rounded-lg px-2 py-1.5 focus:outline-none"
             >
               <option value="quick">Quick Notes</option>
               <option value="topper">Topper Notes</option>
@@ -314,7 +315,7 @@ export const NotesView = ({ kit, onBack, onStyleChange, initialTab, userId }: No
             <button
               onClick={() => setBookmarked(!bookmarked)}
               className={`p-2 rounded-xl border transition-all cursor-pointer ${
-                bookmarked ? 'bg-[#ECFDF5] border-[#10B981] text-[#059669]' : 'border-[#CBD5E1] bg-[#FFFFFF] hover:bg-[#F1F5F9] text-[#64748B]'
+                bookmarked ? 'bg-[#E5EDE5] dark:bg-[#2D3A32] border-[#486B54] dark:border-[#A8C5AD] text-[#486B54] dark:text-[#A8C5AD]' : 'border-[#E2E7E1] dark:border-[#354139] bg-[#FFFFFF] dark:bg-[#242D28] hover:bg-[#F4F5F2] dark:hover:bg-[#1F2622] text-[#647168] dark:text-[#B2BDB5]'
               } shadow-xs`}
               title="Bookmark kit"
             >
@@ -324,9 +325,9 @@ export const NotesView = ({ kit, onBack, onStyleChange, initialTab, userId }: No
             {/* Copy Button */}
             <button
               onClick={handleCopy}
-              className="px-3 py-1.5 rounded-full border border-[#CBD5E1] bg-[#FFFFFF] hover:bg-[#F8FAFC] text-xs font-mono font-semibold text-[#0F172A] flex items-center gap-1.5 shadow-2xs transition-all cursor-pointer"
+              className="px-3 py-1.5 rounded-full border border-[#E2E7E1] dark:border-[#354139] bg-[#FFFFFF] dark:bg-[#242D28] hover:bg-[#F4F5F2] dark:hover:bg-[#1F2622] text-xs font-mono font-semibold text-[#24332D] dark:text-[#E8EEE9] flex items-center gap-1.5 shadow-2xs transition-all cursor-pointer"
             >
-              {copied ? <Check className="w-3.5 h-3.5 text-[#059669]" /> : <Copy className="w-3.5 h-3.5" />}
+              {copied ? <Check className="w-3.5 h-3.5 text-[#486B54] dark:text-[#A8C5AD]" /> : <Copy className="w-3.5 h-3.5" />}
               <span>{copied ? 'Copied!' : 'Copy'}</span>
             </button>
 
@@ -339,17 +340,20 @@ export const NotesView = ({ kit, onBack, onStyleChange, initialTab, userId }: No
               <Download className="w-3.5 h-3.5" />
               <span>Download PDF</span>
             </button>
+
+            {/* Theme Toggle */}
+            <ThemeToggle />
           </div>
         </div>
 
         {/* Tab Navigation */}
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex overflow-x-auto gap-2 border-t border-[#E2E8F0] pt-2 pb-1.5 scrollbar-none">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex overflow-x-auto gap-2 border-t border-[#E2E7E1] dark:border-[#354139] pt-2 pb-1.5 scrollbar-none">
           <button
             onClick={() => setActiveTab('full')}
             className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-mono font-bold transition-all flex items-center gap-2 whitespace-nowrap cursor-pointer ${
               activeTab === 'full'
-                ? 'bg-[#0F172A] text-[#FFFFFF] shadow-xs'
-                : 'text-[#64748B] hover:text-[#0F172A] hover:bg-[#F1F5F9]'
+                ? 'bg-[#24332D] dark:bg-[#E8EEE9] text-[#FFFFFF] dark:text-[#171C1A] shadow-xs'
+                : 'text-[#647168] dark:text-[#B2BDB5] hover:text-[#24332D] dark:hover:text-[#E8EEE9] hover:bg-[#F4F5F2] dark:hover:bg-[#1F2622]'
             }`}
           >
             <BookOpen className="w-4 h-4" />
@@ -360,8 +364,8 @@ export const NotesView = ({ kit, onBack, onStyleChange, initialTab, userId }: No
             onClick={() => setActiveTab('revision')}
             className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-mono font-bold transition-all flex items-center gap-2 whitespace-nowrap cursor-pointer ${
               activeTab === 'revision'
-                ? 'bg-[#0F172A] text-[#FFFFFF] shadow-xs'
-                : 'text-[#64748B] hover:text-[#0F172A] hover:bg-[#F1F5F9]'
+                ? 'bg-[#24332D] dark:bg-[#E8EEE9] text-[#FFFFFF] dark:text-[#171C1A] shadow-xs'
+                : 'text-[#647168] dark:text-[#B2BDB5] hover:text-[#24332D] dark:hover:text-[#E8EEE9] hover:bg-[#F4F5F2] dark:hover:bg-[#1F2622]'
             }`}
           >
             <Sparkles className="w-4 h-4" style={{ color: theme.primary }} />
@@ -372,8 +376,8 @@ export const NotesView = ({ kit, onBack, onStyleChange, initialTab, userId }: No
             onClick={() => setActiveTab('exam')}
             className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-mono font-bold transition-all flex items-center gap-2 whitespace-nowrap cursor-pointer ${
               activeTab === 'exam'
-                ? 'bg-[#0F172A] text-[#FFFFFF] shadow-xs'
-                : 'text-[#64748B] hover:text-[#0F172A] hover:bg-[#F1F5F9]'
+                ? 'bg-[#24332D] dark:bg-[#E8EEE9] text-[#FFFFFF] dark:text-[#171C1A] shadow-xs'
+                : 'text-[#647168] dark:text-[#B2BDB5] hover:text-[#24332D] dark:hover:text-[#E8EEE9] hover:bg-[#F4F5F2] dark:hover:bg-[#1F2622]'
             }`}
           >
             <GraduationCap className="w-4 h-4" />
@@ -385,7 +389,7 @@ export const NotesView = ({ kit, onBack, onStyleChange, initialTab, userId }: No
             className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-mono font-bold transition-all flex items-center gap-2 whitespace-nowrap cursor-pointer ${
               activeTab === 'cards'
                 ? 'bg-[#0F172A] text-[#FFFFFF] shadow-xs'
-                : 'text-[#64748B] hover:text-[#0F172A] hover:bg-[#F1F5F9]'
+                : 'text-[#647168] dark:text-[#B2BDB5] hover:text-[#24332D] dark:text-[#E8EEE9] hover:bg-[#E5EDE5] dark:bg-[#2D3A32]'
             }`}
           >
             <HelpCircle className="w-4 h-4" />
@@ -411,11 +415,11 @@ export const NotesView = ({ kit, onBack, onStyleChange, initialTab, userId }: No
         
         {/* Source Evidence & Grounding Disclosure Banner */}
         {kit.verifiedLecture && (
-          <div className="mb-6 p-3.5 rounded-2xl bg-[#FFFFFF] border border-[#E2E8F0] shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 text-xs font-mono no-print">
-            <div className="flex items-center gap-2 text-[#0F172A] min-w-0 max-w-full">
+          <div className="mb-6 p-3.5 rounded-2xl bg-[#FFFFFF] dark:bg-[#242D28] border border-[#E2E7E1] dark:border-[#354139] shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 text-xs font-mono no-print">
+            <div className="flex items-center gap-2 text-[#24332D] dark:text-[#E8EEE9] min-w-0 max-w-full">
               <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: theme.primary }} />
               <span className="font-bold shrink-0">Verified Source Grounded:</span>
-              <span className="text-[#64748B] truncate max-w-[180px] xs:max-w-xs sm:max-w-[240px] md:max-w-md">
+              <span className="text-[#647168] dark:text-[#B2BDB5] truncate max-w-[180px] xs:max-w-xs sm:max-w-[240px] md:max-w-md">
                 {kit.verifiedLecture.sourceIdentifier}
               </span>
             </div>
@@ -440,12 +444,12 @@ export const NotesView = ({ kit, onBack, onStyleChange, initialTab, userId }: No
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search concepts, formulas or questions within this lecture..."
-            className="w-full h-11 pl-10 pr-10 rounded-xl border border-[#CBD5E1] bg-[#FFFFFF] text-xs font-body text-[#0F172A] focus:outline-none focus:border-[#059669] focus:ring-1 focus:ring-[#059669] shadow-2xs"
+            className="w-full h-11 pl-10 pr-10 rounded-xl border border-[#CBD5E1] bg-[#FFFFFF] text-xs font-body text-[#24332D] dark:text-[#E8EEE9] focus:outline-none focus:border-[#059669] focus:ring-1 focus:ring-[#059669] shadow-2xs"
           />
           {searchQuery && (
             <button
               onClick={() => setSearchQuery('')}
-              className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#94A3B8] hover:text-[#0F172A] cursor-pointer"
+              className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#94A3B8] hover:text-[#24332D] dark:text-[#E8EEE9] cursor-pointer"
               aria-label="Clear search"
             >
               <X className="w-4 h-4" />
@@ -471,7 +475,7 @@ export const NotesView = ({ kit, onBack, onStyleChange, initialTab, userId }: No
 
         {/* Timestamp Concept Popup Modal / Alert */}
         {activeTimestamp && (
-          <div className="mb-6 p-4 rounded-xl border border-[#CBD5E1] bg-[#FFFFFF] shadow-sm flex items-start justify-between gap-4 animate-in fade-in no-print">
+          <div className="mb-6 p-4 rounded-xl border border-[#CBD5E1] bg-[#FFFFFF] shadow-sm flex items-start justify-between gap-4 animate-in fade-in">
             <div className="flex items-start gap-3">
               <div 
                 className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0 border"
@@ -487,18 +491,18 @@ export const NotesView = ({ kit, onBack, onStyleChange, initialTab, userId }: No
                   >
                     {activeTimestamp.time} ({activeTimestamp.seconds}s)
                   </span>
-                  <span className="font-mono-editorial text-sm font-bold text-[#0F172A]">
+                  <span className="font-editorial text-sm font-bold text-[#24332D] dark:text-[#E8EEE9]">
                     {activeTimestamp.title}
                   </span>
                 </div>
-                <p className="text-xs text-[#64748B] font-body mt-1">
+                <p className="text-xs text-[#647168] dark:text-[#B2BDB5] font-body mt-1">
                   {activeTimestamp.summary}
                 </p>
               </div>
             </div>
             <button
               onClick={() => setActiveTimestamp(null)}
-              className="text-xs font-mono text-[#94A3B8] hover:text-[#0F172A] border border-[#E2E8F0] px-2 py-1 rounded cursor-pointer"
+              className="text-xs font-mono text-[#94A3B8] hover:text-[#24332D] dark:text-[#E8EEE9] border border-[#E2E8F0] px-2 py-1 rounded cursor-pointer"
             >
               Dismiss
             </button>
@@ -512,7 +516,7 @@ export const NotesView = ({ kit, onBack, onStyleChange, initialTab, userId }: No
           <div className="space-y-6">
             
             {/* Title & High-Retention Student Overview Card */}
-            <div className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-xs relative overflow-hidden">
+            <div className="bg-[#FFFFFF] dark:bg-[#242D28] border border-[#E2E7E1] dark:border-[#354139] rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-xs relative overflow-hidden">
               
               {/* Dynamic Subject Accent Glow Bar */}
               <div 
@@ -527,21 +531,21 @@ export const NotesView = ({ kit, onBack, onStyleChange, initialTab, userId }: No
                 >
                   {kit.subject ? kit.subject.toUpperCase() : 'STUDY KIT'} • {kit.academicClass || 'CLASS 11/12'}
                 </span>
-                <span className="text-xs font-mono font-semibold text-[#0F172A] bg-[#F1F5F9] px-3 py-1 rounded-full border border-[#E2E8F0]">
+                <span className="text-xs font-mono font-semibold text-[#24332D] dark:text-[#E8EEE9] bg-[#E5EDE5] dark:bg-[#2D3A32] px-3 py-1 rounded-full border border-[#E2E8F0]">
                   Style: {styleNames[activeStyleKey]}
                 </span>
-                <span className="text-xs font-mono text-[#64748B] bg-[#F8FAFC] px-2.5 py-1 rounded-full border border-[#E2E8F0]">
+                <span className="text-xs font-mono text-[#647168] dark:text-[#B2BDB5] bg-[#F4F5F2] dark:bg-[#171C1A] px-2.5 py-1 rounded-full border border-[#E2E8F0]">
                   Audio: {kit.language}
                 </span>
               </div>
 
               {/* Clean Human Title */}
-              <h2 className="font-mono-editorial text-xl sm:text-2xl md:text-3xl font-extrabold text-[#0F172A] leading-tight">
+              <h2 className="font-editorial text-xl sm:text-2xl md:text-3xl font-extrabold text-[#24332D] dark:text-[#E8EEE9] leading-tight">
                 {cleanTitle}
               </h2>
 
               {/* Student Friendly Intro (Removes robot text) */}
-              <p className="font-body text-sm sm:text-base text-[#475569] mt-3 leading-relaxed max-w-3xl">
+              <p className="font-body text-sm sm:text-base text-[#647168] dark:text-[#B2BDB5] mt-3 leading-relaxed max-w-3xl">
                 {activeStyleKey === 'chatpata'
                   ? chatpataContent?.hinglishIntro || 'Conversational summary of this lecture.'
                   : cleanIntro}
@@ -549,37 +553,37 @@ export const NotesView = ({ kit, onBack, onStyleChange, initialTab, userId }: No
 
               {/* Student "What to Read First" Navigator (Eliminates feeling of wordy clutter) */}
               <div className="mt-5 pt-4 border-t border-[#F1F5F9] grid grid-cols-1 sm:grid-cols-3 gap-3">
-                <div className="flex items-center gap-2.5 p-2.5 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0]">
+                <div className="flex items-center gap-2.5 p-2.5 rounded-xl bg-[#F4F5F2] dark:bg-[#171C1A] border border-[#E2E8F0]">
                   <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0" style={{ backgroundColor: theme.badgeBg, color: theme.primary }}>
                     <BookOpen className="w-4 h-4" />
                   </div>
                   <div>
-                    <div className="text-[10px] font-mono text-[#64748B] uppercase">Deep Dive Sections</div>
-                    <div className="text-xs font-bold text-[#0F172A]">
+                    <div className="text-[10px] font-mono text-[#647168] dark:text-[#B2BDB5] uppercase">Deep Dive Sections</div>
+                    <div className="text-xs font-bold text-[#24332D] dark:text-[#E8EEE9]">
                       {kit.content?.topper?.deepDive?.length || 3} Core Concepts
                     </div>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-2.5 p-2.5 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0]">
+                <div className="flex items-center gap-2.5 p-2.5 rounded-xl bg-[#F4F5F2] dark:bg-[#171C1A] border border-[#E2E8F0]">
                   <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0" style={{ backgroundColor: theme.badgeBg, color: theme.primary }}>
                     <Sparkles className="w-4 h-4" />
                   </div>
                   <div>
-                    <div className="text-[10px] font-mono text-[#64748B] uppercase">Formulas & Rules</div>
-                    <div className="text-xs font-bold text-[#0F172A]">
+                    <div className="text-[10px] font-mono text-[#647168] dark:text-[#B2BDB5] uppercase">Formulas & Rules</div>
+                    <div className="text-xs font-bold text-[#24332D] dark:text-[#E8EEE9]">
                       {quickContent?.formulas?.length || 4} Verified Equations
                     </div>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-2.5 p-2.5 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0]">
+                <div className="flex items-center gap-2.5 p-2.5 rounded-xl bg-[#F4F5F2] dark:bg-[#171C1A] border border-[#E2E8F0]">
                   <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0" style={{ backgroundColor: theme.badgeBg, color: theme.primary }}>
                     <Award className="w-4 h-4" />
                   </div>
                   <div>
-                    <div className="text-[10px] font-mono text-[#64748B] uppercase">Practice Quiz</div>
-                    <div className="text-xs font-bold text-[#0F172A]">
+                    <div className="text-[10px] font-mono text-[#647168] dark:text-[#B2BDB5] uppercase">Practice Quiz</div>
+                    <div className="text-xs font-bold text-[#24332D] dark:text-[#E8EEE9]">
                       {kit.quiz?.length || 5} Questions Ready
                     </div>
                   </div>
@@ -596,7 +600,7 @@ export const NotesView = ({ kit, onBack, onStyleChange, initialTab, userId }: No
                   .map((section, idx) => (
                     <div
                       key={idx}
-                      className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-2xl p-6 sm:p-7 shadow-xs hover:shadow-md transition-shadow"
+                      className="bg-[#FFFFFF] dark:bg-[#242D28] border border-[#E2E7E1] dark:border-[#354139] rounded-2xl p-6 sm:p-7 shadow-xs hover:shadow-md transition-shadow"
                     >
                       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
                         <div className="flex items-center gap-2.5">
@@ -606,7 +610,7 @@ export const NotesView = ({ kit, onBack, onStyleChange, initialTab, userId }: No
                           >
                             {idx + 1}
                           </span>
-                          <h3 className="font-mono-editorial text-lg sm:text-xl font-bold text-[#0F172A]">
+                          <h3 className="font-editorial text-lg sm:text-xl font-bold text-[#24332D] dark:text-[#E8EEE9]">
                             {section.title}
                           </h3>
                         </div>
@@ -635,15 +639,15 @@ export const NotesView = ({ kit, onBack, onStyleChange, initialTab, userId }: No
                       {section.subsections && section.subsections.length > 0 && (
                         <div className="mt-4 space-y-3">
                           {section.subsections.map((sub, sIdx) => (
-                            <div key={sIdx} className="p-3.5 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0]">
-                              <div className="font-mono font-bold text-xs text-[#0F172A] mb-1">
+                            <div key={sIdx} className="p-3.5 rounded-xl bg-[#F4F5F2] dark:bg-[#171C1A] border border-[#E2E8F0]">
+                              <div className="font-mono font-bold text-xs text-[#24332D] dark:text-[#E8EEE9] mb-1">
                                 {sub.subtitle}
                               </div>
                               <p className="font-body text-xs text-[#334155] leading-relaxed whitespace-pre-line">
                                 {sub.explanation}
                               </p>
                               {sub.bullets && sub.bullets.length > 0 && (
-                                <ul className="list-disc list-inside mt-2 space-y-1 text-xs text-[#475569]">
+                                <ul className="list-disc list-inside mt-2 space-y-1 text-xs text-[#647168] dark:text-[#B2BDB5]">
                                   {sub.bullets.map((b, bIdx) => (
                                     <li key={bIdx}>{b}</li>
                                   ))}
@@ -658,7 +662,7 @@ export const NotesView = ({ kit, onBack, onStyleChange, initialTab, userId }: No
                       {section.comparisonTable && (
                         <div className="mt-4 overflow-x-auto rounded-xl border border-[#CBD5E1]">
                           <table className="w-full text-left text-xs font-body">
-                            <thead className="bg-[#F1F5F9] font-mono font-bold text-[#0F172A] border-b border-[#CBD5E1]">
+                            <thead className="bg-[#E5EDE5] dark:bg-[#2D3A32] font-mono font-bold text-[#24332D] dark:text-[#E8EEE9] border-b border-[#CBD5E1]">
                               <tr>
                                 {section.comparisonTable.headers.map((h, hIdx) => (
                                   <th key={hIdx} className="p-2.5 whitespace-nowrap">{h}</th>
@@ -667,7 +671,7 @@ export const NotesView = ({ kit, onBack, onStyleChange, initialTab, userId }: No
                             </thead>
                             <tbody className="divide-y divide-[#E2E8F0] bg-[#FFFFFF]">
                               {section.comparisonTable.rows.map((row, rIdx) => (
-                                <tr key={rIdx} className="hover:bg-[#F8FAFC]">
+                                <tr key={rIdx} className="hover:bg-[#F4F5F2] dark:bg-[#171C1A]">
                                   {row.map((cell, cIdx) => (
                                     <td key={cIdx} className="p-2.5 text-[#334155]">{cell}</td>
                                   ))}
@@ -680,15 +684,15 @@ export const NotesView = ({ kit, onBack, onStyleChange, initialTab, userId }: No
 
                       {/* Diagram & Visual Model Guide */}
                       {section.diagramDescription && (
-                        <div className="mt-4 p-4 rounded-xl border border-[#CBD5E1] bg-[#F8FAFC]">
-                          <div className="font-mono text-xs font-bold uppercase text-[#0F172A] mb-1 flex items-center gap-1.5">
+                        <div className="mt-4 p-4 rounded-xl border border-[#CBD5E1] bg-[#F4F5F2] dark:bg-[#171C1A]">
+                          <div className="font-mono text-xs font-bold uppercase text-[#24332D] dark:text-[#E8EEE9] mb-1 flex items-center gap-1.5">
                             <span className="w-2 h-2 rounded-full" style={{ backgroundColor: theme.primary }} />
                             📐 Visual Model & Structure Guide: {section.diagramDescription.title}
                           </div>
                           <pre className="font-mono text-xs text-[#1E293B] bg-[#FFFFFF] p-3 rounded-lg border border-[#E2E8F0] overflow-x-auto my-2">
                             {section.diagramDescription.visualLayout}
                           </pre>
-                          <p className="text-xs font-body text-[#475569] leading-relaxed">
+                          <p className="text-xs font-body text-[#647168] dark:text-[#B2BDB5] leading-relaxed">
                             {section.diagramDescription.explanation}
                           </p>
                         </div>
@@ -696,21 +700,21 @@ export const NotesView = ({ kit, onBack, onStyleChange, initialTab, userId }: No
 
                       {/* Solved Model Example with Working Notes */}
                       {section.workedExample && (
-                        <div className="mt-4 p-4 rounded-xl border border-[#CBD5E1] bg-[#F8FAFC]">
+                        <div className="mt-4 p-4 rounded-xl border border-[#CBD5E1] bg-[#F4F5F2] dark:bg-[#171C1A]">
                           <div className="flex items-center gap-2 font-mono text-xs font-bold uppercase mb-1.5" style={{ color: theme.primary }}>
                             <Check className="w-3.5 h-3.5" />
                             Solved Example & Working Notes
                           </div>
-                          <div className="font-mono-editorial font-bold text-sm text-[#0F172A] mb-2">
+                          <div className="font-editorial font-bold text-sm text-[#24332D] dark:text-[#E8EEE9] mb-2">
                             {section.workedExample.problem}
                           </div>
                           <div className="text-xs sm:text-sm font-body text-[#334155] whitespace-pre-line leading-relaxed mb-3 p-3 bg-white rounded-lg border border-[#E2E8F0]">
-                            <span className="font-mono font-bold text-xs text-[#64748B] block mb-1">Step-by-Step Solution:</span>
+                            <span className="font-mono font-bold text-xs text-[#647168] dark:text-[#B2BDB5] block mb-1">Step-by-Step Solution:</span>
                             {section.workedExample.solution}
                           </div>
                           {section.workedExample.workingNotes && (
-                            <div className="p-3 rounded-lg bg-[#FFFFFF] border border-[#E2E8F0] text-xs font-mono text-[#334155] mb-2 whitespace-pre-line">
-                              <span className="font-bold text-[#0F172A] block mb-1">Detailed Working Notes:</span>
+                            <div className="p-3 rounded-lg bg-[#FFFFFF] dark:bg-[#242D28] border border-[#E2E7E1] dark:border-[#354139] text-xs font-mono text-[#334155] mb-2 whitespace-pre-line">
+                              <span className="font-bold text-[#24332D] dark:text-[#E8EEE9] block mb-1">Detailed Working Notes:</span>
                               {section.workedExample.workingNotes}
                             </div>
                           )}
@@ -747,22 +751,22 @@ export const NotesView = ({ kit, onBack, onStyleChange, initialTab, userId }: No
                         <span className="font-mono font-bold mr-1.5" style={{ color: theme.primary }}>
                           💡 KEY TAKEAWAY:
                         </span>
-                        <span className="text-[#0F172A] font-medium">{section.keyTakeaway}</span>
+                        <span className="text-[#24332D] dark:text-[#E8EEE9] font-medium">{section.keyTakeaway}</span>
                       </div>
                     </div>
                   ))}
 
                 {/* Derivations */}
                 {(kit.content?.topper?.derivations || []).length > 0 && (
-                  <div className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-2xl p-6 sm:p-7 shadow-xs">
-                    <h3 className="font-mono-editorial text-lg sm:text-xl font-bold text-[#0F172A] mb-4 flex items-center gap-2">
+                  <div className="bg-[#FFFFFF] dark:bg-[#242D28] border border-[#E2E7E1] dark:border-[#354139] rounded-2xl p-6 sm:p-7 shadow-xs">
+                    <h3 className="font-editorial text-lg sm:text-xl font-bold text-[#24332D] dark:text-[#E8EEE9] mb-4 flex items-center gap-2">
                       <Sparkles className="w-5 h-5" style={{ color: theme.primary }} />
                       Mathematical Derivations & Analytical Proofs
                     </h3>
                     <div className="space-y-4">
                       {(kit.content?.topper?.derivations || []).map((d, idx) => (
-                        <div key={idx} className="p-4 rounded-xl border border-[#E2E8F0] bg-[#F8FAFC]">
-                          <div className="font-mono-editorial font-bold text-sm text-[#0F172A] mb-2">
+                        <div key={idx} className="p-4 rounded-xl border border-[#E2E8F0] bg-[#F4F5F2] dark:bg-[#171C1A]">
+                          <div className="font-editorial font-bold text-sm text-[#24332D] dark:text-[#E8EEE9] mb-2">
                             {d.title}
                           </div>
                           <div className="space-y-1.5 pl-3 border-l-2 my-3 font-mono text-xs text-[#334155]" style={{ borderColor: theme.primary }}>
@@ -777,7 +781,7 @@ export const NotesView = ({ kit, onBack, onStyleChange, initialTab, userId }: No
                             Final Result: {d.finalResult}
                           </div>
                           {d.whyItWorks && (
-                            <div className="mt-2 text-xs font-body p-2.5 rounded-lg bg-[#FFFFFF] border border-[#E2E8F0] text-[#334155]">
+                            <div className="mt-2 text-xs font-body p-2.5 rounded-lg bg-[#FFFFFF] dark:bg-[#242D28] border border-[#E2E7E1] dark:border-[#354139] text-[#334155]">
                               <span className="font-mono font-bold text-[#059669]">Why this formulation works: </span>
                               {d.whyItWorks}
                             </div>
@@ -789,8 +793,8 @@ export const NotesView = ({ kit, onBack, onStyleChange, initialTab, userId }: No
                 )}
 
                 {/* Topper Pro Tips */}
-                <div className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-2xl p-6 shadow-xs">
-                  <h3 className="font-mono-editorial text-base font-bold text-[#0F172A] mb-3 flex items-center gap-2">
+                <div className="bg-[#FFFFFF] dark:bg-[#242D28] border border-[#E2E7E1] dark:border-[#354139] rounded-2xl p-6 shadow-xs">
+                  <h3 className="font-editorial text-base font-bold text-[#24332D] dark:text-[#E8EEE9] mb-3 flex items-center gap-2">
                     <Award className="w-5 h-5" style={{ color: theme.primary }} />
                     Topper Pro Tips & Common Traps
                   </h3>
@@ -815,9 +819,9 @@ export const NotesView = ({ kit, onBack, onStyleChange, initialTab, userId }: No
                     .map((item, idx) => (
                       <div
                         key={idx}
-                        className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-2xl p-6 shadow-xs hover:shadow-md transition-shadow"
+                        className="bg-[#FFFFFF] dark:bg-[#242D28] border border-[#E2E7E1] dark:border-[#354139] rounded-2xl p-6 shadow-xs hover:shadow-md transition-shadow"
                       >
-                        <div className="flex items-center gap-2 mb-2 font-mono-editorial text-base font-bold text-[#0F172A]">
+                        <div className="flex items-center gap-2 mb-2 font-editorial text-base font-bold text-[#24332D] dark:text-[#E8EEE9]">
                           <Coffee className="w-4 h-4 text-[#D97706]" />
                           {item.concept}
                         </div>
@@ -834,8 +838,8 @@ export const NotesView = ({ kit, onBack, onStyleChange, initialTab, userId }: No
                 </div>
 
                 {chatpataContent?.bhaiKaSummary && chatpataContent.bhaiKaSummary.length > 0 && (
-                  <div className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-2xl p-6 shadow-xs">
-                    <h3 className="font-mono-editorial text-base font-bold text-[#0F172A] mb-3">
+                  <div className="bg-[#FFFFFF] dark:bg-[#242D28] border border-[#E2E7E1] dark:border-[#354139] rounded-2xl p-6 shadow-xs">
+                    <h3 className="font-editorial text-base font-bold text-[#24332D] dark:text-[#E8EEE9] mb-3">
                       Bhai Ka 2-Minute Quick Summary:
                     </h3>
                     <div className="space-y-2">
@@ -854,15 +858,15 @@ export const NotesView = ({ kit, onBack, onStyleChange, initialTab, userId }: No
             {/* RENDER QUICK NOTES */}
             {activeStyleKey === 'quick' && (
               <div className="space-y-6">
-                <div className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-2xl p-6 sm:p-7 shadow-xs">
-                  <h3 className="font-mono-editorial text-lg font-bold text-[#0F172A] mb-4">
+                <div className="bg-[#FFFFFF] dark:bg-[#242D28] border border-[#E2E7E1] dark:border-[#354139] rounded-2xl p-6 sm:p-7 shadow-xs">
+                  <h3 className="font-editorial text-lg font-bold text-[#24332D] dark:text-[#E8EEE9] mb-4">
                     High-Yield Bullet Formula & Concept Cards
                   </h3>
                   <div className="space-y-3">
                     {(quickContent?.cheatSheet || [])
                       .filter(sheet => !searchQuery || (typeof sheet === 'string' && sheet.toLowerCase().includes(searchQuery.toLowerCase())))
                       .map((sheet, i) => (
-                        <div key={i} className="p-3.5 rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] text-xs sm:text-sm font-body text-[#1E293B] flex items-start gap-2.5">
+                        <div key={i} className="p-3.5 rounded-xl border border-[#E2E8F0] bg-[#F4F5F2] dark:bg-[#171C1A] text-xs sm:text-sm font-body text-[#1E293B] flex items-start gap-2.5">
                           <span 
                             className="w-5 h-5 rounded-md flex items-center justify-center font-mono text-[10px] font-bold shrink-0 mt-0.5 border"
                             style={{ backgroundColor: theme.badgeBg, color: theme.badgeText, borderColor: theme.badgeBorder }}
@@ -875,8 +879,8 @@ export const NotesView = ({ kit, onBack, onStyleChange, initialTab, userId }: No
                   </div>
                 </div>
 
-                <div className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-2xl p-6 shadow-xs">
-                  <h3 className="font-mono-editorial text-base font-bold text-[#0F172A] mb-3">
+                <div className="bg-[#FFFFFF] dark:bg-[#242D28] border border-[#E2E7E1] dark:border-[#354139] rounded-2xl p-6 shadow-xs">
+                  <h3 className="font-editorial text-base font-bold text-[#24332D] dark:text-[#E8EEE9] mb-3">
                     Essential Exam Formulae
                   </h3>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -884,7 +888,7 @@ export const NotesView = ({ kit, onBack, onStyleChange, initialTab, userId }: No
                       .filter(f => !searchQuery || (f.name && f.name.toLowerCase().includes(searchQuery.toLowerCase())) || (f.formula && f.formula.toLowerCase().includes(searchQuery.toLowerCase())))
                       .map((f, i) => (
                         <div key={i} className="p-3.5 rounded-xl border border-[#E2E8F0] bg-[#FFFFFF] shadow-2xs">
-                          <div className="text-xs font-mono font-bold text-[#64748B] uppercase">{f.name}</div>
+                          <div className="text-xs font-mono font-bold text-[#647168] dark:text-[#B2BDB5] uppercase">{f.name}</div>
                           <div 
                             className="font-mono text-sm font-bold my-1 px-2.5 py-1 rounded border inline-block"
                             style={{ backgroundColor: theme.badgeBg, color: theme.textDark, borderColor: theme.badgeBorder }}
@@ -902,17 +906,17 @@ export const NotesView = ({ kit, onBack, onStyleChange, initialTab, userId }: No
             {/* RENDER EXAM MODE */}
             {activeStyleKey === 'exam' && (
               <div className="space-y-6">
-                <div className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-2xl p-6 shadow-xs">
+                <div className="bg-[#FFFFFF] dark:bg-[#242D28] border border-[#E2E7E1] dark:border-[#354139] rounded-2xl p-6 shadow-xs">
                   <span 
                     className="text-xs font-mono font-bold px-2.5 py-0.5 rounded-full border"
                     style={{ backgroundColor: theme.badgeBg, color: theme.badgeText, borderColor: theme.badgeBorder }}
                   >
                     EXAM ANALYSIS & RUBRICS
                   </span>
-                  <h3 className="font-mono-editorial text-lg font-bold text-[#0F172A] mt-2">
+                  <h3 className="font-editorial text-lg font-bold text-[#24332D] dark:text-[#E8EEE9] mt-2">
                     Board Marking Scheme & Question Blueprints
                   </h3>
-                  <p className="text-xs sm:text-sm font-body text-[#475569] mt-1 leading-relaxed">
+                  <p className="text-xs sm:text-sm font-body text-[#647168] dark:text-[#B2BDB5] mt-1 leading-relaxed">
                     {kit.content?.exam?.trendAnalysis || 'Practice high-weightage questions with step-by-step marking rubrics.'}
                   </p>
                 </div>
@@ -922,7 +926,7 @@ export const NotesView = ({ kit, onBack, onStyleChange, initialTab, userId }: No
                   {(kit.content?.exam?.questions || [])
                     .filter(q => !searchQuery || (q.question && q.question.toLowerCase().includes(searchQuery.toLowerCase())) || (q.answer && q.answer.toLowerCase().includes(searchQuery.toLowerCase())))
                     .map((q, i) => (
-                      <div key={i} className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-2xl p-5 sm:p-6 shadow-xs">
+                      <div key={i} className="bg-[#FFFFFF] dark:bg-[#242D28] border border-[#E2E7E1] dark:border-[#354139] rounded-2xl p-5 sm:p-6 shadow-xs">
                         <div className="flex items-center justify-between gap-2 mb-2">
                           <span 
                             className="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold border"
@@ -934,11 +938,11 @@ export const NotesView = ({ kit, onBack, onStyleChange, initialTab, userId }: No
                             {q.frequentlyAskedIn || 'Curriculum Practice'}
                           </span>
                         </div>
-                        <h4 className="font-mono-editorial text-sm sm:text-base font-bold text-[#0F172A] mb-2">
+                        <h4 className="font-editorial text-sm sm:text-base font-bold text-[#24332D] dark:text-[#E8EEE9] mb-2">
                           Q{i + 1}: {q.question}
                         </h4>
-                        <div className="p-3.5 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] font-body text-xs sm:text-sm text-[#334155] leading-relaxed">
-                          <span className="font-bold text-[#0F172A] block mb-1">Model Solution & Marking Rubric:</span>
+                        <div className="p-3.5 rounded-xl bg-[#F4F5F2] dark:bg-[#171C1A] border border-[#E2E8F0] font-body text-xs sm:text-sm text-[#334155] leading-relaxed">
+                          <span className="font-bold text-[#24332D] dark:text-[#E8EEE9] block mb-1">Model Solution & Marking Rubric:</span>
                           {q.answer}
                         </div>
                       </div>
@@ -948,8 +952,8 @@ export const NotesView = ({ kit, onBack, onStyleChange, initialTab, userId }: No
             )}
 
             {/* Lecture Timestamps Index */}
-            <div className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-2xl p-6 shadow-xs">
-              <h3 className="font-mono-editorial text-base font-bold text-[#0F172A] mb-3 flex items-center gap-2">
+            <div className="bg-[#FFFFFF] dark:bg-[#242D28] border border-[#E2E7E1] dark:border-[#354139] rounded-2xl p-6 shadow-xs">
+              <h3 className="font-editorial text-base font-bold text-[#24332D] dark:text-[#E8EEE9] mb-3 flex items-center gap-2">
                 <Clock className="w-4 h-4" style={{ color: theme.primary }} />
                 Lecture Timestamps Index
               </h3>
@@ -958,7 +962,7 @@ export const NotesView = ({ kit, onBack, onStyleChange, initialTab, userId }: No
                   <div
                     key={idx}
                     onClick={() => setActiveTimestamp(t)}
-                    className="py-2.5 flex items-center justify-between cursor-pointer hover:bg-[#F8FAFC] px-2 rounded-lg transition-colors group"
+                    className="py-2.5 flex items-center justify-between cursor-pointer hover:bg-[#F4F5F2] dark:bg-[#171C1A] px-2 rounded-lg transition-colors group"
                   >
                     <div className="flex items-center gap-3">
                       <span 
@@ -967,11 +971,11 @@ export const NotesView = ({ kit, onBack, onStyleChange, initialTab, userId }: No
                       >
                         {t.time}
                       </span>
-                      <span className="text-xs sm:text-sm font-medium text-[#1E293B] group-hover:text-[#0F172A]">
+                      <span className="text-xs sm:text-sm font-medium text-[#1E293B] group-hover:text-[#24332D] dark:text-[#E8EEE9]">
                         {t.title}
                       </span>
                     </div>
-                    <ChevronRight className="w-4 h-4 text-[#94A3B8] group-hover:text-[#0F172A]" />
+                    <ChevronRight className="w-4 h-4 text-[#94A3B8] group-hover:text-[#24332D] dark:text-[#E8EEE9]" />
                   </div>
                 ))}
               </div>
@@ -984,18 +988,18 @@ export const NotesView = ({ kit, onBack, onStyleChange, initialTab, userId }: No
         {/* TAB 2: QUICK REVISION SHEET */}
         {/* ======================================================== */}
         {activeTab === 'revision' && (
-          <div className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-2xl p-6 sm:p-8 shadow-xs space-y-6 printable-revision-sheet">
+          <div className="bg-[#FFFFFF] dark:bg-[#242D28] border border-[#E2E7E1] dark:border-[#354139] rounded-2xl p-6 sm:p-8 shadow-xs space-y-6 printable-revision-sheet">
             
             {/* Dedicated Clean Printable Header (Only renders on physical paper / print preview) */}
             <div className="hidden print-only mb-6 pb-4 border-b-2 border-[#0F172A]">
-              <div className="flex items-center justify-between text-xs font-mono font-bold text-[#64748B] mb-1">
+              <div className="flex items-center justify-between text-xs font-mono font-bold text-[#647168] dark:text-[#B2BDB5] mb-1">
                 <span className="uppercase tracking-widest text-[#059669]">LIBNOTES · ONE-PAGE REVISION SHEET</span>
                 <span>{kit.academicClass} • {kit.subject} • {kit.duration}</span>
               </div>
-              <h1 className="font-mono-editorial text-2xl font-bold text-[#0F172A]">
+              <h1 className="font-editorial text-2xl font-bold text-[#24332D] dark:text-[#E8EEE9]">
                 {cleanTitle}
               </h1>
-              <p className="font-body text-xs text-[#475569] mt-1">
+              <p className="font-body text-xs text-[#647168] dark:text-[#B2BDB5] mt-1">
                 High-yield formula & concept summary extracted directly from verified lecture source.
               </p>
             </div>
@@ -1009,13 +1013,13 @@ export const NotesView = ({ kit, onBack, onStyleChange, initialTab, userId }: No
                 >
                   ONE-PAGE REVISION
                 </span>
-                <h3 className="font-mono-editorial text-xl sm:text-2xl font-bold text-[#0F172A] mt-2">
+                <h3 className="font-editorial text-xl sm:text-2xl font-bold text-[#24332D] dark:text-[#E8EEE9] mt-2">
                   High-Yield Revision Sheet
                 </h3>
               </div>
               <button
                 onClick={handlePrint}
-                className="px-3.5 py-1.5 text-xs font-mono font-bold rounded-lg border border-[#E2E8F0] bg-[#F8FAFC] hover:bg-[#E2E8F0] text-[#0F172A] transition-colors flex items-center gap-1.5 cursor-pointer shadow-xs"
+                className="px-3.5 py-1.5 text-xs font-mono font-bold rounded-lg border border-[#E2E8F0] bg-[#F4F5F2] dark:bg-[#171C1A] hover:bg-[#E2E8F0] text-[#24332D] dark:text-[#E8EEE9] transition-colors flex items-center gap-1.5 cursor-pointer shadow-xs"
               >
                 <Printer className="w-3.5 h-3.5" />
                 <span>Print Revision Sheet</span>
@@ -1024,7 +1028,7 @@ export const NotesView = ({ kit, onBack, onStyleChange, initialTab, userId }: No
 
             <div className="space-y-3">
               {(kit.quickRevisionPoints || []).map((pt, i) => (
-                <div key={i} className="p-3.5 rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] flex items-start gap-3">
+                <div key={i} className="p-3.5 rounded-xl border border-[#E2E8F0] bg-[#F4F5F2] dark:bg-[#171C1A] flex items-start gap-3">
                   <span 
                     className="w-6 h-6 rounded-md flex items-center justify-center font-mono text-xs font-bold shrink-0 mt-0.5 border"
                     style={{ backgroundColor: theme.badgeBg, color: theme.badgeText, borderColor: theme.badgeBorder }}
@@ -1041,13 +1045,13 @@ export const NotesView = ({ kit, onBack, onStyleChange, initialTab, userId }: No
               className="p-5 rounded-xl border"
               style={{ backgroundColor: theme.bgLight, borderColor: theme.badgeBorder }}
             >
-              <div className="font-mono-editorial font-bold text-sm text-[#0F172A] mb-3">
+              <div className="font-editorial font-bold text-sm text-[#24332D] dark:text-[#E8EEE9] mb-3">
                 Key Formulas at a Glance:
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs font-mono">
                 {quickContent?.formulas?.map((f, i) => (
                   <div key={i} className="bg-white p-2.5 rounded-lg border border-[#E2E8F0]">
-                    <span className="font-bold text-[#0F172A]">{f.name}: </span>
+                    <span className="font-bold text-[#24332D] dark:text-[#E8EEE9]">{f.name}: </span>
                     <span className="font-bold" style={{ color: theme.primary }}>{f.formula}</span>
                   </div>
                 ))}
@@ -1055,7 +1059,7 @@ export const NotesView = ({ kit, onBack, onStyleChange, initialTab, userId }: No
             </div>
 
             {/* Dedicated Clean Printable Footer */}
-            <div className="hidden print-only pt-4 border-t border-[#E2E8F0] text-center text-[10px] font-mono text-[#64748B]">
+            <div className="hidden print-only pt-4 border-t border-[#E2E8F0] text-center text-[10px] font-mono text-[#647168] dark:text-[#B2BDB5]">
               Generated by Libnotes AI • Verified Lecture Study Kit • Zero Hallucination • www.libnotes.com
             </div>
           </div>
@@ -1066,27 +1070,27 @@ export const NotesView = ({ kit, onBack, onStyleChange, initialTab, userId }: No
         {/* ======================================================== */}
         {activeTab === 'exam' && (
           <div className="space-y-6">
-            <div className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-2xl p-6 sm:p-8 shadow-xs">
+            <div className="bg-[#FFFFFF] dark:bg-[#242D28] border border-[#E2E7E1] dark:border-[#354139] rounded-2xl p-6 sm:p-8 shadow-xs">
               <span 
                 className="text-xs font-mono font-bold px-2.5 py-0.5 rounded-full border"
                 style={{ backgroundColor: theme.badgeBg, color: theme.badgeText, borderColor: theme.badgeBorder }}
               >
                 SYLLABUS & EXAM PRACTICE
               </span>
-              <h3 className="font-mono-editorial text-xl sm:text-2xl font-bold text-[#0F172A] mt-2">
+              <h3 className="font-editorial text-xl sm:text-2xl font-bold text-[#24332D] dark:text-[#E8EEE9] mt-2">
                 Curriculum Practice Questions & Step Marking Schemes
               </h3>
-              <p className="font-body text-xs sm:text-sm text-[#475569] mt-1 leading-relaxed">
+              <p className="font-body text-xs sm:text-sm text-[#647168] dark:text-[#B2BDB5] mt-1 leading-relaxed">
                 Syllabus-aligned practice questions structured by standard weightage (1, 3, 5 marks) with transparent step-by-step evaluation rubrics.
               </p>
-              <div className="mt-3.5 inline-flex items-center gap-2 text-xs font-mono text-[#64748B] bg-[#F8FAFC] px-3 py-1.5 rounded-lg border border-[#E2E8F0]">
+              <div className="mt-3.5 inline-flex items-center gap-2 text-xs font-mono text-[#647168] dark:text-[#B2BDB5] bg-[#F4F5F2] dark:bg-[#171C1A] px-3 py-1.5 rounded-lg border border-[#E2E8F0]">
                 <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: theme.primary }} />
                 <span>Source Grounded: Practice material algorithmically synthesized from verified lecture concepts.</span>
               </div>
             </div>
 
             {(kit.content?.exam?.questions || []).map((q) => (
-              <div key={q.id} className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-2xl p-6 sm:p-7 shadow-xs">
+              <div key={q.id} className="bg-[#FFFFFF] dark:bg-[#242D28] border border-[#E2E7E1] dark:border-[#354139] rounded-2xl p-6 sm:p-7 shadow-xs">
                 <div className="flex items-center justify-between mb-3">
                   <span 
                     className="font-mono text-xs font-bold px-3 py-1 rounded-full border"
@@ -1099,11 +1103,11 @@ export const NotesView = ({ kit, onBack, onStyleChange, initialTab, userId }: No
                   </span>
                 </div>
 
-                <h4 className="font-mono-editorial text-base sm:text-lg font-bold text-[#0F172A] mb-3">
+                <h4 className="font-editorial text-base sm:text-lg font-bold text-[#24332D] dark:text-[#E8EEE9] mb-3">
                   Q: {q.question}
                 </h4>
 
-                <div className="p-4 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] text-xs sm:text-sm font-body text-[#334155] whitespace-pre-line leading-relaxed mb-3">
+                <div className="p-4 rounded-xl bg-[#F4F5F2] dark:bg-[#171C1A] border border-[#E2E8F0] text-xs sm:text-sm font-body text-[#334155] whitespace-pre-line leading-relaxed mb-3">
                   <span className="font-mono font-bold block mb-1" style={{ color: theme.primary }}>Model Answer:</span>
                   {q.answer}
                 </div>
@@ -1112,7 +1116,7 @@ export const NotesView = ({ kit, onBack, onStyleChange, initialTab, userId }: No
                   className="p-3.5 rounded-lg border text-xs font-body"
                   style={{ backgroundColor: theme.bgLight, borderColor: theme.badgeBorder }}
                 >
-                  <span className="font-mono font-bold text-[#0F172A] block mb-1">Examiner Rubric:</span>
+                  <span className="font-mono font-bold text-[#24332D] dark:text-[#E8EEE9] block mb-1">Examiner Rubric:</span>
                   <ul className="list-disc list-inside space-y-0.5 text-[#334155]">
                     {(q.markingScheme || []).map((item, mIdx) => (
                       <li key={mIdx}>{item}</li>
@@ -1129,17 +1133,17 @@ export const NotesView = ({ kit, onBack, onStyleChange, initialTab, userId }: No
         {/* ======================================================== */}
         {activeTab === 'cards' && (
           <div className="space-y-6">
-            <div className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-2xl p-6 sm:p-8 shadow-xs">
+            <div className="bg-[#FFFFFF] dark:bg-[#242D28] border border-[#E2E7E1] dark:border-[#354139] rounded-2xl p-6 sm:p-8 shadow-xs">
               <span 
                 className="text-xs font-mono font-bold px-2.5 py-0.5 rounded-full border"
                 style={{ backgroundColor: theme.badgeBg, color: theme.badgeText, borderColor: theme.badgeBorder }}
               >
                 ACTIVE RECALL FLASHCARDS
               </span>
-              <h3 className="font-mono-editorial text-xl sm:text-2xl font-bold text-[#0F172A] mt-2">
+              <h3 className="font-editorial text-xl sm:text-2xl font-bold text-[#24332D] dark:text-[#E8EEE9] mt-2">
                 Click any card to reveal the answer
               </h3>
-              <p className="font-body text-xs sm:text-sm text-[#475569] mt-1 leading-relaxed">
+              <p className="font-body text-xs sm:text-sm text-[#647168] dark:text-[#B2BDB5] mt-1 leading-relaxed">
                 Test your conceptual memory before attempting the scored diagnostic quiz.
               </p>
             </div>
@@ -1171,7 +1175,7 @@ export const NotesView = ({ kit, onBack, onStyleChange, initialTab, userId }: No
                         </span>
                       </div>
 
-                      <div className="font-mono-editorial text-sm sm:text-base font-bold text-[#0F172A] mt-2">
+                      <div className="font-editorial text-sm sm:text-base font-bold text-[#24332D] dark:text-[#E8EEE9] mt-2">
                         {isFlipped ? card.back : card.front}
                       </div>
                     </div>
@@ -1194,17 +1198,17 @@ export const NotesView = ({ kit, onBack, onStyleChange, initialTab, userId }: No
         {/* ======================================================== */}
         {activeTab === 'quiz' && (
           <div className="space-y-6">
-            <div className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-2xl p-6 sm:p-8 shadow-xs">
+            <div className="bg-[#FFFFFF] dark:bg-[#242D28] border border-[#E2E7E1] dark:border-[#354139] rounded-2xl p-6 sm:p-8 shadow-xs">
               <span 
                 className="text-xs font-mono font-bold px-2.5 py-0.5 rounded-full border"
                 style={{ backgroundColor: theme.badgeBg, color: theme.badgeText, borderColor: theme.badgeBorder }}
               >
                 TOPIC MASTERY
               </span>
-              <h3 className="font-mono-editorial text-xl sm:text-2xl font-bold text-[#0F172A] mt-2">
+              <h3 className="font-editorial text-xl sm:text-2xl font-bold text-[#24332D] dark:text-[#E8EEE9] mt-2">
                 Instant Diagnostic Assessment
               </h3>
-              <p className="font-body text-xs sm:text-sm text-[#475569] mt-1 leading-relaxed">
+              <p className="font-body text-xs sm:text-sm text-[#647168] dark:text-[#B2BDB5] mt-1 leading-relaxed">
                 Answer each question to pinpoint which lecture concepts need a quick 5-minute re-read.
               </p>
             </div>

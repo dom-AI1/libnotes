@@ -36,13 +36,12 @@ export const ChatpataWelcomeModal: React.FC<ChatpataWelcomeModalProps> = ({
 
   useEffect(() => {
     if (isOpen) {
-      // Fire celebratory confetti burst with Libnotes palette
       try {
         confetti({
           particleCount: 70,
           spread: 75,
           origin: { y: 0.55 },
-          colors: ['#79A94A', '#141414', '#E8F2DC', '#FCFAF6', '#F7B731'],
+          colors: ['#486B54', '#24332D', '#E5EDE5', '#A8C5AD', '#F59E0B'],
         });
 
         const timer = setTimeout(() => {
@@ -51,20 +50,19 @@ export const ChatpataWelcomeModal: React.FC<ChatpataWelcomeModalProps> = ({
             angle: 60,
             spread: 55,
             origin: { x: 0 },
-            colors: ['#79A94A', '#E8F2DC', '#141414'],
+            colors: ['#486B54', '#E5EDE5', '#24332D'],
           });
           confetti({
             particleCount: 40,
             angle: 120,
             spread: 55,
             origin: { x: 1 },
-            colors: ['#79A94A', '#E8F2DC', '#141414'],
+            colors: ['#486B54', '#E5EDE5', '#24332D'],
           });
         }, 300);
 
         return () => clearTimeout(timer);
       } catch (err) {
-        // Confetti non-fatal in headless/test environments
         console.debug('[Libnotes Confetti] Skipped in headless environment');
       }
     }
@@ -84,15 +82,15 @@ export const ChatpataWelcomeModal: React.FC<ChatpataWelcomeModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#141414]/70 backdrop-blur-sm animate-in fade-in duration-200">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#171C1A]/75 backdrop-blur-sm animate-in fade-in duration-200">
       <div 
         role="dialog"
         aria-modal="true"
         aria-labelledby="welcome-modal-heading"
-        className="max-w-lg w-full bg-[#FCFAF6] rounded-3xl border-2 border-[#141414] shadow-[8px_8px_0px_#141414] p-6 sm:p-8 text-center relative overflow-hidden animate-in zoom-in-95 duration-200"
+        className="max-w-lg w-full bg-[#FFFFFF] dark:bg-[#242D28] rounded-3xl border border-[#E2E7E1] dark:border-[#354139] shadow-xl p-6 sm:p-8 text-center relative overflow-hidden animate-in zoom-in-95 duration-200 transition-colors"
       >
-        {/* Subtle decorative top banner */}
-        <div className="absolute top-0 left-0 right-0 h-2 bg-[#79A94A]" />
+        {/* Decorative top border */}
+        <div className="absolute top-0 left-0 right-0 h-2 bg-[#486B54] dark:bg-[#A8C5AD]" />
 
         {/* Student Badge with Avatar / Initials */}
         <div className="relative inline-block mt-2 mb-4">
@@ -100,23 +98,23 @@ export const ChatpataWelcomeModal: React.FC<ChatpataWelcomeModalProps> = ({
             <img
               src={avatarUrl}
               alt={displayName}
-              className="w-20 h-20 rounded-full border-2 border-[#141414] shadow-[3px_3px_0px_#141414] mx-auto object-cover"
+              className="w-20 h-20 rounded-full border-2 border-[#E2E7E1] dark:border-[#354139] shadow-xs mx-auto object-cover"
             />
           ) : (
-            <div className="w-20 h-20 rounded-full bg-[#E8F2DC] border-2 border-[#141414] shadow-[3px_3px_0px_#141414] flex items-center justify-center mx-auto text-[#79A94A] font-mono-editorial text-2xl font-bold">
+            <div className="w-20 h-20 rounded-full bg-[#E5EDE5] dark:bg-[#2D3A32] border-2 border-[#486B54] dark:border-[#A8C5AD] shadow-xs flex items-center justify-center mx-auto text-[#486B54] dark:text-[#A8C5AD] font-editorial text-2xl font-bold">
               {getInitials(displayName)}
             </div>
           )}
           <div 
             title="Verified Libnotes Student"
-            className="absolute -bottom-1 -right-1 w-7 h-7 rounded-full bg-[#79A94A] text-white border-2 border-[#141414] flex items-center justify-center shadow-sm"
+            className="absolute -bottom-1 -right-1 w-7 h-7 rounded-full bg-[#486B54] dark:bg-[#A8C5AD] text-white dark:text-[#171C1A] border-2 border-[#FFFFFF] dark:border-[#242D28] flex items-center justify-center shadow-xs"
           >
             <CheckCircle2 className="w-4 h-4" />
           </div>
         </div>
 
         {/* Category Pill */}
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#E8F2DC] border border-[#79A94A]/40 text-[#79A94A] font-mono text-[11px] font-bold uppercase tracking-wider mb-3">
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#E5EDE5] dark:bg-[#2D3A32] border border-[#E2E7E1] dark:border-[#354139] text-[#486B54] dark:text-[#A8C5AD] font-mono text-[11px] font-bold uppercase tracking-wider mb-3">
           <Sparkles className="w-3.5 h-3.5" />
           <span>New Student Welcome</span>
         </div>
@@ -124,28 +122,28 @@ export const ChatpataWelcomeModal: React.FC<ChatpataWelcomeModalProps> = ({
         {/* Primary Celebratory Heading */}
         <h2
           id="welcome-modal-heading"
-          className="font-mono-editorial text-2xl sm:text-3xl font-extrabold text-[#141414] leading-tight"
+          className="font-editorial text-2xl sm:text-3xl font-bold text-[#24332D] dark:text-[#E8EEE9] leading-tight"
         >
           {selectedMessage.heading}
         </h2>
 
         {/* Supporting Copy */}
-        <p className="mt-3 font-body text-xs sm:text-sm text-[#5E5D57] leading-relaxed max-w-md mx-auto">
+        <p className="mt-3 font-body text-xs sm:text-sm text-[#647168] dark:text-[#B2BDB5] leading-relaxed max-w-md mx-auto">
           {selectedMessage.subheading}
         </p>
 
         {/* Quick Student Perks Card */}
-        <div className="mt-6 p-4 rounded-2xl bg-[#FAF8F2] border border-[#141414]/15 text-left space-y-2.5">
-          <div className="flex items-center gap-2.5 text-xs font-mono text-[#141414]">
-            <BookOpen className="w-4 h-4 text-[#79A94A] shrink-0" />
+        <div className="mt-6 p-4 rounded-2xl bg-[#F4F5F2] dark:bg-[#171C1A] border border-[#E2E7E1] dark:border-[#354139] text-left space-y-2.5">
+          <div className="flex items-center gap-2.5 text-xs font-mono text-[#24332D] dark:text-[#E8EEE9]">
+            <BookOpen className="w-4 h-4 text-[#486B54] dark:text-[#A8C5AD] shrink-0" />
             <span>Multi-format notes: Quick, Topper & Chatpata styles</span>
           </div>
-          <div className="flex items-center gap-2.5 text-xs font-mono text-[#141414]">
-            <Award className="w-4 h-4 text-[#79A94A] shrink-0" />
+          <div className="flex items-center gap-2.5 text-xs font-mono text-[#24332D] dark:text-[#E8EEE9]">
+            <Award className="w-4 h-4 text-[#486B54] dark:text-[#A8C5AD] shrink-0" />
             <span>Marking scheme rubrics & diagnostic quizzes included</span>
           </div>
-          <div className="flex items-center gap-2.5 text-xs font-mono text-[#141414]">
-            <ShieldCheck className="w-4 h-4 text-[#79A94A] shrink-0" />
+          <div className="flex items-center gap-2.5 text-xs font-mono text-[#24332D] dark:text-[#E8EEE9]">
+            <ShieldCheck className="w-4 h-4 text-[#486B54] dark:text-[#A8C5AD] shrink-0" />
             <span>100% Free core student workspace (₹0 forever)</span>
           </div>
         </div>
@@ -154,19 +152,18 @@ export const ChatpataWelcomeModal: React.FC<ChatpataWelcomeModalProps> = ({
         <div className="mt-6">
           <button
             onClick={handleProceed}
-            className="w-full btn-primary-green py-3.5 text-xs sm:text-sm font-mono font-bold flex items-center justify-center gap-2 shadow-[3px_3px_0px_#141414] hover:shadow-[1px_1px_0px_#141414] transition-all cursor-pointer"
+            className="w-full btn-primary-green py-3.5 text-xs sm:text-sm font-mono font-bold flex items-center justify-center gap-2 shadow-xs transition-all cursor-pointer"
           >
             <span>Let's Get Learning</span>
             <ArrowRight className="w-4 h-4" />
           </button>
         </div>
 
-        <p className="mt-3 text-[11px] font-mono text-[#5E5D57] flex items-center justify-center gap-1">
+        <p className="mt-3 text-[11px] font-mono text-[#647168] dark:text-[#B2BDB5] flex items-center justify-center gap-1">
           <span>Made for learners who dream big</span>
-          <Heart className="w-3 h-3 text-[#E05B49] fill-current" />
+          <Heart className="w-3 h-3 text-[#DC2626] fill-current" />
         </p>
       </div>
     </div>
   );
 };
-

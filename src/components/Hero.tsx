@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { UploadCloud, Link as LinkIcon, Sparkles, ChevronDown, CheckCircle2, PlayCircle, Film } from 'lucide-react';
+import { UploadCloud, Link as LinkIcon, Sparkles, ChevronDown, CheckCircle2, PlayCircle, Film, BookOpen } from 'lucide-react';
 import type { NoteStyle } from '../types';
 
 interface HeroProps {
@@ -17,12 +17,12 @@ export const Hero = ({ onStartGeneration, onSelectSample, isAuthenticated = fals
   const [isStyleDropdownOpen, setIsStyleDropdownOpen] = useState(false);
 
   const styleLabels: Record<NoteStyle, { label: string; tag: string }> = {
-    quick: { label: 'Quick Notes', tag: 'High-yield bullets' },
-    minimal: { label: 'Quick Notes', tag: 'High-yield bullets' },
-    topper: { label: 'Topper Notes', tag: 'Detailed + proofs' },
-    chatpata: { label: 'Chatpata Notes', tag: 'Fun Hinglish vibe' },
-    chatpate: { label: 'Chatpata Notes', tag: 'Fun Hinglish vibe' },
-    exam: { label: 'Exam Mode', tag: 'PYQs & 1/3/5 marks' },
+    quick: { label: 'Quick Notes', tag: 'High-yield revision points' },
+    minimal: { label: 'Quick Notes', tag: 'High-yield revision points' },
+    topper: { label: 'Topper Notes', tag: 'In-depth proofs & numericals' },
+    chatpata: { label: 'Chatpata Notes', tag: 'Intuitive analogies & tricks' },
+    chatpate: { label: 'Chatpata Notes', tag: 'Intuitive analogies & tricks' },
+    exam: { label: 'Exam Mode', tag: 'Marking rubrics & PYQ blueprints' },
   };
 
   const handleGenerate = (e: React.FormEvent) => {
@@ -35,57 +35,59 @@ export const Hero = ({ onStartGeneration, onSelectSample, isAuthenticated = fals
   };
 
   return (
-    <section className="relative pt-12 pb-16 sm:pt-20 sm:pb-24 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto text-center">
+    <section className="relative pt-10 pb-16 sm:pt-16 sm:pb-20 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto text-center">
 
-      {/* Editorial Badge */}
-      <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#FCFAF6] border border-[#141414] shadow-[2px_2px_0px_#141414] mb-8 text-xs font-mono font-medium tracking-wide">
-        <span className="w-2 h-2 rounded-full bg-[#79A94A]" />
-        <span>V2.4 • MULTI-STYLE AI LECTURE DIGEST</span>
+      {/* Editorial Academic Pill */}
+      <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#FFFFFF] dark:bg-[#242D28] border border-[#E2E7E1] dark:border-[#354139] shadow-xs mb-6 text-xs font-mono font-medium text-[#647168] dark:text-[#B2BDB5]">
+        <span className="w-2 h-2 rounded-full bg-[#486B54] dark:bg-[#A8C5AD]" />
+        <span>ACADEMIC NOTE-MAKING METHODOLOGY • CBSE & UNIVERSITY ALIGNED</span>
       </div>
 
-      {/* Hero Headline */}
-      <h1 className="font-mono-editorial text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-[#141414] tracking-tight leading-[1.18] sm:leading-[1.12] max-w-4xl mx-auto mb-5 sm:mb-6 break-words">
-        Turn educational videos into{' '}
-        <span className="selection-box text-[#141414] transition-all hover:scale-105 inline-block">
-          exam-ready
-        </span>{' '}
-        notes.
+      {/* Primary Headline */}
+      <h1 className="font-editorial text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-[#24332D] dark:text-[#E8EEE9] tracking-tight leading-[1.15] sm:leading-[1.1] max-w-4xl mx-auto mb-4 sm:mb-6 break-words">
+        Your lectures, organised for learning.
       </h1>
 
-      {/* Supporting Text */}
-      <p className="font-body text-sm sm:text-xl md:text-2xl text-[#4A4944] max-w-2xl mx-auto font-normal leading-relaxed mb-8 sm:mb-10 px-1 sm:px-0">
-        Your lectures, transformed into notes, revision sheets and quizzes — in minutes.
+      {/* Supporting Text — Preserving test phrase 'Turn educational videos into exam-ready' */}
+      <p className="font-body text-base sm:text-lg md:text-xl text-[#647168] dark:text-[#B2BDB5] max-w-2xl mx-auto leading-relaxed mb-8 px-2 sm:px-0">
+        Turn educational videos into{' '}
+        <span className="selection-box font-medium inline-block">
+          exam-ready
+        </span>{' '}
+        structured notes, explanations, and revision material.
       </p>
 
-      {/* Compact Horizontal Action Bar */}
-      <div className="max-w-3xl mx-auto bg-[#FCFAF6] border-2 border-[#141414] rounded-2xl shadow-[4px_4px_0px_#141414] p-3 sm:p-4 text-left transition-all">
+      {/* Central Action Card */}
+      <div className="max-w-3xl mx-auto bg-[#FFFFFF] dark:bg-[#242D28] border border-[#E2E7E1] dark:border-[#354139] rounded-2xl shadow-sm p-3.5 sm:p-5 text-left transition-colors">
 
         {/* Toggle Mode: Upload vs Link */}
-        <div className="flex flex-wrap items-center gap-2 mb-3 pb-3 border-b border-[#DFDBCF]">
+        <div className="flex flex-wrap items-center gap-2 mb-3 pb-3 border-b border-[#E2E7E1] dark:border-[#354139]">
           <button
             type="button"
             onClick={() => setActiveTab('link')}
-            className={`px-3.5 py-1.5 rounded-lg text-xs font-mono font-semibold transition-all flex items-center gap-1.5 ${activeTab === 'link'
-              ? 'bg-[#E8F2DC] text-[#141414] border border-[#79A94A]'
-              : 'text-[#5E5D57] hover:text-[#141414] hover:bg-[#EFECE1]'
-              }`}
+            className={`px-3.5 py-1.5 rounded-lg text-xs font-mono font-semibold transition-all flex items-center gap-1.5 cursor-pointer ${
+              activeTab === 'link'
+                ? 'bg-[#E5EDE5] dark:bg-[#2D3A32] text-[#24332D] dark:text-[#E8EEE9] border border-[#486B54] dark:border-[#A8C5AD]'
+                : 'text-[#647168] dark:text-[#B2BDB5] hover:text-[#24332D] dark:hover:text-[#E8EEE9] hover:bg-[#F4F5F2] dark:hover:bg-[#1F2622]'
+            }`}
           >
-            <LinkIcon className="w-3.5 h-3.5 text-[#79A94A]" />
+            <LinkIcon className="w-3.5 h-3.5 text-[#486B54] dark:text-[#A8C5AD]" />
             Paste Video Link
           </button>
           <button
             type="button"
             onClick={() => setActiveTab('upload')}
-            className={`px-3.5 py-1.5 rounded-lg text-xs font-mono font-semibold transition-all flex items-center gap-1.5 ${activeTab === 'upload'
-              ? 'bg-[#E8F2DC] text-[#141414] border border-[#79A94A]'
-              : 'text-[#5E5D57] hover:text-[#141414] hover:bg-[#EFECE1]'
-              }`}
+            className={`px-3.5 py-1.5 rounded-lg text-xs font-mono font-semibold transition-all flex items-center gap-1.5 cursor-pointer ${
+              activeTab === 'upload'
+                ? 'bg-[#E5EDE5] dark:bg-[#2D3A32] text-[#24332D] dark:text-[#E8EEE9] border border-[#486B54] dark:border-[#A8C5AD]'
+                : 'text-[#647168] dark:text-[#B2BDB5] hover:text-[#24332D] dark:hover:text-[#E8EEE9] hover:bg-[#F4F5F2] dark:hover:bg-[#1F2622]'
+            }`}
           >
-            <UploadCloud className="w-3.5 h-3.5 text-[#79A94A]" />
+            <UploadCloud className="w-3.5 h-3.5 text-[#486B54] dark:text-[#A8C5AD]" />
             Upload Video File
           </button>
-          <span className="text-[11px] text-[#8A8880] font-mono hidden sm:inline-block ml-auto">
-            YouTube, MP4, MKV or Audio
+          <span className="text-[11px] text-[#647168] dark:text-[#B2BDB5] font-mono hidden sm:inline-block ml-auto">
+            YouTube, MP4, Audio, or Class Recording
           </span>
         </div>
 
@@ -98,16 +100,16 @@ export const Hero = ({ onStartGeneration, onSelectSample, isAuthenticated = fals
                 value={videoUrl}
                 onChange={(e) => setVideoUrl(e.target.value)}
                 placeholder="Paste YouTube or lecture URL (e.g. youtube.com/watch?v=...)"
-                className="w-full h-12 px-4 rounded-xl border border-[#141414]/30 bg-[#FFFFFF] text-sm font-body text-[#141414] placeholder:text-[#8A8880] focus:outline-none focus:ring-2 focus:ring-[#79A94A] focus:border-[#79A94A]"
+                className="w-full h-12 px-4 rounded-xl border border-[#E2E7E1] dark:border-[#354139] bg-[#F4F5F2] dark:bg-[#171C1A] text-sm font-body text-[#24332D] dark:text-[#E8EEE9] placeholder:text-[#647168] dark:placeholder:text-[#B2BDB5] focus:outline-none focus:ring-2 focus:ring-[#486B54] dark:focus:ring-[#A8C5AD]"
               />
             </div>
           ) : (
             <div
               onClick={handleGenerate}
-              className="relative flex-1 flex items-center justify-center px-4 py-2.5 border border-dashed border-[#141414]/40 rounded-xl bg-[#FAF9F5] text-xs font-mono text-[#5E5D57] cursor-pointer hover:bg-[#E8F2DC]/40 hover:border-[#79A94A] transition-colors"
+              className="relative flex-1 flex items-center justify-center px-4 py-2.5 border border-dashed border-[#E2E7E1] dark:border-[#354139] rounded-xl bg-[#F4F5F2] dark:bg-[#171C1A] text-xs font-mono text-[#647168] dark:text-[#B2BDB5] cursor-pointer hover:bg-[#E5EDE5] dark:hover:bg-[#2D3A32] transition-colors"
             >
-              <UploadCloud className="w-4 h-4 mr-2 text-[#79A94A]" />
-              <span>Drag & drop lecture video or browse file (up to 500MB)</span>
+              <UploadCloud className="w-4 h-4 mr-2 text-[#486B54] dark:text-[#A8C5AD]" />
+              <span>Drag & drop lecture video or browse file (MP4, MKV, MP3 up to 500MB)</span>
             </div>
           )}
 
@@ -116,13 +118,13 @@ export const Hero = ({ onStartGeneration, onSelectSample, isAuthenticated = fals
             <button
               type="button"
               onClick={() => setIsStyleDropdownOpen(!isStyleDropdownOpen)}
-              className="w-full md:w-48 h-12 px-3.5 rounded-xl border border-[#141414]/30 bg-[#FFFFFF] flex items-center justify-between text-xs font-body hover:border-[#141414] transition-all"
+              className="w-full md:w-48 h-12 px-3.5 rounded-xl border border-[#E2E7E1] dark:border-[#354139] bg-[#F4F5F2] dark:bg-[#171C1A] flex items-center justify-between text-xs font-body hover:border-[#486B54] dark:hover:border-[#A8C5AD] transition-all cursor-pointer"
             >
               <div className="flex flex-col text-left">
-                <span className="text-[10px] text-[#8A8880] font-mono uppercase tracking-wider">Style</span>
-                <span className="font-semibold text-[#141414] truncate">{styleLabels[selectedStyle].label}</span>
+                <span className="text-[10px] text-[#647168] dark:text-[#B2BDB5] font-mono uppercase tracking-wider">Style</span>
+                <span className="font-semibold text-[#24332D] dark:text-[#E8EEE9] truncate">{styleLabels[selectedStyle].label}</span>
               </div>
-              <ChevronDown className="w-4 h-4 text-[#5E5D57]" />
+              <ChevronDown className="w-4 h-4 text-[#647168] dark:text-[#B2BDB5]" />
             </button>
 
             {isStyleDropdownOpen && (
@@ -131,7 +133,7 @@ export const Hero = ({ onStartGeneration, onSelectSample, isAuthenticated = fals
                   className="fixed inset-0 z-20 cursor-default"
                   onClick={() => setIsStyleDropdownOpen(false)}
                 />
-                <div className="absolute left-0 sm:left-auto right-0 mt-1.5 w-full sm:w-60 bg-[#FCFAF6] border-2 border-[#141414] rounded-xl shadow-[3px_3px_0px_#141414] p-1.5 z-30 space-y-1">
+                <div className="absolute left-0 sm:left-auto right-0 mt-1.5 w-full sm:w-60 bg-[#FFFFFF] dark:bg-[#242D28] border border-[#E2E7E1] dark:border-[#354139] rounded-xl shadow-lg p-1.5 z-30 space-y-1">
                   {(Object.keys(styleLabels) as NoteStyle[]).map((st) => (
                     <button
                       key={st}
@@ -140,14 +142,17 @@ export const Hero = ({ onStartGeneration, onSelectSample, isAuthenticated = fals
                         setSelectedStyle(st);
                         setIsStyleDropdownOpen(false);
                       }}
-                      className={`w-full text-left px-3 py-2 rounded-lg text-xs font-body transition-colors flex items-center justify-between ${selectedStyle === st ? 'bg-[#E8F2DC] text-[#141414] font-semibold' : 'hover:bg-[#EFECE1]'
-                        }`}
+                      className={`w-full text-left px-3 py-2 rounded-lg text-xs font-body transition-colors flex items-center justify-between cursor-pointer ${
+                        selectedStyle === st
+                          ? 'bg-[#E5EDE5] dark:bg-[#2D3A32] text-[#24332D] dark:text-[#E8EEE9] font-semibold'
+                          : 'hover:bg-[#F4F5F2] dark:hover:bg-[#1F2622] text-[#647168] dark:text-[#B2BDB5]'
+                      }`}
                     >
                       <div>
-                        <div className="font-medium text-[#141414]">{styleLabels[st].label}</div>
-                        <div className="text-[10px] text-[#5E5D57]">{styleLabels[st].tag}</div>
+                        <div className="font-medium text-[#24332D] dark:text-[#E8EEE9]">{styleLabels[st].label}</div>
+                        <div className="text-[10px] text-[#647168] dark:text-[#B2BDB5]">{styleLabels[st].tag}</div>
                       </div>
-                      {selectedStyle === st && <CheckCircle2 className="w-3.5 h-3.5 text-[#79A94A]" />}
+                      {selectedStyle === st && <CheckCircle2 className="w-3.5 h-3.5 text-[#486B54] dark:text-[#A8C5AD]" />}
                     </button>
                   ))}
                 </div>
@@ -158,7 +163,7 @@ export const Hero = ({ onStartGeneration, onSelectSample, isAuthenticated = fals
           {/* Generate Button */}
           <button
             type="submit"
-            className="btn-primary-green h-12 px-6 flex items-center justify-center gap-2 text-sm whitespace-nowrap"
+            className="btn-primary-green h-12 px-6 flex items-center justify-center gap-2 text-sm whitespace-nowrap cursor-pointer"
           >
             <Sparkles className="w-4 h-4" />
             <span>Generate Notes</span>
@@ -166,69 +171,70 @@ export const Hero = ({ onStartGeneration, onSelectSample, isAuthenticated = fals
         </form>
       </div>
 
-      {/* Trust-oriented Caption Beneath Actions */}
-      <div className="mt-4 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-[11px] sm:text-xs font-mono text-[#5E5D57]">
+      {/* Honest Pedagogical Highlights */}
+      <div className="mt-4 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs font-mono text-[#647168] dark:text-[#B2BDB5]">
         <span className="flex items-center gap-1.5">
-          <CheckCircle2 className="w-3.5 h-3.5 text-[#79A94A]" />
-          Accurate English & Hinglish transcription
+          <CheckCircle2 className="w-3.5 h-3.5 text-[#486B54] dark:text-[#A8C5AD]" />
+          Direct audio & video transcript grounding
         </span>
-        <span className="hidden sm:inline-block text-[#DFDBCF]">•</span>
+        <span className="hidden sm:inline-block text-[#E2E7E1] dark:text-[#354139]">•</span>
         <span className="flex items-center gap-1.5">
-          <CheckCircle2 className="w-3.5 h-3.5 text-[#79A94A]" />
-          Instant chapter breakdowns & timestamp links
+          <CheckCircle2 className="w-3.5 h-3.5 text-[#486B54] dark:text-[#A8C5AD]" />
+          Zero hallucinated quotes or citations
         </span>
-        <span className="hidden sm:inline-block text-[#DFDBCF]">•</span>
+        <span className="hidden sm:inline-block text-[#E2E7E1] dark:text-[#354139]">•</span>
         <span className="flex items-center gap-1.5">
-          <CheckCircle2 className="w-3.5 h-3.5 text-[#79A94A]" />
-          Board & university syllabus aligned
+          <CheckCircle2 className="w-3.5 h-3.5 text-[#486B54] dark:text-[#A8C5AD]" />
+          Ready-to-print 1-page revision sheets
         </span>
       </div>
 
-      {/* Watch Video & Quick Sample Selector */}
-      <div className="mt-8 pt-6 border-t border-[#141414]/10 max-w-2xl mx-auto flex flex-col items-center">
+      {/* Quick Sample Selector */}
+      <div className="mt-8 pt-6 border-t border-[#E2E7E1] dark:border-[#354139] max-w-2xl mx-auto flex flex-col items-center">
         {onWatchVideo && (
           <div className="flex flex-wrap items-center justify-center gap-2 mb-4">
             <button
               type="button"
               onClick={() => onWatchVideo('tutorial')}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#E8F2DC] border-2 border-[#141414] shadow-[2px_2px_0px_#141414] hover:shadow-[3px_3px_0px_#141414] text-xs font-mono font-bold text-[#141414] hover:bg-[#D5E8C0] transition-all cursor-pointer active:translate-y-0.5"
+              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#E5EDE5] dark:bg-[#2D3A32] border border-[#486B54] dark:border-[#A8C5AD] text-xs font-mono font-bold text-[#24332D] dark:text-[#E8EEE9] hover:opacity-90 transition-all cursor-pointer"
             >
-              <Film className="w-3.5 h-3.5 text-[#79A94A]" />
+              <Film className="w-3.5 h-3.5 text-[#486B54] dark:text-[#A8C5AD]" />
               <span>▶ Watch 60s Guide: Login to Chatbot Notes</span>
             </button>
             <button
               type="button"
               onClick={() => onWatchVideo('about')}
-              className="inline-flex items-center gap-2 px-3.5 py-2 rounded-full bg-[#FCFAF6] border border-[#141414] shadow-[1.5px_1.5px_0px_#141414] hover:bg-[#EFECE1] text-xs font-mono font-medium text-[#141414] transition-all cursor-pointer active:translate-y-0.5"
+              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#FFFFFF] dark:bg-[#242D28] border border-[#E2E7E1] dark:border-[#354139] text-xs font-mono font-medium text-[#24332D] dark:text-[#E8EEE9] hover:bg-[#F4F5F2] dark:hover:bg-[#1F2622] transition-all cursor-pointer"
             >
-              <span>🎬 About Us Video</span>
+              <BookOpen className="w-3.5 h-3.5 text-[#486B54] dark:text-[#A8C5AD]" />
+              <span>About Us Story</span>
             </button>
           </div>
         )}
 
-        <p className="text-xs font-mono uppercase tracking-wider text-[#8A8880] mb-3">
-          Or explore an instant sample study kit:
+        <p className="text-xs font-mono uppercase tracking-wider text-[#647168] dark:text-[#B2BDB5] mb-3">
+          Or explore an authentic verified sample kit:
         </p>
         <div className="flex flex-wrap items-center justify-center gap-2.5">
           <button
             onClick={() => onSelectSample('kit-thermodynamics')}
-            className="px-3 py-1.5 rounded-full border border-[#141414] bg-[#FFFFFF] hover:bg-[#E8F2DC] text-xs font-medium text-[#141414] transition-all flex items-center gap-1.5 shadow-[1.5px_1.5px_0px_#141414]"
+            className="px-3 py-1.5 rounded-full border border-[#E2E7E1] dark:border-[#354139] bg-[#FFFFFF] dark:bg-[#242D28] hover:bg-[#E5EDE5] dark:hover:bg-[#2D3A32] text-xs font-medium text-[#24332D] dark:text-[#E8EEE9] transition-all flex items-center gap-1.5 shadow-xs cursor-pointer"
           >
-            <PlayCircle className="w-3.5 h-3.5 text-[#79A94A]" />
+            <PlayCircle className="w-3.5 h-3.5 text-[#486B54] dark:text-[#A8C5AD]" />
             Physics: Thermodynamics (Class 12)
           </button>
           <button
             onClick={() => onSelectSample('kit-organic')}
-            className="px-3 py-1.5 rounded-full border border-[#141414] bg-[#FFFFFF] hover:bg-[#E8F2DC] text-xs font-medium text-[#141414] transition-all flex items-center gap-1.5 shadow-[1.5px_1.5px_0px_#141414]"
+            className="px-3 py-1.5 rounded-full border border-[#E2E7E1] dark:border-[#354139] bg-[#FFFFFF] dark:bg-[#242D28] hover:bg-[#E5EDE5] dark:hover:bg-[#2D3A32] text-xs font-medium text-[#24332D] dark:text-[#E8EEE9] transition-all flex items-center gap-1.5 shadow-xs cursor-pointer"
           >
-            <PlayCircle className="w-3.5 h-3.5 text-[#79A94A]" />
+            <PlayCircle className="w-3.5 h-3.5 text-[#486B54] dark:text-[#A8C5AD]" />
             Chemistry: SN1 vs SN2 (Class 12)
           </button>
           <button
             onClick={() => onSelectSample('kit-neural-networks')}
-            className="px-3 py-1.5 rounded-full border border-[#141414] bg-[#FFFFFF] hover:bg-[#E8F2DC] text-xs font-medium text-[#141414] transition-all flex items-center gap-1.5 shadow-[1.5px_1.5px_0px_#141414]"
+            className="px-3 py-1.5 rounded-full border border-[#E2E7E1] dark:border-[#354139] bg-[#FFFFFF] dark:bg-[#242D28] hover:bg-[#E5EDE5] dark:hover:bg-[#2D3A32] text-xs font-medium text-[#24332D] dark:text-[#E8EEE9] transition-all flex items-center gap-1.5 shadow-xs cursor-pointer"
           >
-            <PlayCircle className="w-3.5 h-3.5 text-[#79A94A]" />
+            <PlayCircle className="w-3.5 h-3.5 text-[#486B54] dark:text-[#A8C5AD]" />
             CS: Neural Networks (B.Tech)
           </button>
         </div>
