@@ -2,6 +2,7 @@ import type { StudyKit, NoteStyle, Subject, AcademicClass, Language } from '../t
 import { buildDynamicKitContent } from './dynamicContentGenerator';
 import { analyzeEducationalMedia } from './videoAnalysisService';
 import { validateLectureGrounding } from './groundingQualityGate';
+import { auditAndEnhanceNoteQuality } from './noteMethodologyEngine';
 
 export interface GenerationParams {
   title?: string;
@@ -400,12 +401,13 @@ export async function processEducationalLecture(
   });
   await new Promise((resolve) => setTimeout(resolve, 400));
 
-  // Build grounded content
+  // Build grounded content using subject-aware methodology
   const dynamicContent = buildDynamicKitContent(
     verifiedLecture.subject,
     verifiedLecture.chapter,
     verifiedLecture.academicClass,
-    verifiedLecture.stream
+    verifiedLecture.stream,
+    verifiedLecture
   );
 
   // Step 4: Exam PYQs and Rubric Compilation
@@ -421,7 +423,7 @@ export async function processEducationalLecture(
   const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
   // Synthesize educational study kit
-  const kit: StudyKit = {
+  const rawKit: StudyKit = {
     id,
     lectureId: verifiedLecture.lectureId,
     title: `${verifiedLecture.subject}: ${verifiedLecture.chapter}`,
@@ -445,7 +447,10 @@ export async function processEducationalLecture(
     verifiedLecture,
   };
 
-  // Step 5: Grounding Quality Gate
+  // Step 5: Internal Note-Making Audit & Self-Correction
+  const kit = auditAndEnhanceNoteQuality(rawKit, verifiedLecture);
+
+  // Step 6: Grounding Quality Gate
   const qualityReport = validateLectureGrounding(kit, verifiedLecture);
   if (!qualityReport.passed) {
     throw new Error(`Grounding Quality Gate failed: ${qualityReport.errors.join(' | ')}`);

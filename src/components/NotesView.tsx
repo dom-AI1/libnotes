@@ -471,7 +471,7 @@ export const NotesView = ({ kit, onBack, onStyleChange, initialTab, userId }: No
 
         {/* Timestamp Concept Popup Modal / Alert */}
         {activeTimestamp && (
-          <div className="mb-6 p-4 rounded-xl border border-[#CBD5E1] bg-[#FFFFFF] shadow-sm flex items-start justify-between gap-4 animate-in fade-in">
+          <div className="mb-6 p-4 rounded-xl border border-[#CBD5E1] bg-[#FFFFFF] shadow-sm flex items-start justify-between gap-4 animate-in fade-in no-print">
             <div className="flex items-start gap-3">
               <div 
                 className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0 border"
@@ -627,9 +627,118 @@ export const NotesView = ({ kit, onBack, onStyleChange, initialTab, userId }: No
                         </button>
                       </div>
 
-                      <p className="font-body text-sm sm:text-base text-[#334155] leading-relaxed">
+                      <p className="font-body text-sm sm:text-base text-[#334155] leading-relaxed whitespace-pre-line">
                         {section.content}
                       </p>
+
+                      {/* Subsections if available */}
+                      {section.subsections && section.subsections.length > 0 && (
+                        <div className="mt-4 space-y-3">
+                          {section.subsections.map((sub, sIdx) => (
+                            <div key={sIdx} className="p-3.5 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0]">
+                              <div className="font-mono font-bold text-xs text-[#0F172A] mb-1">
+                                {sub.subtitle}
+                              </div>
+                              <p className="font-body text-xs text-[#334155] leading-relaxed whitespace-pre-line">
+                                {sub.explanation}
+                              </p>
+                              {sub.bullets && sub.bullets.length > 0 && (
+                                <ul className="list-disc list-inside mt-2 space-y-1 text-xs text-[#475569]">
+                                  {sub.bullets.map((b, bIdx) => (
+                                    <li key={bIdx}>{b}</li>
+                                  ))}
+                                </ul>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      )}
+
+                      {/* Comparison Table if available */}
+                      {section.comparisonTable && (
+                        <div className="mt-4 overflow-x-auto rounded-xl border border-[#CBD5E1]">
+                          <table className="w-full text-left text-xs font-body">
+                            <thead className="bg-[#F1F5F9] font-mono font-bold text-[#0F172A] border-b border-[#CBD5E1]">
+                              <tr>
+                                {section.comparisonTable.headers.map((h, hIdx) => (
+                                  <th key={hIdx} className="p-2.5 whitespace-nowrap">{h}</th>
+                                ))}
+                              </tr>
+                            </thead>
+                            <tbody className="divide-y divide-[#E2E8F0] bg-[#FFFFFF]">
+                              {section.comparisonTable.rows.map((row, rIdx) => (
+                                <tr key={rIdx} className="hover:bg-[#F8FAFC]">
+                                  {row.map((cell, cIdx) => (
+                                    <td key={cIdx} className="p-2.5 text-[#334155]">{cell}</td>
+                                  ))}
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      )}
+
+                      {/* Diagram & Visual Model Guide */}
+                      {section.diagramDescription && (
+                        <div className="mt-4 p-4 rounded-xl border border-[#CBD5E1] bg-[#F8FAFC]">
+                          <div className="font-mono text-xs font-bold uppercase text-[#0F172A] mb-1 flex items-center gap-1.5">
+                            <span className="w-2 h-2 rounded-full" style={{ backgroundColor: theme.primary }} />
+                            📐 Visual Model & Structure Guide: {section.diagramDescription.title}
+                          </div>
+                          <pre className="font-mono text-xs text-[#1E293B] bg-[#FFFFFF] p-3 rounded-lg border border-[#E2E8F0] overflow-x-auto my-2">
+                            {section.diagramDescription.visualLayout}
+                          </pre>
+                          <p className="text-xs font-body text-[#475569] leading-relaxed">
+                            {section.diagramDescription.explanation}
+                          </p>
+                        </div>
+                      )}
+
+                      {/* Solved Model Example with Working Notes */}
+                      {section.workedExample && (
+                        <div className="mt-4 p-4 rounded-xl border border-[#CBD5E1] bg-[#F8FAFC]">
+                          <div className="flex items-center gap-2 font-mono text-xs font-bold uppercase mb-1.5" style={{ color: theme.primary }}>
+                            <Check className="w-3.5 h-3.5" />
+                            Solved Example & Working Notes
+                          </div>
+                          <div className="font-mono-editorial font-bold text-sm text-[#0F172A] mb-2">
+                            {section.workedExample.problem}
+                          </div>
+                          <div className="text-xs sm:text-sm font-body text-[#334155] whitespace-pre-line leading-relaxed mb-3 p-3 bg-white rounded-lg border border-[#E2E8F0]">
+                            <span className="font-mono font-bold text-xs text-[#64748B] block mb-1">Step-by-Step Solution:</span>
+                            {section.workedExample.solution}
+                          </div>
+                          {section.workedExample.workingNotes && (
+                            <div className="p-3 rounded-lg bg-[#FFFFFF] border border-[#E2E8F0] text-xs font-mono text-[#334155] mb-2 whitespace-pre-line">
+                              <span className="font-bold text-[#0F172A] block mb-1">Detailed Working Notes:</span>
+                              {section.workedExample.workingNotes}
+                            </div>
+                          )}
+                          {section.workedExample.whyItWorks && (
+                            <div 
+                              className="text-xs font-body p-2.5 rounded-lg border"
+                              style={{ backgroundColor: theme.bgLight, borderColor: theme.badgeBorder, color: theme.textDark }}
+                            >
+                              <span className="font-mono font-bold">Why this works: </span>
+                              {section.workedExample.whyItWorks}
+                            </div>
+                          )}
+                        </div>
+                      )}
+
+                      {/* Common Mistakes & Traps */}
+                      {section.commonMistakes && section.commonMistakes.length > 0 && (
+                        <div className="mt-4 p-3.5 rounded-xl border border-[#FDE68A] bg-[#FFFBEB]">
+                          <div className="font-mono text-xs font-bold text-[#92400E] mb-1.5 flex items-center gap-1.5">
+                            ⚠️ Examiner Alert: Common Student Mistakes in this Topic
+                          </div>
+                          <ul className="list-disc list-inside space-y-1 text-xs font-body text-[#78350F]">
+                            {section.commonMistakes.map((m, mIdx) => (
+                              <li key={mIdx}>{m}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
 
                       <div 
                         className="mt-4 p-3.5 rounded-xl border text-xs font-body"
@@ -667,6 +776,12 @@ export const NotesView = ({ kit, onBack, onStyleChange, initialTab, userId }: No
                           >
                             Final Result: {d.finalResult}
                           </div>
+                          {d.whyItWorks && (
+                            <div className="mt-2 text-xs font-body p-2.5 rounded-lg bg-[#FFFFFF] border border-[#E2E8F0] text-[#334155]">
+                              <span className="font-mono font-bold text-[#059669]">Why this formulation works: </span>
+                              {d.whyItWorks}
+                            </div>
+                          )}
                         </div>
                       ))}
                     </div>

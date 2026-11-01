@@ -4,14 +4,17 @@ import type {
   AcademicClass, 
   TimestampConcept, 
   Flashcard, 
-  QuizQuestion 
+  QuizQuestion,
+  VerifiedLectureRepresentation 
 } from '../types';
+import { buildMethodologyGroundedKit } from './noteMethodologyEngine';
 
 export function buildDynamicKitContent(
   subject: Subject,
   chapter: string,
   _academicClass: AcademicClass,
-  _stream?: string
+  _stream?: string,
+  verifiedLecture?: VerifiedLectureRepresentation
 ): {
   content: StudyKit['content'];
   timestamps: TimestampConcept[];
@@ -21,6 +24,46 @@ export function buildDynamicKitContent(
 } {
   const sLower = (subject || '').toLowerCase();
   const cLower = (chapter || '').toLowerCase();
+
+  // 0. SUBJECT METHODOLOGY ENGINE FOR TARGET CURRICULUM CHAPTERS
+  // Accountancy Journal Entries
+  const isJournalMethodology = 
+    (sLower.includes('account') || cLower.includes('journal') || cLower.includes('debit') || cLower.includes('ledger') || cLower.includes('bookkeeping')) && 
+    !cLower.includes('cash flow') && !cLower.includes('cash_flow');
+  if (isJournalMethodology) {
+    return buildMethodologyGroundedKit(subject, chapter, _academicClass, _stream, verifiedLecture);
+  }
+
+  // Mathematics Quadratic Equations
+  const isQuadraticMethodology = cLower.includes('quadratic') || cLower.includes('discriminant');
+  if (isQuadraticMethodology) {
+    return buildMethodologyGroundedKit(subject, chapter, _academicClass, _stream, verifiedLecture);
+  }
+
+  // Physics Laws of Motion
+  const isMotionMethodology = 
+    (cLower.includes('motion') || cLower.includes('newton') || cLower.includes('friction') || cLower.includes('inertia') || cLower.includes('momentum')) && 
+    !cLower.includes('thermo') && !cLower.includes('optic');
+  if (isMotionMethodology) {
+    return buildMethodologyGroundedKit(subject, chapter, _academicClass, _stream, verifiedLecture);
+  }
+
+  // Biology Photosynthesis
+  const isPhotosynthesisMethodology = 
+    (cLower.includes('photo') || cLower.includes('chloroplast') || cLower.includes('calvin')) && 
+    !cLower.includes('respirat');
+  if (isPhotosynthesisMethodology) {
+    return buildMethodologyGroundedKit(subject, chapter, _academicClass, _stream, verifiedLecture);
+  }
+
+  // Economics National Income
+  const isNationalIncomeMethodology = 
+    cLower.includes('national income') || 
+    cLower.includes('income accounting') || 
+    (sLower.includes('econo') && (cLower.includes('multiplier') || cLower.includes('elasticity') || cLower.includes('demand') || cLower.includes('gdp')));
+  if (isNationalIncomeMethodology) {
+    return buildMethodologyGroundedKit(subject, chapter, _academicClass, _stream, verifiedLecture);
+  }
 
   // -1. COMMERCE / ACCOUNTANCY — CASH FLOW STATEMENTS (AS-3)
   const isCashFlow = cLower.includes('cash flow') || cLower.includes('cash_flow');
@@ -3369,192 +3412,6 @@ export function buildDynamicKitContent(
     };
   }
 
-  // 8. DYNAMIC GENERAL SYLLABUS SYNTHESIZER
-  const disciplineFormulas = sLower.includes('phys') ? [
-    { name: `${chapter} Conservation & Force Balance`, formula: 'Σ F_ext = dP/dt | W_net = ΔK', note: 'SI Units: Force [N], Energy [J]; verify inertial frame reference' },
-    { name: 'Conservation of Total Mechanical Energy', formula: 'E_total = K + U = constant', note: 'Holds in isolated systems under conservative forces' },
-    { name: 'Wave & Frequency Relation', formula: 'v = f · λ', note: 'Wave velocity = frequency × wavelength' },
-  ] : sLower.includes('chem') ? [
-    { name: `${chapter} Equilibrium Quotient`, formula: 'Q = [Products]^c / [Reactants]^d', note: 'Concentrations in mol/L; compare Q with K_eq for reaction direction' },
-    { name: 'Gibbs Free Energy & Spontaneity', formula: 'ΔG = ΔH - T ΔS', note: 'Reaction is spontaneous when ΔG < 0 at temperature T in Kelvin' },
-    { name: 'Ideal Gas State Relation', formula: 'P V = n R T', note: 'Universal gas constant R = 8.314 J/(mol·K)' },
-  ] : sLower.includes('math') ? [
-    { name: `${chapter} Governing Functional Relation`, formula: 'y = f(x) subject to domain constraints and boundary conditions', note: 'Verify existence, continuity, and boundary constraints' },
-    { name: 'Fundamental Limit Definition of Derivative', formula: "lim_{h→0} [f(x+h) - f(x)] / h = f'(x)", note: 'Defines instantaneous rate of change and tangent slope' },
-    { name: 'Mathematical Domain Validity Identity', formula: 'Domain: {x ∈ ℝ | f(x) is defined and real}', note: 'Preserves mathematical real-valued constraints' },
-  ] : (sLower.includes('account') || sLower.includes('econo') || sLower.includes('commerc')) ? [
-    { name: 'Fundamental Accounting Balance Equation', formula: "Assets = Liabilities + Owner's Equity (Capital)", note: 'Dual-aspect accounting convention holds across every transaction' },
-    { name: 'National Income Aggregate Expenditure Identity', formula: 'Y = C + I + G + (X - M)', note: 'Expenditure approach to macroeconomic national output' },
-    { name: 'Operating Margin Formulation', formula: 'Operating Profit = Net Revenue - Operating Expenses', note: 'Measures core earnings efficiency' },
-  ] : sLower.includes('bio') ? [
-    { name: 'Physiological Balance Relation', formula: 'Total Functional Capacity = Σ (Component Functional Volumes)', note: 'Homeostatic balance under standard physiological conditions' },
-    { name: 'Michaelis-Menten Enzymatic Rate', formula: 'v = (Vmax · [S]) / (Km + [S])', note: 'Relates substrate concentration [S] to reaction velocity v' },
-  ] : [
-    { name: 'Fundamental Conservation Balance', formula: 'Inflow + Generation = Outflow + Accumulation', note: 'Universal balance equation across system boundaries' },
-    { name: 'Steady-State Equilibrium Condition', formula: 'd(State Variable) / dt = 0', note: 'Defines steady state with time-invariant properties' },
-  ];
-
-  return {
-    content: {
-      quick: {
-        headline: `${subject}: ${chapter} — Key Revision & Exam Essentials`,
-        cheatSheet: [
-          `Fundamental Premise: Master the primary definitions, governing principles, and analytical rules of ${chapter}.`,
-          `System Boundaries: Always verify baseline conditions, initial states, and contextual limits before computing solutions.`,
-          `High-Yield Marking Criteria: State full definitions, cite standard theorems, and preserve step-by-step logic.`,
-          `High-Frequency Trap: Never omit proper dimensional units or skip defining variable notations used in derivations.`,
-        ],
-        formulas: disciplineFormulas,
-        bulletSummary: [
-          `Core concepts in ${chapter} form the prerequisite foundation for advanced exam questions.`,
-          'Always illustrate your written answers with clean, labeled diagrams and explicit formula statements.',
-        ],
-      },
-      minimal: {
-        headline: `${chapter} Summary`,
-        cheatSheet: [
-          `Key concept: Core governing rules in ${chapter}.`,
-          'Standard definitions and analytical limits.',
-        ],
-        formulas: disciplineFormulas.slice(0, 2),
-        bulletSummary: [`Essential conceptual takeaways for ${chapter}.`],
-      },
-      topper: {
-        introduction: `Comprehensive analytical lecture synthesis for ${subject}: ${chapter}. Structured in alignment with CBSE, university curriculum, and competitive entrance examination standards.`,
-        deepDive: [
-          {
-            title: `1. Foundational Theory & Conceptual Scope of ${chapter}`,
-            timestamp: '02:15',
-            content: `The lecture develops foundational principles, definitions, and boundary limits governing ${chapter}. Students are introduced to core mechanisms, qualitative reasoning models, and rigorous conceptual hierarchies.`,
-            keyTakeaway: 'Always define core terminology clearly and establish baseline assumptions before setting up mathematical or logical steps.',
-          },
-          {
-            title: `2. Systematic Formulation & Detailed Analysis in ${chapter}`,
-            timestamp: '14:30',
-            content: `Detailed examination of governing relationships, derivations, and step-by-step analytical methods. Connects fundamental theory with practical problem-solving strategies and exam rubrics.`,
-            keyTakeaway: 'Organize derivations with clear step headers, highlighting final expressions in boxed format to secure full presentation marks.',
-          },
-        ],
-        derivations: [
-          {
-            title: `Systematic Derivation of Governing Relations in ${chapter}`,
-            steps: [
-              `State baseline governing equation and foundational definitions for ${chapter}`,
-              'Establish system boundary conditions and constraint equations',
-              'Perform step-by-step algebraic/calculus transformation to eliminate intermediate variables',
-              'Verify dimensional consistency and state final governing result',
-            ],
-            finalResult: `Core analytical theorem for ${chapter} established with dimensional consistency`,
-          },
-        ],
-        proTips: [
-          'In descriptive questions, begin with an unambiguous two-line definition and cite the governing law explicitly.',
-          'Always double-check units, signs, and physical or logical consistency in final calculated results.',
-        ],
-      },
-      chatpata: {
-        hinglishIntro: `Bhai dekho, ${subject} mein ${chapter} ko bilkul simple Hinglish mein samajhte hain! Yeh super-important topic hai aur iske fundamentals ek baar dimaag mein fit ho gaye toh marks pakke hain.`,
-        desiAnalogies: [
-          {
-            concept: `${chapter} Core Foundation`,
-            analogy: `Jaise daily life mein balance aur clear rules hote hain, waise hi ${subject} mein ${chapter} exact relationships follow karta hai. Bas step-by-step concepts yaad rakho!`,
-            desiPunchline: `Fundamentals strong toh exam tension zero!`,
-          },
-          {
-            concept: `Exam Trap in ${chapter}`,
-            analogy: `Examiner hamesha boundary values aur units mein ghumane ki koshish karta hai — jaise bowling mein yorker aati hai. Question ko dhyan se padho aur basics se solve karo.`,
-            desiPunchline: `Hadhbadi mein gadbadi mat karna!`,
-          },
-        ],
-        bhaiKaSummary: [
-          `Point 1: ${chapter} ki main definitions aur formulas ko tips pe rakho.`,
-          `Point 2: Step-by-step derivation mein har step ka reason likhna mat bhoolna.`,
-        ],
-        jugaadPoints: [
-          `Exam mein full marks ke liye definition ke saath labeled diagram zaroor draw karna!`,
-        ],
-      },
-      chatpate: {
-        hinglishIntro: `Bhai dekho, ${chapter} bilkul simple hai! Yeh ${subject} ka essential topic hai.`,
-        desiAnalogies: [],
-        bhaiKaSummary: [],
-        jugaadPoints: [],
-      },
-      exam: {
-        trendAnalysis: `Comprehensive syllabus analysis for ${subject}: ${chapter}. Identifies high-weightage topics, recurring question patterns, and marking schemes.`,
-        highWeightageTopics: [
-          `Core definitions and conceptual principles of ${chapter} (2 Marks)`,
-          `Step-by-step derivation and formulation proof (3-5 Marks)`,
-          `Practical application and numerical evaluation (3 Marks)`,
-        ],
-        questions: [
-          {
-            id: 1,
-            marks: 1,
-            question: `State the primary governing principle of ${chapter} and mention its fundamental significance.`,
-            answer: `The primary principle establishes the fundamental relationship governing systems in ${chapter}, serving as the baseline for quantitative evaluation.`,
-            markingScheme: ['Accurate definition (½ mark)', 'Statement of significance/units (½ mark)'],
-            frequentlyAskedIn: 'Curriculum Practice Question (NCERT / Board Syllabus Aligned — 1 Mark)',
-          },
-          {
-            id: 2,
-            marks: 3,
-            question: `Explain the core mechanism or derivation of ${chapter} with suitable mathematical expressions and boundary conditions.`,
-            answer: `State the governing relation, apply boundary constraints, integrate or transform the expressions across the designated range, and state the final result with proper units.`,
-            markingScheme: ['Setup & initial conditions (1 mark)', 'Intermediate transformation steps (1 mark)', 'Final expression & units (1 mark)'],
-            frequentlyAskedIn: 'Curriculum Practice Question (NCERT / Board Syllabus Aligned — 3 Marks)',
-          },
-          {
-            id: 3,
-            marks: 5,
-            question: `Provide a detailed analytical evaluation of ${chapter}, deriving the governing relationship and discussing its boundary conditions and practical applications.`,
-            answer: `Develop the complete step-by-step formulation starting from foundational definitions, apply system constraints, prove the governing result, and state practical applications with dimensional verification.`,
-            markingScheme: ['Foundational setup & definitions (1.5 marks)', 'Step-by-step mathematical/analytical development (2 marks)', 'Boundary conditions & application analysis (1.5 marks)'],
-            frequentlyAskedIn: 'Curriculum Practice Question (NCERT / Board Syllabus Aligned — 5 Marks)',
-          },
-        ],
-      },
-    },
-    timestamps: [
-      { time: '01:30', seconds: 90, title: 'Introduction & Core Terminology', summary: `Foundational definitions and concepts of ${chapter}.` },
-      { time: '12:15', seconds: 735, title: 'Mathematical Formulation & Proof', summary: 'Step-by-step derivation and analytical structure.' },
-      { time: '24:40', seconds: 1480, title: 'Common Traps & Examination Rubric', summary: 'Scoring strategies, model answers, and examiner rubrics.' },
-    ],
-    flashcards: [
-      { id: 1, front: `What is the core premise of ${chapter}?`, back: `The fundamental relationships, governing equations, and principles that define ${chapter} in ${subject}.`, concept: 'Core Principle' },
-      { id: 2, front: 'What mistake do students most often make in this topic?', back: 'Skipping intermediate derivation steps and omitting proper units/dimensions in final solutions.', concept: 'Exam Trap' },
-      { id: 3, front: `How should you structure answers for ${chapter} in exams?`, back: 'Start with a precise definition, provide the governing formula, sketch a clean diagram, and state units.', concept: 'Exam Strategy' },
-    ],
-    quiz: [
-      {
-        id: 1,
-        question: `In ${chapter}, what is the essential prerequisite before applying governing mathematical formulations?`,
-        options: ['Verifying initial system boundary conditions and assumptions', 'Ignoring intermediate variable definitions', 'Skipping units and dimensions', 'Assuming zero resistance'],
-        correctIndex: 0,
-        explanation: 'All governing formulations require explicit verification of baseline boundary conditions and system assumptions.',
-        topic: `${chapter} Fundamentals`,
-      },
-      {
-        id: 2,
-        question: 'What is the primary factor that causes deduction in step-marking for this topic?',
-        options: ['Missing physical units or incomplete intermediate steps', 'Using blue ink', 'Writing too fast', 'Double underlining'],
-        correctIndex: 0,
-        explanation: 'Examiner rubrics allocate dedicated marks for intermediate steps, dimensional consistency, and final units.',
-        topic: 'Exam Presentation',
-      },
-      {
-        id: 3,
-        question: `How does understanding the core theory of ${chapter} benefit problem-solving?`,
-        options: ['It allows direct setup of governing equations from first principles', 'It replaces the need to practice numericals', 'It eliminates boundary condition constraints', 'It guarantees zero errors without checking'],
-        correctIndex: 0,
-        explanation: 'Grounded comprehension of foundational theory allows students to set up problems from first principles without memorizing edge cases.',
-        topic: 'Conceptual Mastery',
-      },
-    ],
-    quickRevisionPoints: [
-      `Governing principle: Foundational formulations define the core relationships in ${chapter}.`,
-      'Step-marking rule: Always show full algebraic/calculus setups with units.',
-      'Examination tip: Highlight final boxed answers with explicit dimensional units.',
-    ],
-  };
+  // ADAPTIVE GENERAL DOMAIN FALLBACK FOR UNFAMILIAR CHAPTERS
+  return buildMethodologyGroundedKit(subject, chapter, _academicClass, _stream, verifiedLecture);
 }

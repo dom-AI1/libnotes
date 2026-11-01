@@ -148,10 +148,34 @@ export interface QuickNotesContent {
   bulletSummary: string[];
 }
 
+export interface TopperDeepDiveSection {
+  title: string;
+  timestamp: string;
+  content: string;
+  keyTakeaway: string;
+  subsections?: { subtitle: string; explanation: string; bullets?: string[] }[];
+  workedExample?: {
+    problem: string;
+    solution: string;
+    workingNotes?: string;
+    whyItWorks?: string;
+  };
+  comparisonTable?: {
+    headers: string[];
+    rows: string[][];
+  };
+  diagramDescription?: {
+    title: string;
+    visualLayout: string;
+    explanation: string;
+  };
+  commonMistakes?: string[];
+}
+
 export interface TopperNotesContent {
   introduction: string;
-  deepDive: { title: string; timestamp: string; content: string; keyTakeaway: string }[];
-  derivations: { title: string; steps: string[]; finalResult: string }[];
+  deepDive: TopperDeepDiveSection[];
+  derivations: { title: string; steps: string[]; finalResult: string; whyItWorks?: string }[];
   proTips: string[];
 }
 
